@@ -69,8 +69,6 @@ settings jail #jail
 `#jail` is the default jail destination. To change the legacy channel, run
 `settings jail #staff-jail`.
 
-![Settings jail command configuring the jail channel](/images/moderation/jail-channel.png)
-
 #### Private jail threads
 
 Enable this to give each jailed member a private thread for talking with
@@ -119,8 +117,6 @@ settings modlog #jail-log
 
 If you leave the channel out, bored uses the current text channel (the one you ran the command in).
 
-![Settings modlog command configuring the modlog channel](/images/moderation/modlog-channel.png)
-
 ### Roles
 
 #### Image muted role
@@ -142,8 +138,6 @@ settings imuted @Image Muted
   </Tab>
 </Tabs>
 
-![Settings imuted command configuring the image muted role](/images/moderation/image-muted-role.png)
-
 #### Reaction muted role
 
 <Tabs items={["Syntax", "Example"]}>
@@ -162,8 +156,6 @@ settings rmuted @Reaction Muted
 
   </Tab>
 </Tabs>
-
-![Settings rmuted command configuring the reaction muted role](/images/moderation/reaction-muted-role.png)
 
 Use `none` to clear any saved mute-role setting.
 
@@ -189,8 +181,6 @@ settings jailmsg Read the rules and wait for staff.
 </Tabs>
 
 Use `reset`, `off`, or `none` with `settings jailmsg` to clear the saved message. Jail messages support the same moderation template variables used by invoke punishment messages, including `{moderator.mention}`, `{duration}`, `{reason}`, `{user.mention}`, and `{guild}`.
-
-![Settings jailmsg command configuring a custom jail message](/images/moderation/custom-jail-message.png)
 
 ## Invoke messages
 
