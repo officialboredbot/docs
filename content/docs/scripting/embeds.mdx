@@ -1,0 +1,188 @@
+---
+title: Embeds
+description: Learn bored's embed scripting format and the most common supported embed parts.
+section: Resources
+icon: code-bracket-square
+---
+
+import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
+
+bored accepts both its own embed script format and raw JSON payloads. The custom script format is still the easiest one to write by hand, so that is the format this page focuses on first.
+
+<Callout type="info" title="Too long to read?">
+If you're not interested in reading this entire page, you can use our [**embed builder**](https://bored.rest/embeds) to create embeds without needing to understand the code structure.
+</Callout>
+
+Components V2 messages use a separate script format. See [Components](/scripting/components) for containers, text displays, media galleries, separators, and component buttons.
+
+## Structure
+
+Each part of the embed is written as a small parameter block.
+
+- `{embed}` marks the input as embed code in commands that also accept normal text.
+- `$v` separates each part of the script.
+- `{key: value}` defines the actual data for that part.
+
+```text
+{embed}$v{title: Welcome}$v{description: Hello {user.mention}, welcome to {guild.name}}
+```
+
+If the command only accepts embed code, `{embed}` is often unnecessary. If the command can also accept normal text, starting with `{embed}$v` is the safe option.
+
+## Core parameters
+
+| Parameter | What it changes | Example |
+| --- | --- | --- |
+| `message` | Normal message content outside the embed. | `{message: Welcome to the server}` |
+| `url` | Embed title URL. | `{url: https://bored.rest}` |
+| `color` | Embed color. Omit it, or use `{color: none}`, for a colorless embed. | `{color: #2a2d31}` |
+| `title` | Embed title text. | `{title: Welcome}` |
+| `description` | Embed description text. | `{description: Hello {user.mention}}` |
+| `image` | Main image URL. | `{image: https://cdn.example.com/banner.png}` |
+| `thumbnail` | Thumbnail image URL. | `{thumbnail: {guild.icon}}` |
+| `timestamp` | Current timestamp with no argument. | `{timestamp}` |
+
+`image.url` and `thumbnail.url` are accepted too if you prefer the longer form. Dot-notation keys such as `author.name` and `field.inline` are also supported.
+
+## Multiple embeds
+
+You can chain more than one embed in the same message by repeating `{embed}$v...` blocks. bored sends up to Discord's limit of **10** embeds per message.
+
+```text
+{embed}$v{title: First}$v{description: One}
+{embed}$v{title: Second}$v{description: Two}
+```
+
+The visual builder exposes this limit as one primary embed plus up to nine additional image embeds. This lets one classic message display up to 10 large images while keeping the title, description, fields, and other rich content on the first embed.
+
+If Discord rejects a script as invalid, bored warns with `Invalid code` and a short fenced API detail instead of sending a broken embed.
+
+## Advanced parts
+
+<Accordions>
+  <Accordion title="Author">
+    Use the shorthand form when you want to set the whole author in one part.
+
+    <Tabs items={["Syntax", "Example"]}>
+      <Tab>
+
+```text
+{author: name && icon && url}
+```
+
+      </Tab>
+      <Tab>
+
+```text
+{embed}$v{author: {user.display_name} && {user.display_avatar}}
+```
+
+      </Tab>
+    </Tabs>
+
+    `icon` and `url` are optional. You can also split the author into dedicated keys with `author.name`, `author.icon`, `author.icon_url`, and `author.url`.
+  </Accordion>
+  <Accordion title="Fields">
+    Fields can be written as one shorthand entry or split into separate parts.
+
+    <Tabs items={["Shorthand", "Split keys"]}>
+      <Tab>
+
+```text
+{field: name && value && inline}
+```
+
+      </Tab>
+      <Tab>
+
+```text
+{field.name: Rules}$v{field.value: Read the rules first}$v{field.inline: true}
+```
+
+      </Tab>
+    </Tabs>
+
+    Add `inline` at the end of the shorthand field, or use `field.inline: true`, when you want that field to sit beside the others instead of taking a full row.
+  </Accordion>
+  <Accordion title="Footer">
+    Footers use a short two-part format.
+
+    <Tabs items={["Syntax", "Example"]}>
+      <Tab>
+
+```text
+{footer: text && icon}
+```
+
+      </Tab>
+      <Tab>
+
+```text
+{embed}$v{footer: Joined user ID: {user.id} && {user.display_avatar}}
+```
+
+      </Tab>
+    </Tabs>
+
+    The footer icon is optional.
+  </Accordion>
+  <Accordion title="Buttons">
+    bored supports regular link buttons, style-based buttons, and a channel-link shorthand.
+
+    <Tabs items={["Link button", "Style button", "Channel link"]}>
+      <Tab>
+
+```text
+{button: https://discord.com/invite/UePr2KBcFY && Support Server}
+```
+
+      </Tab>
+      <Tab>
+
+```text
+{button: blurple && Open ticket && disabled}
+```
+
+      </Tab>
+      <Tab>
+
+```text
+{button: channel link && Rules && #rules}
+```
+
+      </Tab>
+    </Tabs>
+
+    Style buttons accept `blurple`, `green`, `grey`, and `red`. Link-style buttons can also include an optional emoji and an enabled or disabled state.
+
+    You can also target a stored embed with `embed:<name>` for a public button response, or `ephemeral:<name>` for a private click response.
+  </Accordion>
+</Accordions>
+
+## Variables inside embeds
+
+Embed scripts can use the same dynamic variables documented on the [Variables](/scripting/variables) page.
+
+```text
+{embed}$v{description: Welcome {user.mention} to {guild.name}}$v{footer: Member count: {guild.count}}
+```
+
+## JSON support
+
+**JSON and JSON-like payloads are mostly accepted too.** If you already have a Discord-style payload, bored can usually read it as long as the structure is valid.
+
+The JSON route is most useful when you want to send:
+
+- `content`
+- `embed`
+- `embeds`
+- `components`
+- `allowed_mentions`
+
+The custom script format is still the better fit when you are writing embeds manually inside bored commands.
+
+## Full example
+
+```text
+{embed}$v{message: Welcome to {guild.name}}$v{color: #2a2d31}$v{title: Read this first}$v{description: Head to {channel.mention} and make sure your profile is set up.}$v{thumbnail: {guild.icon}}$v{field: Member && {user.mention} && inline}$v{field: Joined && {user.joined_at} && inline}$v{footer: User ID: {user.id} && {user.display_avatar}}$v{button: https://discord.com/invite/UePr2KBcFY && Support Server}
+```

@@ -1,0 +1,498 @@
+---
+title: Filter
+description: Block links, invites, filtered words, spam bursts, edited bait messages, and other risky chat patterns.
+section: Server Security
+icon: funnel
+---
+
+import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
+
+`filter` is bored's prefix-only chat protection system. Slash `/filter` is intentionally disabled. It combines Discord AutoMod rules with bored's own message checks so staff can control server-wide filters, channel-scoped filters, word rules, whitelists, and snipe safety from one command group.
+
+`filter links` and `filter invites` default to **on** across all channels.
+
+## How it works
+
+Filter is split into three layers:
+
+- **AutoMod filters** use Discord AutoMod to block messages before they land. This covers `links`, `invites`, and the word/regex filter.
+- **Runtime filters** are enforced directly by bored after a message is sent. This covers `spam`, `caps`, `spoilers`, `massmention`, `musicfiles`, `emoji`, and `edit`.
+- **Snipe filters** do not block live chat. They decide which deleted or edited content `snipe` and `editsnipe` are allowed to show later.
+
+Most filter commands require `Manage Channels`. Word, regex, word whitelist, reset, and word migration commands also require `Manage Server` because they sync Discord AutoMod keyword rules. Common aliases include `filter list` / `ls`, `filter reset` / `clear`, and whitelist / `wl`.
+
+## Start here
+
+<Steps>
+  <Step title="Apply the preset">
+    Use the setup command if you want the normal starter configuration.
+
+```text
+filter setup
+```
+
+    This enables `invites`, `spam`, `caps`, `massmention`, and `emoji` across all channels with delete-only enforcement. It uses `spam` at `6` messages in `8s`, `caps` at `15`, `massmention` at `10`, and `emoji` at `8`.
+  </Step>
+  <Step title="Review the configuration">
+    Open the full overview after setup.
+
+```text
+filter config
+```
+
+    Bare `filter`, `filter status`, `filter settings`, `filter panel`, and `filter cfg` open the same overview.
+  </Step>
+  <Step title="Inspect one module">
+    Run a module with no setting, or use its list command, to inspect that module's saved scope, action, thresholds, and exemptions.
+
+```text
+filter spam
+filter spam list
+```
+  </Step>
+</Steps>
+
+## Shared command pieces
+
+<Accordions>
+  <Accordion title="Scope">
+    Most module toggles accept `all` or one text channel. `current`, `here`, and `this` can be used for the current text channel.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+filter (module) (channel or all) (on or off)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+filter spam all on
+filter links #general on
+filter emoji here off
+```
+
+  </Tab>
+</Tabs>
+
+If you pass only the state, bored defaults the scope to all channels.
+
+```text
+filter invites on
+```
+  </Accordion>
+  <Accordion title="Threshold">
+    Sets how many matching items are needed before a runtime filter triggers. It works on `spam`, `caps`, `spoilers`, `massmention`, and `emoji`.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+--threshold (number)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+filter caps all on --threshold 15
+```
+
+  </Tab>
+</Tabs>
+
+`musicfiles`, `edit`, `links`, and `invites` do not use `--threshold`.
+  </Accordion>
+  <Accordion title="Window">
+    Sets the time window used by `spam`. Other filters do not use `--window`.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+--window (duration)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+filter spam all on --threshold 6 --window 8s
+```
+
+  </Tab>
+</Tabs>
+  </Accordion>
+  <Accordion title="Punishment">
+    By default, filters only block or delete matching messages. Add `--do timeout` when you also want bored or Discord AutoMod to timeout the member.
+
+<Tabs items={["Syntax", "Example", "Clear"]}>
+  <Tab>
+
+```text
+--do timeout (duration)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+filter massmention all on --threshold 10 --do timeout 10m
+```
+
+  </Tab>
+  <Tab>
+
+```text
+filter spam all on --do off
+```
+
+  </Tab>
+</Tabs>
+
+`edit` is delete-only and rejects `--do`. Timeout actions need bored to have permission to timeout members.
+  </Accordion>
+</Accordions>
+
+<Callout type="warn" title="AutoMod channel limits">
+Discord AutoMod can store up to `50` exempt channels on a rule. If you enable an AutoMod-backed filter for one channel, bored has to exempt the other text channels from that rule, so very large servers may need to use `all` plus whitelist or exemption controls instead.
+</Callout>
+
+## Word filter
+
+The word filter stores blocked words and regex patterns in bored, then syncs them into a Discord AutoMod keyword rule. Discord blocks matching messages before they appear in chat.
+
+### Add or remove words
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+filter add (word)
+filter remove (word)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+filter add free nitro
+filter remove free nitro
+```
+
+  </Tab>
+</Tabs>
+
+Bare `filter (word)` is shorthand for `filter add (word)`.
+
+```text
+filter free nitro
+```
+
+Each keyword can be up to `60` characters. Discord AutoMod supports up to `1000` keywords in the synced word rule.
+
+### List and reset
+
+```text
+filter list
+filter reset
+```
+
+`filter reset` only clears filtered words. It does not clear regex patterns, whitelisted words, link filters, invite filters, runtime filters, or snipe filters.
+
+### Word whitelist
+
+Use the word whitelist for phrases that should be allowed through the word filter.
+
+<Tabs items={["Syntax", "Example", "List"]}>
+  <Tab>
+
+```text
+filter whitelist (word)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+filter whitelist bored.rest
+```
+
+  </Tab>
+  <Tab>
+
+```text
+filter whitelist list
+```
+
+  </Tab>
+</Tabs>
+
+Whitelisted words can be up to `60` characters. Discord AutoMod supports up to `100` word allowlist entries on this rule.
+
+### Regex patterns
+
+Regex patterns are also synced into the word AutoMod rule.
+
+<Tabs items={["Syntax", "Example", "List"]}>
+  <Tab>
+
+```text
+filter regex (pattern)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+filter regex (?i)free\s+nitro
+```
+
+  </Tab>
+  <Tab>
+
+```text
+filter regex list
+```
+
+  </Tab>
+</Tabs>
+
+Running the same pattern again removes it. Regex patterns can be up to `260` characters, and Discord AutoMod supports up to `10` regex patterns on the synced rule.
+
+### Word exemptions and sync
+
+```text
+filter exempt (role)
+filter exempt list
+filter wordmigrate
+```
+
+`filter exempt` lets a role bypass the word AutoMod rule. `filter wordmigrate` forces bored to resync the saved words, regex patterns, whitelist, and exempt roles back into Discord AutoMod.
+
+## Link and invite filters
+
+`links` and `invites` are AutoMod-backed filters. They support server-wide mode, one-channel mode, timeout actions, whitelist targets, and role exemptions.
+
+### Links
+
+<Tabs items={["Syntax", "Example", "Whitelist"]}>
+  <Tab>
+
+```text
+filter links [channel or all] (on or off) [--do timeout (duration)]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+filter links all on
+filter links #general on --do timeout 2m
+```
+
+  </Tab>
+  <Tab>
+
+```text
+filter links whitelist (link, user, role, channel, or category)
+filter links whitelist list
+```
+
+  </Tab>
+</Tabs>
+
+The links whitelist can allow a specific URL or exempt a user, role, channel, or category. User whitelisting creates or reuses a `bored links whitelist` role and assigns it to that member.
+
+### Invites
+
+<Tabs items={["Syntax", "Example", "Whitelist"]}>
+  <Tab>
+
+```text
+filter invites [channel or all] (on or off) [--do timeout (duration)]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+filter invites all on
+filter invites #partners on --do timeout 10m
+```
+
+  </Tab>
+  <Tab>
+
+```text
+filter invites whitelist (user, role, channel, or category)
+filter invites whitelist list
+```
+
+  </Tab>
+</Tabs>
+
+The invites whitelist does not accept raw invite links. It exempts trusted users, roles, channels, or categories. User whitelisting creates or reuses a `bored invites whitelist` role and assigns it to that member.
+
+### Role-only exemptions
+
+```text
+filter links exempt (role)
+filter links exempt list
+filter invites exempt (role)
+filter invites exempt list
+```
+
+Use `whitelist` when you need a user, channel, category, or allowed link target. Use `exempt` when you only need a role bypass.
+
+## Runtime filters
+
+Runtime filters are handled by bored after a message is sent. When they match, bored deletes the message. If `--do timeout` is configured, bored also attempts to timeout the member and logs an automatic moderation case.
+
+### Runtime module reference
+
+| Module | What it checks | Supported flags |
+| --- | --- | --- |
+| `spam` | repeated messages from the same member in one channel | `--threshold`, `--window`, `--do timeout` |
+| `caps` | fully uppercase words with at least two letters | `--threshold`, `--do timeout` |
+| `spoilers` | repeated spoiler blocks using `||text||` | `--threshold`, `--do timeout` |
+| `massmention` | user mentions, role mentions, and everyone/here mentions | `--threshold`, `--do timeout` |
+| `musicfiles` | audio attachments and linked music file extensions | `--do timeout` |
+| `emoji` | custom and unicode emoji count | `--threshold`, `--do timeout` |
+
+### Enable runtime filters
+
+<Tabs items={["Spam", "Caps", "Mass Mention", "Music Files", "Emoji"]}>
+  <Tab>
+
+```text
+filter spam all on --threshold 6 --window 8s
+```
+
+  </Tab>
+  <Tab>
+
+```text
+filter caps #general on --threshold 15
+```
+
+  </Tab>
+  <Tab>
+
+```text
+filter massmention all on --threshold 10 --do timeout 10m
+```
+
+  </Tab>
+  <Tab>
+
+```text
+filter musicfiles #submissions on
+```
+
+  </Tab>
+  <Tab>
+
+```text
+filter emoji all on --threshold 8
+```
+
+  </Tab>
+</Tabs>
+
+When `spam` triggers, bored deletes the whole tracked message burst when possible, not just the final message that crossed the threshold.
+
+### Runtime exemptions
+
+Each runtime filter supports role exemptions and a list view.
+
+```text
+filter spam exempt (role)
+filter spam exempt list
+filter spam list
+```
+
+Replace `spam` with `caps`, `spoilers`, `massmention`, `musicfiles`, or `emoji` for the matching module.
+
+## Edit filter
+
+`filter edit` deletes messages after they are edited. It triggers when the message content or attachments change.
+
+<Tabs items={["Syntax", "Example", "Exempt"]}>
+  <Tab>
+
+```text
+filter edit (channel or all) (on or off)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+filter edit all on
+```
+
+  </Tab>
+  <Tab>
+
+```text
+filter edit exempt (role)
+filter edit exempt list
+```
+
+  </Tab>
+</Tabs>
+
+Members with `Manage Messages`, `Manage Server`, or `Administrator` bypass the edit filter automatically. Exempt roles bypass it too.
+
+<Callout type="warn" title="Delete-only filter">
+`filter edit` does not support `--threshold`, `--window`, or `--do`. It deletes matching edited messages immediately when enabled in scope.
+</Callout>
+
+## Snipe safety
+
+`filter snipe` controls what `snipe` and `editsnipe` can reveal later. It does not stop messages from being sent.
+
+<Tabs items={["Syntax", "Example", "List"]}>
+  <Tab>
+
+```text
+filter snipe (invites, links, images, word, files, or music)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+filter snipe invites
+```
+
+  </Tab>
+  <Tab>
+
+```text
+filter snipe list
+```
+
+  </Tab>
+</Tabs>
+
+Running the same type again removes it from the snipe blocklist.
+
+## Status commands
+
+Use these when you need to audit what is currently configured.
+
+```text
+filter
+filter config
+filter links list
+filter invites whitelist list
+filter regex list
+filter whitelist list
+filter snipe list
+```
+
+Bare `filter (module)` also opens that module's saved state view for `links`, `invites`, `edit`, `spam`, `caps`, `spoilers`, `massmention`, `musicfiles`, and `emoji`.

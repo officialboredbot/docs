@@ -1,0 +1,180 @@
+---
+title: Confessions
+description: Let members submit anonymous confessions, replies, votes, reports, and staff blocks.
+section: Server Configuration
+icon: eye-slash
+---
+
+Confessions lets members submit anonymous posts with `/confess`. Public confession posts can include vote buttons, anonymous reply threads, and staff reporting.
+
+## Start here
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+confessions add (channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+confessions add #confessions
+```
+
+  </Tab>
+</Tabs>
+
+Bored needs view, send, embed, read history, create public thread, and send in thread permissions in the confession channel.
+
+## Member flow
+
+```text
+/confess
+```
+
+The slash command opens a modal for the confession text. Confessions and anonymous replies cannot be empty, cannot contain links or Discord invites, and are checked against the server's confession blacklist.
+
+Confession submissions have a `60` second cooldown. Anonymous replies have a `30` second cooldown.
+
+## Report channel
+
+<Tabs items={["Set", "View", "Clear"]}>
+  <Tab>
+
+```text
+confessions reportchannel #confession-reports
+```
+
+  </Tab>
+  <Tab>
+
+```text
+confessions reportchannel
+```
+
+  </Tab>
+  <Tab>
+
+```text
+confessions reportchannel none
+```
+
+  </Tab>
+</Tabs>
+
+Set a report channel before members use `confessions report`.
+
+## Report a confession
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+confessions report (confession number or reply message id)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+confessions report 7
+```
+
+  </Tab>
+</Tabs>
+
+Reports go to the configured staff report channel and include the saved anonymous subject when bored can resolve it.
+
+## Staff blocks
+
+<Tabs items={["Mute", "Unmute"]}>
+  <Tab>
+
+```text
+confessions mute (member)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+confessions unmute (member)
+```
+
+  </Tab>
+</Tabs>
+
+Muted members cannot submit anonymous confessions.
+
+## Blocked phrases
+
+<Tabs items={["Add", "Remove", "List", "Clear"]}>
+  <Tab>
+
+```text
+confessions blacklist add (phrase)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+confessions blacklist remove (phrase)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+confessions blacklist list
+```
+
+  </Tab>
+  <Tab>
+
+```text
+confessions blacklist clear
+```
+
+  </Tab>
+</Tabs>
+
+Blocked phrases are matched against confession and anonymous reply text.
+
+## Vote buttons
+
+<Tabs items={["Set", "View", "Reset"]}>
+  <Tab>
+
+```text
+confessions emojis set (upvote emoji or none) (downvote emoji or none)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+confessions emojis view
+```
+
+  </Tab>
+  <Tab>
+
+```text
+confessions emojis reset
+```
+
+  </Tab>
+</Tabs>
+
+Use `none`, `off`, `clear`, or similar clear words for a vote side to hide that button. `confessions emojis reset` restores the default vote buttons.
+
+## Disable
+
+```text
+confessions disable
+```
+
+This asks for confirmation, disables anonymous confessions, and wipes the stored confession records for the server. `confessions remove` works as a compatibility alias.

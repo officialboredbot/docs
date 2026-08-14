@@ -1,0 +1,224 @@
+---
+title: Guild Tag Roles
+description: Reward members with roles when they enable your server's guild tag on their profile.
+section: Server Configuration
+icon: tag
+---
+
+Guild tag roles award one or more roles when a member enables your server's **guild tag** on their profile.
+
+<Callout type="warning" title="Server requirement">
+Your server must support **guild tags**. If guild tags are unavailable on the server, `badge on` warns you and rewards cannot be enabled.
+</Callout>
+
+## Start here
+
+<Steps>
+  <Step title="Enable badge rewards">
+    Turn rewards on first.
+
+```text
+badge on
+```
+
+    bored only grants roles after rewards are enabled and your server supports guild tags.
+  </Step>
+  <Step title="Add at least one reward role">
+    Save the roles members should receive when they enable your guild tag.
+
+```text
+badge role add @Tagged
+```
+
+    Role names also work without a mention, for example `badge role add Tagged`.
+  </Step>
+  <Step title="Sync existing members">
+    If members already had your guild tag enabled before setup, run a sync.
+
+```text
+badge sync
+```
+
+    This grants or removes saved roles based on each member's current guild tag state.
+  </Step>
+</Steps>
+
+## Permissions
+
+- **Manage Server** — `badge on`, `badge off`, `badge config`, `badge sync`, `badge channel`, `badge message`, and all `badge role` subcommands.
+
+Role commands still require bored to manage the role you choose, and the role must sit below bored's highest role.
+
+## Turn badge rewards on or off
+
+### Enable badge rewards
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+badge (on or off)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+badge on
+```
+
+  </Tab>
+</Tabs>
+
+### Disable badge rewards
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+badge (on or off)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+badge off
+```
+
+  </Tab>
+</Tabs>
+
+This stops automatic role grants without deleting your saved roles or message settings.
+
+## View the current config
+
+```text
+badge config
+```
+
+You can also use `badge settings` or `badge status`. This shows whether rewards are enabled, whether guild tags are available, the award channel, award message preview, and how many reward roles are saved.
+
+## Reward roles
+
+Reward roles are granted when a member enables your guild tag and removed when they turn it off.
+
+### Add a reward role
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+badge role add (role)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+badge role add @Tagged
+```
+
+  </Tab>
+</Tabs>
+
+Managed roles and `@everyone` cannot be used.
+
+### List reward roles
+
+```text
+badge role list
+```
+
+This shows every role currently saved for guild tag rewards.
+
+### Remove a reward role
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+badge role remove (role)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+badge role remove @Tagged
+```
+
+  </Tab>
+</Tabs>
+
+This removes that role from the guild tag reward list without affecting other saved roles.
+
+### Sync reward roles
+
+```text
+badge sync
+```
+
+Requires `badge on`. bored scans every member, grants saved roles to members who currently have your guild tag enabled, and removes those roles from members who do not. Run this after changing your role list or enabling rewards for the first time.
+
+## Award channel
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+badge channel (channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+badge channel #tag-rewards
+```
+
+  </Tab>
+</Tabs>
+
+When a member enables your guild tag, bored can announce it in the channel you set here.
+
+## Award messages
+
+You can save a custom award message and preview it before members see it.
+
+### Set the award message
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+badge message (message)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+badge message {user.mention} just enabled our guild tag!
+```
+
+  </Tab>
+</Tabs>
+
+Plain text and bored's embed script format are both supported.
+
+### Preview the current message
+
+```text
+badge message view
+```
+
+Use this to preview the currently saved award message.
+
+### Clear the award message
+
+```text
+badge message clear
+```
+
+This removes the custom award message.

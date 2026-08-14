@@ -1,0 +1,89 @@
+---
+title: Honeypot
+description: Catch risky accounts when they send messages in a dedicated trap channel.
+section: Server Security
+icon: bug-ant
+---
+
+Honeypot creates a visible channel that should not be used for normal chat. When a non-bot member sends a message there, bored deletes the message when possible, increments the caught counter, updates the notice, and applies the configured punishment without DMing or warning the member.
+
+The default punishment is `softban`. All honeypot commands require **Manage Server**. The bot also needs `Manage Channels` to create or remove the honeypot channel and the matching moderation permission for the punishment you choose.
+
+## Start here
+
+```text
+honeypot setup
+```
+
+This creates `#honeypot`, posts a colorless Components V2 warning notice with a disabled `Caught: N` button, and enables detection. `hp setup` and `honeypots setup` work as aliases. Bot and webhook messages are ignored.
+
+## Alerts
+
+<Tabs items={["Syntax", "Example", "Clear"]}>
+  <Tab>
+
+```text
+honeypot alerts [channel]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+honeypot alerts #mod-logs
+```
+
+  </Tab>
+  <Tab>
+
+```text
+honeypot alerts
+```
+
+  </Tab>
+</Tabs>
+
+Alerts include the member, trigger channel, applied punishment, failed punishment actions, message text when present, and attachment count.
+
+## Punishment
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+honeypot punishment (punishments)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+honeypot punishment timeout softban
+```
+
+  </Tab>
+</Tabs>
+
+Supported punishments are `kick`, `ban`, `softban`, and `timeout`. You can combine `timeout` with one removal punishment, but you cannot combine multiple removal punishments together.
+
+`timeout` lasts `1` day. `ban` and `softban` delete `1` day of message history. `mute` and `tempban` are accepted as aliases for `timeout`.
+
+## View settings
+
+```text
+honeypot settings
+```
+
+This shows whether Honeypot is enabled, the trap channel, the alert channel, the punishment list, and the current caught count.
+
+## Disable
+
+```text
+honeypot disable
+```
+
+This asks for confirmation, deletes the configured honeypot channel when bored can manage it, and clears the saved Honeypot config.
+
+<Callout type="warn" title="Punishment limits">
+Honeypot does not punish the server owner or members above bored's highest role. Those triggers can still be reported to the alert channel.
+</Callout>

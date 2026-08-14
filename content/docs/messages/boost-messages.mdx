@@ -1,0 +1,102 @@
+---
+title: Boost Messages
+description: Send configurable thank-you messages when members boost the server.
+section: Server Configuration
+icon: gift
+---
+
+Boost Messages let bored send a saved thank-you message to each channel you configure when someone starts boosting the server.
+
+Messages support plain text or bored's embed script format. `--self_destruct` is optional and can be set from `6` to `60` seconds.
+
+## Add a boost message
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+boosts add (channel) (message)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+boosts add #boosts thanks for boosting {user.mention} --self_destruct 30
+```
+
+  </Tab>
+</Tabs>
+
+You can save one boost message per channel.
+
+## View a saved message
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+boosts view (channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+boosts view #boosts
+```
+
+  </Tab>
+</Tabs>
+
+Use this to check the saved content and whether `self_destruct` is enabled for that channel.
+
+## List configured channels
+
+```text
+boosts list
+```
+
+This shows every channel that currently has a boost message saved.
+
+## Remove a boost message
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+boosts remove (channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+boosts remove #boosts
+```
+
+  </Tab>
+</Tabs>
+
+This only removes the saved boost message for that channel.
+
+## Test a boost message
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+boosts test (channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+boosts test #boosts
+```
+
+  </Tab>
+</Tabs>
+
+This sends a preview of the saved boost message to that channel without waiting for a real boost event.

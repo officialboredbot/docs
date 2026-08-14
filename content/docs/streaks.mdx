@@ -1,0 +1,78 @@
+---
+title: Streaks
+description: Run daily streaks with configurable resets, restores, reward roles, and leaderboards.
+section: Miscellaneous
+icon: fire
+---
+
+Streaks reward members for meeting a daily message goal and claiming each completed day.
+
+## Setup
+
+Members with **Manage Server** can enable streaks and configure the schedule.
+
+```text
+streak enable
+streak config timezone America/New_York
+streak config reset 12 AM
+streak config requirement 5
+```
+
+Reset times accept 12-hour and 24-hour input, including `12 AM`, `8:30 PM`, `00:00`, and `20:30`. The time is interpreted in the configured timezone.
+
+## Member commands
+
+```text
+streak [member]
+streak claim
+streak restore
+streak leaderboard
+```
+
+`streak claim` works after the member reaches the daily message requirement. A missed day can be restored when the member has a restore credit and the missed period is still inside the configured restore window.
+
+## Restore settings
+
+```text
+streak config restores (amount)
+streak config restorewindow (days)
+streak grantrestore (member) [amount]
+```
+
+Starting restores can be set from `0` to `100`. The restore window can be set from `1` to `30` days. `streak grantrestore` gives additional credits to one member.
+
+## Streak roles
+
+Members with **Manage Roles** can award roles at specific streak lengths.
+
+```text
+streak add @Active 7
+streak add @Dedicated 30
+streak roles
+```
+
+Reward roles stack. A member with a 30-day current streak receives both configured roles in this example. Claims and restores update rewards automatically.
+
+```text
+streak update @Active 14
+streak remove 30
+streak sync
+```
+
+`streak update` changes a role's required streak, while `streak remove` removes the reward at that day threshold. `streak sync` recalculates every member from their current streak and removes rewards they no longer qualify for.
+
+The bot needs **Manage Roles**, and each reward must be below both the manager's and bot's highest roles. `@everyone` and integration-managed roles cannot be used.
+
+## Other settings
+
+```text
+streak config
+streak config timezone (timezone)
+streak config reset (time)
+streak config requirement (messages)
+streak disable
+```
+
+The daily message requirement can be set from `1` to `1,000`.
+
+Slash commands use `/streak`. Prefix `streaks` is an alias for `streak`.

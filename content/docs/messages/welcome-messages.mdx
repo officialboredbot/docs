@@ -1,0 +1,118 @@
+---
+title: Welcome Messages
+description: Send configurable join messages to one or more channels when members join.
+section: Server Configuration
+icon: user-plus
+---
+
+Welcome Messages let bored send a saved join message to each channel you configure when someone joins the server.
+
+<Callout type="warning" title="Raid state">
+When **raid state** is active through AntiRaid, welcome messages are paused until the raid batch is cleared or you turn raid state off.
+</Callout>
+
+## Add a welcome message
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+welcome add (channel) (message)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+welcome add #welcome welcome to {guild} {user.mention} --self_destruct 30
+```
+
+  </Tab>
+</Tabs>
+
+You can save one welcome message per channel. Messages support plain text, bored's embed script format, or [Components V2 container scripts](/scripting/components). `--self_destruct` is optional and can be set from `6` to `60` seconds.
+
+Saved welcome content can include user and role mentions. `@everyone` and `@here` stay disabled.
+
+<Callout type="info" title="Invite-aware welcomes">
+If [Invite Tracking](/invite-tracking) is enabled and your welcome message uses invite variables such as `{inviter}` or `{invite_code}`, that row overrides the invite tracker for joins. Welcome messages without invite variables keep running alongside the tracker.
+</Callout>
+
+## View a saved message
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+welcome view (channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+welcome view #welcome
+```
+
+  </Tab>
+</Tabs>
+
+Use this to check the saved content and whether `self_destruct` is enabled for that channel.
+
+## List configured channels
+
+```text
+welcome list
+```
+
+This shows every channel that currently has a welcome message saved.
+
+## Remove a welcome message
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+welcome remove (channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+welcome remove #welcome
+```
+
+  </Tab>
+</Tabs>
+
+This only removes the saved welcome message for that channel.
+
+## Reset all welcome messages
+
+```text
+welcome reset
+```
+
+This clears every saved welcome message in the server after a confirmation prompt. `welcome clear` works as an alias.
+
+## Test a welcome message
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+welcome test (member)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+welcome test @member
+```
+
+  </Tab>
+</Tabs>
+
+If you leave the member out, bored uses you when possible and sends the saved welcome messages as a preview.

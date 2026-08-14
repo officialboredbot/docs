@@ -1,0 +1,109 @@
+---
+title: AutoPFP
+description: Post automatic profile picture, GIF, and banner drops from Pinterest collections.
+section: Miscellaneous
+icon: camera
+---
+
+AutoPFP can rotate Pinterest media into configured channels and can also fetch one-off profile pictures, GIFs, and banners on demand.
+
+Scheduled drops run across a `5` minute cycle and send up to `10` images when a configured collection is due. Bored uses its own channel webhook when it can manage webhooks, then falls back to a normal bot message.
+
+## Collections
+
+The automatic drop options are `females`, `female gifs`, `males`, `male gifs`, `banners`, and `banner gifs`.
+
+## Set up a drop
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+autopfp setup (option) (channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+autopfp setup female gifs #pfps
+```
+
+  </Tab>
+</Tabs>
+
+You need `Manage Server` to add, remove, or reset AutoPFP drops. The target channel must let bored view the channel, embed links, attach files, and either send messages or manage webhooks.
+
+## View active drops
+
+```text
+autopfp status
+```
+
+`autopfp list` works as an alias.
+
+## Remove a drop
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+autopfp remove (option)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+autopfp remove banners
+```
+
+  </Tab>
+</Tabs>
+
+## Reset every drop
+
+```text
+autopfp reset
+```
+
+This clears every AutoPFP configuration for the server after a confirmation prompt.
+
+## Manual fetch commands
+
+<Tabs items={["Profile picture", "GIF", "Banner", "Banner GIF"]}>
+  <Tab>
+
+```text
+getpfp female
+```
+
+  </Tab>
+  <Tab>
+
+```text
+getgif male
+```
+
+  </Tab>
+  <Tab>
+
+```text
+getbanner
+```
+
+  </Tab>
+  <Tab>
+
+```text
+getbanner gif
+```
+
+  </Tab>
+</Tabs>
+
+`getpfp` accepts `female` or `male`. `getgif` accepts `female` or `male`. `getbanner` fetches a normal banner by default, and `getbanner gif` fetches an animated banner.
+
+<Callout type="info" title="Slash commands">
+AutoPFP setup is also available under `/autopfp`. Manual fetches are also available as `/getpfp`, `/getgif`, and `/getbanner`.
+</Callout>

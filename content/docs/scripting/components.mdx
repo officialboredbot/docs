@@ -1,0 +1,250 @@
+---
+title: Components
+description: Build Discord Components V2 messages with bored's component script format or raw JSON.
+section: Resources
+icon: cube-transparent
+---
+
+Components V2 replace a message's normal content and embeds with layout components such as containers, text displays, media galleries, separators, sections, and buttons.
+
+<Callout type="warning" title="Components are a separate message format">
+Start component scripts with the singular `{component}` marker. Do not combine `{component}` with `{embed}`, normal message content, or embed parameters. bored rejects mixed component and embed scripts.
+</Callout>
+
+If you prefer a visual editor, the [Embed Builder](https://bored.rest/embeds) can generate the script for you.
+
+## Structure
+
+Component scripts use the same `$v` separator as embed scripts.
+
+- `{component}` marks the message as Components V2.
+- `$v` separates each component parameter.
+- `{container}` begins a new visual container.
+- The parameters after a container become its children.
+
+```text
+{component}$v{container: #5865f2}$v{text: ## Welcome}$v{text: Hello {user.mention}, read the rules below.}$v{separator: large}$v{button: https://bored.rest && Open bored}
+```
+
+Variables are rendered inside component text, labels, descriptions, and URLs where supported. Component scripts disable mentions, so a rendered mention such as `{user.mention}` appears without notifying the user.
+
+## Containers
+
+Each `{container}` starts a new Discord container. Containers can use an accent color and can be marked as spoilers.
+
+```text
+{container}
+{container: #5865f2}
+{container: #5865f2 && spoiler}
+{container: none && spoiler}
+```
+
+Use `none` when you want a spoiler container without an accent color. Starting another container closes the previous one. Empty containers are ignored.
+
+## Supported parameters
+
+| Parameter | What it adds | Example |
+| --- | --- | --- |
+| `container` | Starts a new container with an optional color and spoiler state. | `{container: #5865f2 && spoiler}` |
+| `text` | Adds a markdown text display. | `{text: ## Server rules}` |
+| `section` | Adds text beside a thumbnail or button. | `{section: Read this first && https://cdn.example.com/rules.png}` |
+| `media` | Adds media to a gallery. Consecutive entries share a gallery. | `{media: https://cdn.example.com/banner.png && Server banner}` |
+| `separator` | Adds spacing with an optional divider. | `{separator: large}` |
+| `button` | Adds a link button or stored-embed button. | `{button: green && Rules && embed:rules}` |
+
+The shorthand script currently supports the parameters listed above. Discord has additional component types, but bored does not expose select menus or file uploads through this shorthand.
+
+## Text displays
+
+Text displays support Discord markdown and bored variables.
+
+```text
+{component}$v{container}$v{text: ## Welcome to {guild.name}}$v{text: You are member **{guild.count}**.}
+```
+
+bored rejects the script when the rendered component layout exceeds a combined content length of **4,000 characters**.
+
+## Sections
+
+A section places one text display beside either a thumbnail or a button.
+
+<Tabs items={["Thumbnail syntax", "Thumbnail example", "Button example"]}>
+  <Tab>
+
+```text
+{section: text && thumbnail URL && thumbnail description && spoiler}
+```
+
+  </Tab>
+  <Tab>
+
+```text
+{section: Read the rules before chatting. && https://cdn.example.com/rules.png && Rules icon && false}
+```
+
+  </Tab>
+  <Tab>
+
+```text
+{section: Read the rules before chatting. && button && green && Open rules && embed:rules}
+```
+
+  </Tab>
+</Tabs>
+
+The thumbnail description and spoiler value are optional. The thumbnail must use a valid `http` or `https` URL.
+
+For a button accessory, put the literal `button` after the section text, then use the same style, label, target, emoji, and enabled or disabled values accepted by a normal component button. Section buttons count toward the same unique interaction-target rules as action-row buttons.
+
+## Media galleries
+
+Consecutive `{media}` entries are grouped into one gallery. A gallery can contain up to **10** items; bored starts another gallery when more consecutive media entries are provided.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+{media: URL && description && spoiler}
+```
+
+  </Tab>
+  <Tab>
+
+```text
+{component}$v{container}$v{media: https://cdn.example.com/one.png && First image}$v{media: https://cdn.example.com/two.png && Second image && true}
+```
+
+  </Tab>
+</Tabs>
+
+The description and spoiler value are optional. Starting a button, text display, section, separator, or new container closes the current gallery.
+
+## Separators
+
+Separators add vertical spacing between components.
+
+```text
+{separator}
+{separator: small}
+{separator: large}
+{separator: hidden}
+```
+
+`small` is the default spacing. Use `hidden`, `false`, or `off` to keep the spacing without drawing a divider.
+
+## Buttons
+
+Consecutive buttons share action rows. Each row can contain up to **5** buttons; bored starts another row after the fifth button.
+
+### Link buttons
+
+The URL-first form is the shortest way to create a link button.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+{button: URL && label && emoji && enabled or disabled}
+```
+
+  </Tab>
+  <Tab>
+
+```text
+{button: https://bored.rest && Open bored && enabled}
+```
+
+  </Tab>
+</Tabs>
+
+The emoji and state are optional. Button labels can contain up to **80 characters**, and link URLs can contain up to **512 characters**.
+
+You can also use the style form with `link` and target a URL, channel mention, channel ID, or channel name.
+
+```text
+{button: link && Read the rules && #rules && enabled}
+```
+
+### Stored-embed buttons
+
+Non-link buttons can open a stored embed when clicked.
+
+<Tabs items={["Public response", "Private response"]}>
+  <Tab>
+
+```text
+{button: green && Rules && embed:rules && enabled}
+```
+
+  </Tab>
+  <Tab>
+
+```text
+{button: blurple && Help && ephemeral:help && enabled}
+```
+
+  </Tab>
+</Tabs>
+
+`embed:<name>` sends the stored embed publicly. `ephemeral:<name>` sends it privately to the member who clicked. The aliases `public:<name>` and `private:<name>` are accepted too.
+
+Button styles are `blurple`, `green`, `gray` or `grey`, `red`, and `link`. An optional emoji goes after the target and before the enabled or disabled state.
+
+```text
+{button: red && Disabled action && embed:archive && disabled}
+```
+
+Buttons on the same message must have unique interaction targets. bored rejects the script when two buttons produce the same custom ID.
+
+## Multiple containers
+
+Repeat `{container}` to create another visual group in the same message.
+
+```text
+{component}$v{container: #5865f2}$v{text: ## Information}$v{text: Welcome to {guild.name}.}$v{container: #57f287}$v{text: ## Links}$v{button: https://bored.rest && Website}$v{button: https://discord.com/invite/UePr2KBcFY && Support}
+```
+
+Discord allows up to **40 total components** in a Components V2 message. Containers can hold text displays, sections, media galleries, separators, and button action rows.
+
+## Raw JSON
+
+bored also accepts Discord-style Components V2 JSON. Include message flag `32768`, or provide a top-level V2 component type that bored can detect.
+
+```json
+{
+  "flags": 32768,
+  "components": [
+    {
+      "type": 17,
+      "accent_color": 5793266,
+      "components": [
+        {
+          "type": 10,
+          "content": "## Welcome\nThis message uses Components V2."
+        },
+        {
+          "type": 14,
+          "divider": true,
+          "spacing": 2
+        }
+      ]
+    }
+  ]
+}
+```
+
+When bored detects Components V2 JSON, it discards legacy `content` and `embeds`. The flag cannot be removed from a Discord message after that message is sent.
+
+Raw JSON can represent more Discord component types than bored's shorthand. When a message cannot be represented safely as shorthand, `embedcode` returns lossless Components V2 JSON instead.
+
+All Components V2 sends disable user, role, `@everyone`, `@here`, and reply mention parsing. Mention-enabling `allowed_mentions` values in imported V2 JSON are ignored.
+
+The visual builder round-trips containers, text displays, sections with thumbnail or button accessories, media galleries with up to 10 items each, separators, and action-row buttons. It rejects unsupported layouts instead of silently dropping pieces. File components require matching uploaded attachments, so standalone component scripts and builder imports reject them.
+
+## Full example
+
+```text
+{component}$v{container: #5865f2}$v{text: ## Welcome to {guild.name}}$v{text: Hello {user.mention}. Use the links below to get started.}$v{section: Read the server rules before chatting. && https://cdn.example.com/rules.png && Rules}$v{separator: large}$v{media: https://cdn.example.com/banner.png && Server banner}$v{button: link && Rules channel && #rules && enabled}$v{button: green && Open help && ephemeral:help && enabled}
+```
+
+For self-assignable dropdown roles, use [Dropdown Role Menus](/roles/dropdown-role-menus). Role menus are persistent controls managed by the `rolemenu` command group, not component-script select parameters.

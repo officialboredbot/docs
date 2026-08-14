@@ -1,0 +1,258 @@
+---
+title: Giveaways
+description: Run reaction-based giveaways with requirements, bonus entries, rerolls, and winner roles.
+section: Miscellaneous
+icon: gift-top
+---
+
+import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
+
+Giveaways posts a giveaway message, collects entries from reactions, checks eligibility when the giveaway ends, and announces the selected winners.
+
+Staff need `Manage Channels` for the main giveaway commands. Winner role rewards require `Manage Roles`.
+
+## Start a giveaway
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+giveaways start [channel] (duration) (winners) (prize) [flags]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+giveaways start #giveaways 24h 2 Nitro --requiredroles @Member --bonusentries @Booster 2
+```
+
+  </Tab>
+</Tabs>
+
+If you omit the channel, bored uses the configured default giveaway channel. If no default is set, it uses the current channel.
+
+## Start flags
+
+<Accordions>
+  <Accordion title="Description">
+    Adds extra text above the giveaway status block. Plain text and embed script descriptions are supported.
+
+```text
+--description (text)
+```
+  </Accordion>
+  <Accordion title="Hosts">
+    Sets one or more visible hosts instead of only the command runner.
+
+```text
+--host (members)
+--hosts (members)
+```
+  </Accordion>
+  <Accordion title="Required roles">
+    Requires entrants to have one of the listed roles.
+
+```text
+--requiredroles (roles)
+```
+  </Accordion>
+  <Accordion title="Winner roles">
+    Gives the listed roles to winners when the giveaway ends. This requires `Manage Roles`.
+
+```text
+--roles (roles)
+```
+  </Accordion>
+  <Accordion title="Bonus entries">
+    Gives a member or role extra entries. Each configured target can receive up to `100` extra entries.
+
+```text
+--bonusentries (target amount)
+--bonusentry (target amount)
+```
+  </Accordion>
+  <Accordion title="Voice">
+    Requires entrants to be in a voice channel. `--voice` by itself turns the requirement on.
+
+```text
+--voice
+--voice on
+--voice off
+```
+  </Accordion>
+  <Accordion title="Levels">
+    Requires bored's message leveling data. Use minimum and maximum together when the giveaway should stay inside a level range.
+
+```text
+--minlevel (level)
+--maxlevel (level)
+```
+  </Accordion>
+  <Accordion title="Invites and messages">
+    Requires invite tracking or message tracking to be enabled before the giveaway starts.
+
+```text
+--invites (amount)
+--messages (amount)
+```
+  </Accordion>
+  <Accordion title="Voice level">
+    Requires bored's voice leveling data to be enabled.
+
+```text
+--voicelevel (level)
+```
+  </Accordion>
+  <Accordion title="Age and stay">
+    Requires a minimum account age or minimum time in the server, measured in days.
+
+```text
+--age (days)
+--stay (days)
+```
+  </Accordion>
+  <Accordion title="Color and media">
+    Sets the giveaway accent color, thumbnail, or main image. `--thumbnail` and `--image` can use a direct URL or the first attachment on the command message.
+
+```text
+--color (hex)
+--thumbnail (url)
+--image (url)
+```
+  </Accordion>
+</Accordions>
+
+## Default channel
+
+<Tabs items={["Set", "Clear"]}>
+  <Tab>
+
+```text
+giveaways channel (channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+giveaways channel clear
+```
+
+  </Tab>
+</Tabs>
+
+`giveaways set` works as an alias for `giveaways channel`.
+
+## Manage a giveaway
+
+<Tabs items={["End", "Cancel", "Reroll"]}>
+  <Tab>
+
+```text
+giveaways end [message link]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+giveaways cancel [message link]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+giveaways reroll [message link] [winners]
+```
+
+  </Tab>
+</Tabs>
+
+You can run management commands with a message link, by replying to the giveaway message, or with no target to use the latest giveaway message in the current channel.
+
+## Edit a giveaway
+
+<Tabs items={["Basics", "Roles", "Requirements", "Media"]}>
+  <Tab>
+
+```text
+giveaways edit prize [message link] (prize)
+giveaways edit host [message link] (members)
+giveaways edit duration [message link] (duration)
+giveaways edit winners [message link] (amount)
+giveaways edit description [message link] (description)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+giveaways edit requiredroles [message link] [roles]
+giveaways edit roles [message link] [roles]
+giveaways edit bonusentries [message link] (target amount)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+giveaways edit minlevel [message link] (level)
+giveaways edit maxlevel [message link] (level)
+giveaways edit age [message link] (days)
+giveaways edit stay [message link] (days)
+giveaways edit invites [message link] (amount)
+giveaways edit messages [message link] (amount)
+giveaways edit voicelevel [message link] (level)
+giveaways edit voice [message link] (on or off)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+giveaways edit color [message link] (hex)
+giveaways edit thumbnail [message link] (url)
+giveaways edit image [message link] (url)
+```
+
+  </Tab>
+</Tabs>
+
+For prefix edits, omitting roles clears `requiredroles` or winner `roles`. Use `0` to clear invite, message, voice-level, or bonus-entry targets. Use `off` to clear the voice requirement.
+
+## Blacklists
+
+<Tabs items={["Toggle", "List"]}>
+  <Tab>
+
+```text
+giveaways blacklist (member or role)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+giveaways blacklists
+```
+
+  </Tab>
+</Tabs>
+
+Running `giveaways blacklist` again on the same member or role removes them from the blacklist.
+
+## Lists and cleanup
+
+```text
+giveaways list
+```
+
+Shows saved giveaways in the server.
+
+```text
+giveaways clear
+```
+
+Clears ended or cancelled giveaways from the saved giveaway list after a confirmation prompt.

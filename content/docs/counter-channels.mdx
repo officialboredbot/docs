@@ -1,0 +1,80 @@
+---
+title: Counter Channels
+description: Create channels that automatically show server totals and countdowns.
+section: Miscellaneous
+icon: calculator
+---
+
+Counter channels keep a channel or category name updated with a server statistic. They can show member counts, channel counts, boost counts, or a countdown from a Unix timestamp.
+
+You need `Manage Channels` to add, remove, or list counters. bored also needs permission to create the channel type you choose.
+
+## Add a counter
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+counter add (option) (type)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+counter add members voice
+```
+
+  </Tab>
+</Tabs>
+
+bored creates the channel and saves it as a managed counter.
+
+## Options
+
+Supported counter options are:
+
+- `members` - total server members.
+- `users_only` - human members.
+- `bots_only` - bot members.
+- `pending_members` - members still pending screening.
+- `all_channels` - all guild channels.
+- `text_channels` - text channels.
+- `voice_channels` - voice channels.
+- `categories` - channel categories.
+- `announcement_channels` - announcement channels.
+- `staging_channels` - stage channels.
+- `boosts` - current boost count.
+- `booster_count` - current booster count.
+- A Unix timestamp - creates a countdown counter.
+
+Supported channel types are `voice`, `text`, `category`, `announce`, and `stage`.
+
+## Remove a counter
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+counter remove (channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+counter remove #members-1200
+```
+
+  </Tab>
+</Tabs>
+
+Removing a counter stops bored from updating that channel. It does not delete the channel.
+
+## List counters
+
+```text
+counter list
+```
+
+This shows every saved counter in the server, including counters whose channels were deleted.

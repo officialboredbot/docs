@@ -1,0 +1,157 @@
+---
+title: Reaction Triggers
+description: Add emoji reactions automatically when messages contain saved trigger words.
+section: Server Configuration
+icon: cursor-arrow-rays
+---
+
+Reaction Triggers let bored react automatically when a message contains a saved trigger word.
+
+Triggers are matched inside the message content, not as exact full-message matches, so a saved trigger like `sob` reacts anywhere that word appears in the message.
+
+## Add a reaction trigger
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+reaction add (emoji(s), trigger word)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+reaction add 😭 sob
+```
+
+  </Tab>
+</Tabs>
+
+The trigger must be at least `2` characters long. You can also add more than one emoji to the same trigger in one command. Bare `reaction` and `autoreact` behave the same as `reaction add`.
+
+## Remove one reaction trigger
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+reaction delete (emoji(s), trigger word)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+reaction delete sob 😭
+```
+
+  </Tab>
+</Tabs>
+
+`reaction remove` works as an alias for `reaction delete`.
+
+This removes only the matching emoji from that trigger.
+
+## Remove all emojis from one trigger
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+reaction deleteall (trigger word)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+reaction deleteall sob
+```
+
+  </Tab>
+</Tabs>
+
+`reaction removeall` works as an alias for `reaction deleteall`. Use this when you want to clear every saved emoji for one trigger at once.
+
+## List reaction triggers
+
+```text
+reaction list
+```
+
+This shows every saved trigger and the emoji attached to it.
+
+## See who added a trigger
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+reaction owner (trigger word)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+reaction owner sob
+```
+
+  </Tab>
+</Tabs>
+
+If the trigger has more than one emoji saved, bored shows the owner for each one.
+
+## Clear every reaction trigger
+
+```text
+reaction clear
+```
+
+This removes all saved reaction triggers in the server.
+
+## Channel auto reactions
+
+`reaction messages` is a separate part of the same system. Instead of waiting for a trigger word, it adds the same reactions to every new message in one channel.
+
+### Set auto reactions for a channel
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+reaction messages (channel) [first] [second] [third]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+reaction messages #selfies 😭 😐 🤮
+```
+
+  </Tab>
+</Tabs>
+
+You can save up to `3` emojis for each channel.
+
+<Callout type="warning" title="Channel requirement">
+The channel must be **imgonly** or have **slowmode set to at least 1 minute** before bored will accept `reaction messages`.
+</Callout>
+
+### List channels using auto reactions
+
+```text
+reaction messages list
+```
+
+This shows every channel that currently has saved auto reactions.
+
+### Remove auto reactions from a channel
+
+```text
+reaction messages (channel)
+```
+
+Run `reaction messages` with just the channel to remove its saved auto reactions.

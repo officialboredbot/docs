@@ -1,0 +1,476 @@
+---
+title: Invite Tracking
+description: Track who invited who, set a tracker channel, gate fake invites, and reward inviters automatically.
+section: Server Configuration
+icon: envelope
+---
+
+Invite Tracking records joins and leaves by invite code, shows member stats, awards invite roles, and can post join and leave notices through a single tracker channel.
+
+Tracking stays off until you enable it. Once it is on, bored syncs the server's current invites and starts attributing future joins and leaves.
+
+## Start here
+
+<Steps>
+  <Step title="Enable invite tracking">
+    Turn the system on first.
+
+```text
+invites enable
+```
+
+    `enableinvites` still works as a compatibility alias.
+  </Step>
+  <Step title="Set a tracker channel">
+    Choose one channel for the default invite join and leave notices.
+
+```text
+invites tracker #invites
+```
+
+    bored seeds default join and leave messages in that channel. Vanity and unknown joins use the same channel with stock fallback text.
+  </Step>
+</Steps>
+
+<Callout type="info" title="Custom invite copy">
+If you want custom invite-aware wording, use normal [`welcome`](/messages/welcome-messages) and [`leave`](/messages/leave-messages) messages with invite variables. Those rows override the tracker for that event. Regular welcome or leave messages without invite variables do **not** suppress the tracker.
+</Callout>
+
+## View invite data
+
+### View a member's invite stats
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+invites [member]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+invites @member
+```
+
+  </Tab>
+</Tabs>
+
+This shows the member's total invites, joins, leaves, fake invites, and bonus invites. With no member argument, a reply to another user's message uses that user as the target.
+
+### See who invited someone
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+inviter [member]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+inviter @member
+```
+
+  </Tab>
+</Tabs>
+
+Use this when you want to see who invited a member, which code was used, and which channel that invite came from. Raw user IDs still work for people who already left.
+
+### View everyone a member has invited
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+invited [member] [page]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+invited @member 2
+```
+
+  </Tab>
+</Tabs>
+
+This shows the members invited by that user, whether they are still in the server, and any fake-invite reason that still applies.
+
+### List someone's active invite codes
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+invitecodes [member]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+invitecodes @member
+```
+
+  </Tab>
+</Tabs>
+
+This lists that member's current invite codes together with uses, channel, and expiry. Like `invites`, a reply can supply the target when no member is typed.
+
+## Leaderboard
+
+### View the invite leaderboard
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+invites leaderboard [page]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+invites leaderboard 1
+```
+
+  </Tab>
+</Tabs>
+
+This shows the current server invite leaderboard using bored's tracked totals.
+
+### Rename the leaderboard
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+invites leaderboardrename (title)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+invites leaderboardrename Summer invites
+```
+
+  </Tab>
+</Tabs>
+
+Use this if you want the leaderboard embed title to match your server branding.
+
+## Bonus invites and manual adjustments
+
+### Add bonus invites
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+invites add (member) (amount)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+invites add @member 5
+```
+
+  </Tab>
+</Tabs>
+
+Bonus invites count toward the member's total and can award invite roles.
+
+### Remove invites
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+invites remove (member) (amount)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+invites remove @member 2
+```
+
+  </Tab>
+</Tabs>
+
+This subtracts from the member's current total. Bonus is consumed first, then joins, and the total never drops below `0`. Invite roles update with the new amount.
+
+### Clear one member's invites
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+invites clear (member)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+invites clear @member
+```
+
+  </Tab>
+</Tabs>
+
+This resets that member's tracked total to `0`. `clearinvites` works as an alias.
+
+### Clear every invite record in the server
+
+```text
+invites clearserverinvites
+```
+
+This clears all stored invite data for the server after a confirmation prompt, and also removes invite reward roles that were granted through the system. `clearall` works as an alias.
+
+## Reward roles
+
+### View reward roles
+
+```text
+invites roles
+```
+
+This lists every reward role and the invite amount required to get it.
+
+### Add a reward role
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+invites roles add (role) (invites)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+invites roles add @Trusted 10
+```
+
+  </Tab>
+</Tabs>
+
+When members reach that invite amount, bored awards the role automatically. Totals use joins plus bonus minus leaves.
+
+### Remove a reward role
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+invites roles remove (invites)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+invites roles remove 10
+```
+
+  </Tab>
+</Tabs>
+
+Reward roles are removed by the invite amount they were tied to.
+
+## Fake invite requirements
+
+You can require roles or a minimum account age before a join counts as a real invite.
+
+If a join misses those checks, bored records it as a fake invite instead of adding it to the inviter's real total. Fake joins are rechecked later, and once the member meets the requirements the invite can be promoted into a real one.
+
+### Require certain roles
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+invites requiredroles (roles)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+invites requiredroles @Verified @Member
+```
+
+  </Tab>
+</Tabs>
+
+Every listed role must be present before the invite is promoted out of fake status. Run the command with no roles to clear the requirement.
+
+### Require a minimum account age
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+invites requiredage (days)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+invites requiredage 7
+```
+
+  </Tab>
+</Tabs>
+
+If the joining account is newer than the age you set, that join is tracked as fake. The default required age is **3 days**.
+
+### Bypass the checks for one member
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+invites bypass (member)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+invites bypass @member
+```
+
+  </Tab>
+</Tabs>
+
+Use this when you want to manually approve a member so their recorded join can count normally.
+
+## Invite creation
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+invites create [member] [channel]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+invites create @member #general
+```
+
+  </Tab>
+</Tabs>
+
+This creates a new invite link and assigns that code to the selected member, so future joins through it count toward that member's invite total.
+
+If you leave the member out, bored uses you. If you leave the channel out, bored uses the current channel when possible. `invite create` also works as a typo-friendly alias for this command.
+
+## Invite tracker
+
+The tracker is the default invite notice channel. It is not a separate welcome or leave command tree.
+
+### Set the tracker channel
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+invites tracker (channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+invites tracker #invites
+```
+
+  </Tab>
+</Tabs>
+
+This replaces any previous tracker channel and seeds default join and leave messages there. Vanity and unknown joins still post in that same channel using bored's stock fallback text.
+
+### Remove the tracker channel
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+invites tracker remove (channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+invites tracker remove #invites
+```
+
+  </Tab>
+</Tabs>
+
+This clears the tracker state for that channel so default invite notices stop posting there.
+
+## Custom invite copy
+
+For custom invite-aware messages, use the normal system message commands with invite variables:
+
+```text
+welcome add #invites {user.mention} joined through **{inviter}** ({inviter_invites_total} invites)
+leave add #invites **{user.name}** left; invited by **{inviter}**
+```
+
+Only welcome or leave rows that actually use invite variables override the tracker. Plain welcome or leave messages without those variables keep running alongside it.
+
+### Invite variables
+
+| Variable | Output |
+| --- | --- |
+| `{inviter}` | Inviter display name when known. |
+| `{inviter.mention}` | Inviter mention when known. |
+| `{inviter.id}` | Inviter user ID when known. |
+| `{inviter_invites_total}` | Inviter's current total invites. |
+| `{inviter_invites_joins}` | Inviter's join count. |
+| `{inviter_invites_leaves}` | Inviter's leave count. |
+| `{inviter_invites_bonus}` | Inviter's bonus invites. |
+| `{invite_code}` | Invite code used for the join. |
+| `{invite_channel}` | Channel the invite was created in. |
+| `{invite_uses}` | Current uses on that invite code. |
+
+When an inviter cannot be determined, these values usually fall back to `n/a`. See [Welcome Messages](/messages/welcome-messages), [Leave Messages](/messages/leave-messages), and [Variables](/scripting/variables) for the shared message syntax.
+
+## Config
+
+```text
+invites config
+```
+
+This shows whether tracking is enabled, the leaderboard title, required roles, required account age, and the current tracker channel. It also points you to `welcome add` and `leave add` for custom invite-aware copy.
+
+## Disable invite tracking
+
+```text
+invites disable
+```
+
+This turns tracking off for the server. New join and leave attribution stops until you enable it again. `disableinvites` still works as a compatibility alias.
+
+While tracking is disabled, the rest of the `invites` command surface warns and stops. Only `invites enable`, `invites disable`, and their compatibility aliases remain available.

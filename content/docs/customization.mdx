@@ -1,0 +1,126 @@
+---
+title: Customization
+description: Customize bored's server profile with a custom avatar, banner, bio, nickname, or reset.
+section: Overview
+icon: paint-brush
+---
+
+Use customization to change how bored appears inside your server with a server-specific avatar, banner, bio, and nickname.
+
+<Callout type="warning" title="Access and cooldowns">
+Customization is available to the **server owner** and **antinuke admins**. Avatar, banner, bio, and reset each have a **6 hour** cooldown. `customize name` has a **5 minute** cooldown.
+</Callout>
+
+## Interactive customize
+
+Running bare `customize` opens a button for the invoker. Clicking it opens a modal where you can update avatar URL, banner URL, and bio in one flow.
+
+Attachment uploads still work through `customize avatar` and `customize banner`.
+
+## Update avatar
+
+Set bored's server avatar for the current server.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+customize avatar (image URL)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+customize avatar https://cdn.example.com/avatar.png
+```
+
+  </Tab>
+</Tabs>
+
+You can also send `customize avatar` with an image attached to the same message. `customize pfp` works as an alias.
+
+If Discord rejects the image format, bored replies that the image format is not supported.
+
+![Customize avatar command example](/images/examples/customization/avatar.png)
+
+## Update banner
+
+Set bored's server banner for the current server.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+customize banner (image URL)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+customize banner https://cdn.example.com/banner.png
+```
+
+  </Tab>
+</Tabs>
+
+You can also send `customize banner` with an image attached to the same message.
+
+![Customize banner command example](/images/examples/customization/banner.png)
+
+## Update bio
+
+Set bored's server bio text. The final bio must stay within `190` characters after any automatic link is added. If the bio does not already include `bored.rest` or `discord.gg/boredbot`, bored appends `https://bored.rest` automatically.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+customize bio (text)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+customize bio support server @ discord.gg/boredbot
+```
+
+  </Tab>
+</Tabs>
+
+![Customize bio command example](/images/examples/customization/bio.png)
+
+## Update nickname
+
+Set bored's nickname in the current server.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+customize name (nickname)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+customize name bored
+```
+
+  </Tab>
+</Tabs>
+
+This only changes the server nickname. It uses the shorter **5 minute** cooldown.
+
+## Reset
+
+Reset bored's server avatar, banner, bio, and nickname back to the default profile for your server.
+
+```text
+customize reset
+```
+
+![Customize reset command example](/images/examples/customization/reset.png)

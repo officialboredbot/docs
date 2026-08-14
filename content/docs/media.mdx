@@ -1,0 +1,39 @@
+---
+title: Media Tools
+description: Edit images, GIFs, and videos from attachments, replies, links, or member avatars.
+section: Miscellaneous
+icon: photo
+---
+
+Media commands use the first usable source from the command, attachment, replied message, embed, sticker, or member avatar.
+
+Prefix `m` is an alias for `media`. Common subcommands such as `caption` and `gif` also work directly.
+
+## Commands
+
+```text
+media speechbubble [image] [--solid] [--flip] [--bottom] [--scale 0.01-1]
+media caption [image] (text) [--bottom] [--black]
+media gif [media] [--width 720] [--fps 15] [--speed 1]
+media grayscale [image]
+media invert [image]
+media reverse [gif or video]
+media speed [gif or video] (factor 0.5-4)
+media blur [image] [strength 1-20]
+media info [media]
+media url [source]
+```
+
+`makegif` is an alias for `media gif`.
+
+## Reply usage
+
+Reply to a message containing media and omit the source:
+
+```text
+media caption bottom text --bottom
+media speechbubble --flip --bottom --scale 0.3
+media reverse
+```
+
+The global slash surface uses `/media`.

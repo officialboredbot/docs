@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "fumadocs-mdx:collections/*": [
+        ".source/*"
+      ]
+    }
+  }
+}

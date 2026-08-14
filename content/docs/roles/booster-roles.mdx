@@ -1,0 +1,123 @@
+---
+title: Booster Roles
+description: Let boosters create and customize their own server roles.
+section: Server Configuration
+icon: heart
+---
+
+Booster Roles let server boosters create and manage their own custom roles. bored also includes management commands for staff so you can control limits, filters, award roles, and role positioning.
+
+## Create a booster role
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+boosterrole create (name) [color] [second color]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+boosterrole create booster #ffcc00
+```
+
+  </Tab>
+</Tabs>
+
+Boosters can have one booster role at a time. `br` works as a shortcut for `boosterrole create`.
+
+If you provide two colors and the server supports enhanced role colors, bored applies a native gradient. Otherwise bored falls back to a single blended color.
+
+## Customize your role
+
+<Tabs items={["Rename", "Color", "Icon"]}>
+  <Tab>
+
+```text
+boosterrole rename (new name)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+boosterrole color (color) [second color] [name]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+boosterrole icon (image URL, emoji, or attachment)
+```
+
+  </Tab>
+</Tabs>
+
+Boosters can also use `boosterrole dominant` to match their avatar's main color, `boosterrole random` for a random color, and `boosterrole remove` to delete their role. Color input accepts hex codes, friendly color names, and multi-word phrases. Animated custom emoji icons prompt before being applied as a static role icon.
+
+Root `boosterrole #ff4f9a` also works as a shortcut for `boosterrole color`.
+
+## Staff configuration
+
+<Tabs items={["Base role", "Limit", "Award role"]}>
+  <Tab>
+
+```text
+boosterrole base (role)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+boosterrole limit 1
+```
+
+  </Tab>
+  <Tab>
+
+```text
+boosterrole award set @Booster
+```
+
+  </Tab>
+</Tabs>
+
+Use `boosterrole base` to control where booster roles should be positioned, `boosterrole limit` to control how many a member can own, and `boosterrole award` to give members a normal role when they start boosting. `boosterrole award view` and `boosterrole award unset` manage that award role.
+
+Booster roles are positioned above the configured base role when possible. If bored cannot place the role above that base, creation or linking warns and leaves the role in its default position.
+
+## Sharing, filters, and maintenance
+
+<Tabs items={["Share", "Filter", "Maintenance"]}>
+  <Tab>
+
+```text
+boosterrole share (member)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+boosterrole filter (word)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+boosterrole cleanup
+```
+
+  </Tab>
+</Tabs>
+
+`boosterrole share` lets a booster invite another member into their role after that member confirms. Staff can manage share caps with `boosterrole share max`, `boosterrole share limit`, `boosterrole share list`, and `boosterrole share remove`.
+
+`boosterrole filter` blocks unwanted words in booster role names, and `boosterrole cleanup` removes unused saved booster roles. Use `boosterrole list` when you want to review every booster role in the server.
+
+Staff can also use `boosterrole link` to attach an existing role, `boosterrole include` to manage included roles, and `boosterrole organize` to clean up booster role ordering.

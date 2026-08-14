@@ -1,0 +1,158 @@
+---
+title: Reaction Stats
+description: Track received reaction counts for up to three emojis and create shortcut commands for them.
+section: Miscellaneous
+icon: face-smile
+---
+
+Reaction Stats counts reactions members receive on their messages after tracking is enabled. When someone else reacts with a tracked emoji, the message author gets the count. Self-reacts are ignored, and removing a reaction lowers the count.
+
+You can track up to **3** emojis per server.
+
+## Start here
+
+```text
+reactstats enable
+```
+
+Add the emojis you want to track:
+
+```text
+reactstats add 😭
+```
+
+Run `reactstats disable` to stop recording new reacts. `emojistats` and `reactstat` work as aliases for `reactstats`.
+
+## Check a member
+
+<Tabs items={["Your count", "Member count"]}>
+  <Tab>
+
+```text
+reactstats 😭
+```
+
+  </Tab>
+  <Tab>
+
+```text
+reactstats @user 😭
+```
+
+  </Tab>
+</Tabs>
+
+If the server only tracks one emoji, you can omit the emoji argument. The response shows that member's received count, rank, and how many more reacts are needed for the next rank when relevant.
+
+## List tracked emojis
+
+```text
+reactstats list
+```
+
+## Leaderboard
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+reactstats leaderboard [emoji]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+reactstats leaderboard 😭
+```
+
+  </Tab>
+</Tabs>
+
+`reactstats top` works as an alias. If more than one emoji is tracked, include the emoji.
+
+## Include bots
+
+<Tabs items={["On", "Off"]}>
+  <Tab>
+
+```text
+reactstats bots on
+```
+
+  </Tab>
+  <Tab>
+
+```text
+reactstats bots off
+```
+
+  </Tab>
+</Tabs>
+
+When bots are off, reacts from bots and reacts on bot messages are ignored.
+
+## Channel rules
+
+<Tabs items={["Ignore", "Unignore", "Whitelist", "Unwhitelist"]}>
+  <Tab>
+
+```text
+reactstats ignore (channel)
+```
+
+`reactstats blacklist` works as an alias for `reactstats ignore`.
+
+  </Tab>
+  <Tab>
+
+```text
+reactstats ignore remove (channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+reactstats whitelist (channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+reactstats whitelist remove (channel)
+```
+
+  </Tab>
+</Tabs>
+
+Ignored channels are excluded. If you add any whitelist entries, only whitelisted channels or categories are counted.
+
+## Shortcut commands
+
+<Tabs items={["Add", "Remove", "List"]}>
+  <Tab>
+
+```text
+reactstats command add (shortcut) (emoji)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+reactstats command remove (shortcut)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+reactstats command list
+```
+
+  </Tab>
+</Tabs>
+
+Adding a shortcut creates a normal server command alias that runs `reactstats (emoji)`. For example, `reactstats command add sob 😭` creates a `sob` shortcut if it does not conflict with an active built-in command or existing alias.

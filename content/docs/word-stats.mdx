@@ -1,0 +1,142 @@
+---
+title: Word Stats
+description: Count how often specific words are said and create shortcut commands for them.
+section: Miscellaneous
+icon: chart-bar-square
+---
+
+Word Stats counts normalized words from new server messages after tracking is enabled. It ignores prefix command messages and ignores bot messages unless you explicitly include bots.
+
+## Start here
+
+```text
+wordstats enable
+```
+
+Run `wordstats disable` to stop recording new word usage.
+
+## Check a word
+
+<Tabs items={["Your count", "Member count"]}>
+  <Tab>
+
+```text
+wordstats pizza
+```
+
+  </Tab>
+  <Tab>
+
+```text
+wordstats @user pizza
+```
+
+  </Tab>
+</Tabs>
+
+The response shows that member's count plus the server-wide total for the same word.
+
+## Leaderboard
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+wordstats leaderboard (word) [limit]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+wordstats leaderboard pizza 15
+```
+
+  </Tab>
+</Tabs>
+
+The limit is clamped between `1` and `25`. `wordstats top` works as an alias.
+
+## Include bots
+
+<Tabs items={["On", "Off"]}>
+  <Tab>
+
+```text
+wordstats bots on
+```
+
+  </Tab>
+  <Tab>
+
+```text
+wordstats bots off
+```
+
+  </Tab>
+</Tabs>
+
+## Channel rules
+
+<Tabs items={["Ignore", "Unignore", "Whitelist", "Unwhitelist"]}>
+  <Tab>
+
+```text
+wordstats ignore (channel)
+```
+
+`wordstats blacklist` works as an alias for `wordstats ignore`.
+
+  </Tab>
+  <Tab>
+
+```text
+wordstats ignore remove (channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+wordstats whitelist (channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+wordstats whitelist remove (channel)
+```
+
+  </Tab>
+</Tabs>
+
+Ignored channels are excluded. If you add any whitelist entries, only whitelisted channels or categories are counted.
+
+## Shortcut commands
+
+<Tabs items={["Add", "Remove", "List"]}>
+  <Tab>
+
+```text
+wordstats command add (shortcut) (word)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+wordstats command remove (shortcut)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+wordstats command list
+```
+
+  </Tab>
+</Tabs>
+
+Adding a shortcut creates a normal server command alias that runs `wordstats (word)`. For example, `wordstats command add pizza pizza` creates a `pizza` shortcut if it does not conflict with an active built-in command or existing alias.

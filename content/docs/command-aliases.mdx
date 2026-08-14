@@ -1,0 +1,185 @@
+---
+title: Command Aliases
+description: Create shortcuts that run other commands with your own saved arguments.
+section: Server Configuration
+icon: link
+---
+
+At the same time, bored already comes with a lot of premade aliases, so in a lot of cases you may not even need to make your own shortcut first.
+
+This is useful when your server keeps using the same command pattern over and over and you want something shorter, cleaner, or easier for staff to remember.
+
+## Add an alias
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+alias add (shortcut) (command)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+alias add deport ban
+```
+
+  </Tab>
+</Tabs>
+
+The shortcut must be a single word. In the example above, running `deport @member` will execute `ban @member`.
+
+If an alias does not use placeholders, bored appends any extra arguments you type after the alias to the end of the saved command automatically.
+
+## Placeholders
+
+This is the part that makes aliases actually useful.
+
+You can save part of a command ahead of time and leave certain argument slots open for the person using the alias later. bored does that with numbered placeholders like `{0}`, `{1}`, `{2}`, and so on.
+
+The numbering starts at `{0}`:
+
+- `{0}` is the first argument after the alias
+- `{1}` is the second
+- `{2}` is the third
+
+### Example breakdown
+
+```text
+ban @member Harassing Members
+```
+
+In that command:
+
+- `{0}` would be `@member`
+- `{1}` would be `Harassing Members`
+
+### Alias with a saved duration
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+alias add (shortcut) (command with placeholders)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+alias add m10 timeout {0} 10m
+```
+
+  </Tab>
+</Tabs>
+
+Running `m10 @member` turns into `timeout @member 10m`.
+
+That means the member still comes from the user's input, while the duration is already saved inside the alias.
+
+### Alias with a saved role
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+alias add (shortcut) (command with placeholders)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+alias add pic role {0} @Pic-Perms
+```
+
+  </Tab>
+</Tabs>
+
+Running `pic @member` turns into `role @member @Pic-Perms`.
+
+This is a good way to turn a longer role command into a short staff shortcut.
+
+## Remove an alias
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+alias remove (shortcut)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+alias remove deport
+```
+
+  </Tab>
+</Tabs>
+
+This removes a custom alias from the server.
+
+If the shortcut you remove is one of bored's built-in command aliases, it gets disabled for your server instead. Running `alias remove` on the same built-in alias again restores it.
+
+## Related commands
+
+### View one alias
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+alias view (shortcut)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+alias view deport
+```
+
+  </Tab>
+</Tabs>
+
+Use this to check exactly what one alias runs.
+
+### View all aliases
+
+```text
+alias list
+```
+
+This lists the aliases saved in the server, along with built-in aliases you have disabled.
+
+### Remove all aliases for one command
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+alias removeall (command)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+alias removeall ban
+```
+
+  </Tab>
+</Tabs>
+
+This removes every custom alias that points to that command name.
+
+### Reset all aliases
+
+```text
+alias reset
+```
+
+This removes every custom alias and restores built-in aliases that were disabled in the server.

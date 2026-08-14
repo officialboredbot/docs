@@ -1,0 +1,76 @@
+---
+title: Customization
+description: Panel embeds, per-option welcome messages, forms, and variables.
+section: Server Configuration
+icon: adjustments-horizontal
+---
+
+Most ticket messaging is configured per **ticket option**. The **panel message** is the one shared message used by every option on that panel.
+
+## Panel message
+
+Edit a panel's public message under **Panel Message** in the panel editor. It accepts either a classic bored embed script or a [Components V2 container script](/scripting/components).
+
+You can set:
+
+- title
+- description
+- color
+- image
+- thumbnail
+
+The title is optional. Remove the title block from the script to publish a titleless panel.
+
+Under **Option Display**, choose whether enabled options appear as separate **Buttons** or inside one **Dropdown**. Label and emoji are set per option under **Ticket Options → Button**. Button style applies when the panel uses buttons.
+
+When you use a Components V2 script, bored adds the option buttons or dropdown in a separate container below your layout.
+
+## Welcome messages
+
+Welcome messages are **per option**. Open an option in the configurator and go to **Welcome Message**. These messages also accept either a classic embed script or a Components V2 container script.
+
+You can customize:
+
+- title
+- description
+- color
+- image
+- thumbnail
+- close and claim button labels, emojis, and styles
+
+The title is optional. bored posts the saved message in the new ticket channel and adds the working Close and Claim controls below a Components V2 layout.
+
+## Forms
+
+Forms are also **per option**. Enable them under **Forms** in the option editor, or use `ticket forms` as a shortcut.
+
+When forms are enabled for an option:
+
+1. The member fills out a modal before the ticket channel is created.
+2. bored posts that option's welcome message in the new ticket.
+3. bored includes the submitted questions and answers. For Components V2 welcomes, the answers are sent as a separate embed.
+
+Use forms when you need context up front — for example, account details, report categories, or application fields.
+
+## Variables
+
+Ticket welcome messages support bored's shared variables plus ticket-specific placeholders.
+
+See the [Variables](/scripting/variables) page and open the **Ticketing** tab for the full list. Commonly used placeholders:
+
+- `{user}` — ticket opener
+- `{ticket.number}` / `{ticket.number.padded}` — ticket number
+- `{ticket.channel}` — ticket channel mention
+- `{panel.name}` — panel name
+- `{panel.button_label}` — label of the option button the member clicked
+
+Shared **Guild**, **User**, **Channel**, and **Date & Time** variables also work. In welcome messages, user variables refer to the opener and channel variables refer to the ticket channel.
+
+## Channel names
+
+Channel naming is separate from welcome-message variables. Configure it per option under **Ticket Settings → Channel Name Generation**.
+
+Available formats:
+
+- `{option.name}-{ticket.number}`
+- `{option.name}-{ticket.creator.username}`

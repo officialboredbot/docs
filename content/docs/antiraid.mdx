@@ -1,0 +1,284 @@
+---
+title: AntiRaid
+description: Protect your server from join floods, default-avatar accounts, and very new accounts.
+section: Server Security
+icon: shield-exclamation
+---
+
+import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
+
+## Why use an antiraid system?
+
+AntiRaid focuses on join-based threats instead of moderator abuse. It helps you deal with raid joins, throwaway accounts, and low-quality spam accounts before they settle into the server.
+
+## How does the antiraid work?
+
+Each module checks a different join condition. `massjoin` watches how many accounts join within a short window, `avatar` checks whether a joining member has no profile picture, `newaccounts` checks account age before allowing the join to pass normally, and `apps` strips **use external apps** from channel permissions.
+
+You can also bulk-enable or bulk-disable the AntiRaid modules with `antiraid toggle on` or `antiraid toggle off` without resetting their saved settings.
+
+## Available flags
+
+<Accordions>
+  <Accordion title="Threshold">
+    Sets the numeric limit used by a module. For `massjoin`, it is the number of joins allowed inside the massjoin window. For `newaccounts`, it is the minimum account age in days.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+--threshold (number)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+--threshold 7
+```
+
+  </Tab>
+</Tabs>
+  </Accordion>
+  <Accordion title="Punishment">
+    Sets the action used by `avatar` and `newaccounts`. AntiRaid accepts `ban` or `kick` here. Massjoin's punish window always bans new joins during that window.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+--do (action)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+--do ban
+```
+
+  </Tab>
+</Tabs>
+  </Accordion>
+  <Accordion title="Lock channels">
+    Decides whether text channels should be locked once `massjoin` triggers.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+--lock (true or false)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+--lock true
+```
+
+  </Tab>
+</Tabs>
+  </Accordion>
+  <Accordion title="Punish new joins">
+    Decides whether newly joining accounts should keep getting punished for `10` minutes after `massjoin` triggers.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+--punish (true or false)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+--punish true
+```
+
+  </Tab>
+</Tabs>
+  </Accordion>
+</Accordions>
+
+## Mass joins
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+antiraid massjoin (on or off) [--threshold (number)] [--lock (true or false)] [--punish (true or false)]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+antiraid massjoin on --threshold 5 --lock true --punish true
+```
+
+  </Tab>
+</Tabs>
+
+In this example, `threshold` being set to `5` means AntiRaid triggers when `5` accounts join within `10` seconds. `lock` being set to `true` locks text channels, and `punish` being set to `true` opens a `10` minute punish window that **bans** new joins after the trigger.
+
+When massjoin triggers, bored turns **raid state** on automatically. While raid state is active, system welcome and goodbye messages are paused. Raid state clears automatically once the trigger batch has been punished, so those messages resume without a manual reset.
+
+## Default avatar
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+antiraid avatar (on or off) [--do (action)]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+antiraid avatar on --do kick
+```
+
+  </Tab>
+</Tabs>
+
+In this example, `do` being set to `kick` means accounts that join without a profile picture are kicked.
+
+## New accounts
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+antiraid newaccounts (on or off) [--threshold (number)] [--do (action)]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+antiraid newaccounts on --threshold 7 --do ban
+```
+
+  </Tab>
+</Tabs>
+
+In this example, `threshold` being set to `7` means accounts must be at least `7` days old to join safely, and `do` being set to `ban` means younger accounts are banned.
+
+## External apps
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+antiraid apps [--excluded (roles)]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+antiraid apps --excluded @Staff @Trusted
+```
+
+  </Tab>
+</Tabs>
+
+This denies **use external apps** across every channel bored can manage for `@everyone` and other roles, except roles you pass with `--excluded`. Roles above bored's highest role are skipped. bored needs **Manage Roles** and **Manage Channels**.
+
+If every target role already has the permission denied in a channel, that channel is skipped. When nothing needs updating, bored confirms instead of running a full pass.
+
+## Whitelist
+
+AntiRaid whitelist entries are temporary. They are consumed when that user joins, so this is best used to let a specific account through once.
+
+### Whitelist a member
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+antiraid whitelist (member)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+antiraid whitelist @trusted-member
+```
+
+  </Tab>
+</Tabs>
+
+Run the same command again to remove that whitelist entry.
+
+### View whitelist entries
+
+```text
+antiraid whitelist view
+```
+
+## Configuration
+
+### Config
+
+```text
+antiraid config
+```
+
+### Raid state
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+antiraid state (on or off)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+antiraid state off
+```
+
+  </Tab>
+</Tabs>
+
+Use this to manually enable or disable raid state. Turning it off also clears the punish window and unlocks channels that bored locked through AntiRaid.
+
+### Reset
+
+```text
+antiraid reset
+```
+
+This disables all AntiRaid modules, clears the punish window, turns raid state off, and unlocks channels that were locked by AntiRaid.
+
+## After a raid
+
+If you need to clean up members who already joined during a raid, use `raid` with a duration window and an action.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+raid (duration) (kick or ban) <reason>
+```
+
+  </Tab>
+  <Tab>
+
+```text
+raid 2h ban raid cleanup
+```
+
+  </Tab>
+</Tabs>
+
+That example bans members who joined in the last `2` hours.
+
+`raid` does not DM punished users and does not write per-user modlog cases. It only performs the bulk action and returns a summary.

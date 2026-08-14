@@ -1,0 +1,146 @@
+---
+title: Message Tracking
+description: Track server message counts, leaderboards, ignored targets, and award roles.
+section: Miscellaneous
+icon: chat-bubble-bottom-center-text
+---
+
+Message Tracking tracks member message totals after it is enabled. It can show individual stats, rank members by total messages, and award roles at configured message counts.
+
+The tracker ignores bot and webhook messages. Ignored channels, categories, and roles can also be excluded from counting.
+
+## Start here
+
+```text
+messages enable
+```
+
+New message data starts recording after the system is enabled. `messages disable` stops new counting without deleting saved totals.
+
+## View stats
+
+<Tabs items={["Your stats", "Member stats"]}>
+  <Tab>
+
+```text
+messages
+```
+
+  </Tab>
+  <Tab>
+
+```text
+messages @user
+```
+
+  </Tab>
+</Tabs>
+
+Stats include total messages, messages sent today, and messages sent in the last `7` days.
+
+## Leaderboard
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+messages leaderboard [page]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+messages leaderboard 2
+```
+
+  </Tab>
+</Tabs>
+
+`messages lb` works as an alias.
+
+## Ignored targets
+
+<Tabs items={["Toggle", "List"]}>
+  <Tab>
+
+```text
+messages ignore (channel or category or role)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+messages list
+```
+
+  </Tab>
+</Tabs>
+
+Running `messages ignore` again on the same target resumes tracking there.
+
+## Award roles
+
+<Tabs items={["Add", "Remove", "View"]}>
+  <Tab>
+
+```text
+messages awards add (role) (messages)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+messages awards remove (messages)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+messages awards
+```
+
+  </Tab>
+</Tabs>
+
+When a member reaches a configured total, bored gives them the matching award role. Run `messages sync` after changing awards if you want bored to re-check every current member.
+
+## Manual adjustments
+
+Manual adjustments require **Manage Server**.
+
+<Tabs items={["Add", "Remove"]}>
+  <Tab>
+
+```text
+messages add (member) (amount)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+messages remove (member) (amount)
+```
+
+  </Tab>
+</Tabs>
+
+Manual changes also re-check the member's award roles.
+
+## Reset and cleanup
+
+```text
+messages reset
+```
+
+This requires `Administrator`, asks for confirmation, removes saved message data, and clears award roles from members.
+
+```text
+messages cleanup
+```
+
+Only the server owner can use cleanup. It removes saved message data for users who are no longer in the server.

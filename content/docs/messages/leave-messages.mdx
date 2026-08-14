@@ -1,0 +1,116 @@
+---
+title: Leave Messages
+description: Send configurable leave messages to one or more channels when members leave.
+section: Server Configuration
+icon: user-minus
+---
+
+Leave Messages let bored send a saved goodbye message to each channel you configure when someone leaves the server.
+
+<Callout type="warning" title="Raid state">
+When **raid state** is active through AntiRaid, leave messages are paused until the raid batch is cleared or you turn raid state off.
+</Callout>
+
+## Add a leave message
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+leave add (channel) (message)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+leave add #goodbye goodbye {user.mention} --self_destruct 30
+```
+
+  </Tab>
+</Tabs>
+
+You can save one leave message per channel. Messages support plain text or bored's embed script format. `--self_destruct` is optional and can be set from `6` to `60` seconds. `goodbye` works as an alias for `leave`.
+
+<Callout type="info" title="Invite-aware leave messages">
+If [Invite Tracking](/invite-tracking) is enabled and your leave message uses invite variables such as `{inviter}` or `{invite_code}`, that row overrides the invite tracker for leaves. Leave messages without invite variables keep running alongside the tracker.
+</Callout>
+
+## View a saved message
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+leave view (channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+leave view #goodbye
+```
+
+  </Tab>
+</Tabs>
+
+Use this to check the saved content and whether `self_destruct` is enabled for that channel.
+
+## List configured channels
+
+```text
+leave list
+```
+
+This shows every channel that currently has a leave message saved.
+
+## Remove a leave message
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+leave remove (channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+leave remove #goodbye
+```
+
+  </Tab>
+</Tabs>
+
+This only removes the saved leave message for that channel.
+
+## Reset all leave messages
+
+```text
+leave reset
+```
+
+This clears every saved leave message in the server after a confirmation prompt. `leave clear` works as an alias.
+
+## Test a leave message
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+leave test (member)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+leave test @member
+```
+
+  </Tab>
+</Tabs>
+
+If you leave the member out, bored uses you when possible and sends the saved leave messages as a preview.

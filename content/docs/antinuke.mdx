@@ -1,0 +1,422 @@
+---
+title: AntiNuke
+description: Remain in control of server moderators restricting them from malicious behavior.
+section: Server Security
+icon: lock-closed
+---
+
+import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
+
+## Why use an antinuke system?
+
+AntiNuke helps you keep moderators and other trusted members within the limits you set for your server. If someone starts abusing destructive actions and goes over the threshold you configured, bored applies the punishment you chose before the damage can continue.
+
+## How does the antinuke work?
+
+Each AntiNuke module watches a specific action type and counts how often one person does it within a short window. Once that count passes the threshold you set, bored applies the configured punishment and logs what happened for the server owner to review.
+
+## Start here
+
+<Steps>
+  <Step title="Run `antinuke setup`">
+    This applies bored's recommended configuration.
+
+```text
+antinuke setup
+```
+
+    It enables protection for dangerous permission grants, channel creation and deletion, role deletion, emoji deletion, mass bans, mass kicks, webhook creation, and bot joins. Vanity protection is left for you to enable separately if you want it.
+  </Step>
+  <Step title="Review the current state">
+    Use `antinuke config` to see the status of each module, or `antinuke list` to view enabled modules together with whitelist and protected-target entries.
+  </Step>
+</Steps>
+
+<Callout type="info" title="Bulk toggle">
+Use `antinuke toggle on` or `antinuke toggle off` to enable or disable the normal AntiNuke modules without resetting their saved thresholds, punishments, or command-detection settings.
+</Callout>
+
+## Who can manage it
+
+The **server owner** is an antinuke admin by default. If you want someone else to manage it too, add them as an antinuke admin.
+
+AntiNuke does not punish the server owner, antinuke admins, or whitelisted users.
+
+<Callout type="info" title="bored vanity">
+The companion [**bored vanity**](https://discord.com/oauth2/authorize?client_id=1459869503289561293) bot is always whitelisted from antinuke by default, so role awards and its join do not trigger modules like `botadd` or `role`. That whitelist entry cannot be removed.
+</Callout>
+
+### AntiNuke admin
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+antinuke admin (member)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+antinuke admin @trusted-mod
+```
+
+  </Tab>
+</Tabs>
+
+Added antinuke admins still need `manage_guild` in the server.
+
+### List AntiNuke admins
+
+```text
+antinuke admin list
+```
+
+## Whitelist
+
+Whitelisted members and bots bypass AntiNuke completely, so only use this for targets you 100% trust.
+
+### Whitelist a member or bot
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+antinuke whitelist (member)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+antinuke whitelist @trusted-mod
+```
+
+  </Tab>
+</Tabs>
+
+You can use a mention, username, or raw ID here. `antinuke wl` works as a shorter alias.
+
+### Whitelist every current bot
+
+```text
+antinuke whitelist bots
+```
+
+This bulk-whitelists the bots that are already in the server so you do not have to whitelist each one by hand.
+
+## Module flags
+
+<Accordions>
+  <Accordion title="Threshold">
+    Sets how many actions are allowed before punishment. bored accepts values from `1` to `10`.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+--threshold (number)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+--threshold 3
+```
+
+  </Tab>
+</Tabs>
+  </Accordion>
+  <Accordion title="Punishment">
+    Sets the punishment: `warn`, `jail`, `kick`, `ban`, `stripstaff`, or `timeout`.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+--do (punishment)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+--do ban
+```
+
+  </Tab>
+</Tabs>
+  </Accordion>
+  <Accordion title="Command">
+    Decides whether bored's own commands count toward the threshold. Use it on `ban`, `kick`, `role`, `webhook`, and `permissions`.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+--command (on or off)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+--command on
+```
+
+  </Tab>
+</Tabs>
+
+#### More on the command flag
+
+For instance, a moderator could try to abuse their permissions through bored itself by using the `ban` command on each member one by one. When `--command` is set to `on`, those command-based actions count toward the threshold and can trigger AntiNuke.
+  </Accordion>
+</Accordions>
+
+## AntiNuke Protect
+
+`antinuke protect` lets you mark one specific user or one specific role as protected from kicks and bans.
+
+If somebody who is **not** the server owner or an antinuke admin tries to kick or ban that protected target, bored treats it as a serious antinuke event. bored can punish the actor, log it as an automatic case, and DM the server owner.
+
+This is especially useful for your **Server Booster** role. That role cannot be deleted or manually removed from active boosters unless the member stops boosting, so protecting it gives you a clean way to punish anyone who tries to kick or ban boosters through bored or through Discord's native moderation.
+
+### Protect a user or role
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+antinuke protect (role/user) (punishment)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+antinuke protect @Server Booster stripstaff
+```
+
+  </Tab>
+</Tabs>
+
+In this example, anyone who is not an antinuke admin and tries to kick or ban a member with the `@Server Booster` role will be punished with `stripstaff`.
+
+If you run the same command again with the same target and punishment, bored removes that protection. If you run it again with a different punishment, bored updates the punishment instead.
+
+### What happens when protection is triggered
+
+- If the protected target is acted on through bored's own `ban`, `softban`, `tempban`, or `kick` commands, bored blocks the action first unless the moderator is the server owner or an antinuke admin.
+- If the protected target is acted on natively through Discord, bored allows the native action to happen and then punishes the responsible moderator through AntiNuke.
+- Protected users and protected roles also appear in `antinuke list`. Use `antinuke protected` or `antinuke protect list` to view only protected targets.
+
+## Modules
+
+### Ban protection
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+antinuke ban (on or off) [--threshold (number)] [--do (punishment)] [--command (on or off)]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+antinuke ban on --threshold 3 --do stripstaff --command on
+```
+
+  </Tab>
+</Tabs>
+
+In this example, `threshold` being set to `3` means AntiNuke triggers after `3` bans. `do` being set to `stripstaff` means the person responsible has their staff roles removed, and `command` being on means bans done through bored's `ban` command still count.
+
+### Kick protection
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+antinuke kick (on or off) [--threshold (number)] [--do (punishment)] [--command (on or off)]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+antinuke kick on --threshold 1 --do stripstaff --command on
+```
+
+  </Tab>
+</Tabs>
+
+In this example, `threshold` being set to `1` means a single kick is enough to trigger AntiNuke. `do` being set to `stripstaff` removes the responsible member's staff roles, and `command` being on means kicks done through bored still count.
+
+### Channel protection
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+antinuke channel (on or off) [--threshold (number)] [--do (punishment)]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+antinuke channel on --threshold 1 --do ban
+```
+
+  </Tab>
+</Tabs>
+
+In this example, `threshold` being set to `1` means one channel create or delete action is enough to trigger AntiNuke. `do` being set to `ban` means the responsible member is banned.
+
+### Role protection
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+antinuke role (on or off) [--threshold (number)] [--do (punishment)] [--command (on or off)]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+antinuke role on --threshold 2 --do stripstaff --command on
+```
+
+  </Tab>
+</Tabs>
+
+In this example, `threshold` being set to `2` means AntiNuke triggers after `2` role deletion actions. `do` being set to `stripstaff` removes the responsible member's staff roles, and `command` being on means matching role actions done through bored still count.
+
+### Webhook protection
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+antinuke webhook (on or off) [--threshold (number)] [--do (punishment)] [--command (on or off)]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+antinuke webhook on --threshold 1 --do ban --command on
+```
+
+  </Tab>
+</Tabs>
+
+In this example, `threshold` being set to `1` means one webhook creation is enough to trigger AntiNuke. `do` being set to `ban` bans the responsible member, and `command` being on means matching webhook actions done through bored still count.
+
+### Emoji protection
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+antinuke emoji (on or off) [--threshold (number)] [--do (punishment)]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+antinuke emoji on --threshold 1 --do kick
+```
+
+  </Tab>
+</Tabs>
+
+In this example, `threshold` being set to `1` means one emoji deletion is enough to trigger AntiNuke. `do` being set to `kick` kicks the responsible member.
+
+### Vanity protection
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+antinuke vanity (on or off) [--do (punishment)]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+antinuke vanity on --do ban
+```
+
+  </Tab>
+</Tabs>
+
+<Callout type="warning" title="Vanity revert">
+bored cannot restore the original vanity automatically because Discord may require a captcha when changing it back.
+</Callout>
+
+In this example, `do` being set to `ban` means the responsible member is banned if vanity protection catches a change.
+
+### Bot join protection
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+antinuke botadd (on or off) [--do (punishment)]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+antinuke botadd on --do ban
+```
+
+  </Tab>
+</Tabs>
+
+In this example, `do` being set to `ban` means the person responsible for adding the bot is banned. If you want to add a trusted bot while this is enabled, whitelist it first.
+
+### Dangerous permission grants
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+antinuke permissions (on or off) [--threshold (number)] [--do (punishment)] [--command (on or off)]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+antinuke permissions on --threshold 1 --do ban --command on
+```
+
+  </Tab>
+</Tabs>
+
+Enabling this means bored will monitor dangerous permission grants by default. The bulk watcher defaults to threshold `1`, so a single dangerous grant can trigger immediately. In the example above, `do` being set to `ban` bans the responsible member, and `command` being on means bored's own role commands can be blocked from granting dangerous permissions when command detection applies.
+
+## View configuration
+
+### Config
+
+```text
+antinuke config
+```
+
+### Enabled modules and whitelist entries
+
+```text
+antinuke list
+```

@@ -1,0 +1,84 @@
+---
+title: Autosnipe
+description: Automatically repost deleted, edited, and removed-reaction snipes in selected channels.
+section: Miscellaneous
+icon: archive-box-arrow-down
+---
+
+Autosnipe posts snipe results automatically instead of waiting for staff to run `snipe`, `editsnipe`, or `reactionsnipe`.
+
+It is prefix-only for now. Each event type can post in **one channel per server**. Enabling the same event type in a new channel replaces the old channel for that type.
+
+Autosnipe still respects `filter snipe` blocks for deleted and edited message content.
+
+## Enable one event type
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+autosnipe (delete, edit, or reaction) [channel] [on or off]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+autosnipe delete #logs on
+```
+
+  </Tab>
+</Tabs>
+
+If you leave out the channel, bored uses the channel where you ran the command.
+
+## Enable every event type
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+autosnipe all [channel] [on or off]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+autosnipe all #logs on
+```
+
+  </Tab>
+</Tabs>
+
+This sets deleted-message, edited-message, and removed-reaction autosnipes to the same channel.
+
+## Check the configuration
+
+```text
+autosnipe config
+autosnipe list
+```
+
+`autosnipe config` shows the channel currently used for each event type. `autosnipe list` shows the effective enabled channel rows.
+
+## Reset autosnipe
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+autosnipe reset [channel]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+autosnipe reset #logs
+```
+
+  </Tab>
+</Tabs>
+
+Without a channel, bored clears autosnipe settings for the current channel.

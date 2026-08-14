@@ -1,0 +1,308 @@
+---
+title: Auto Responders
+description: Create automatic replies and trigger-based role actions for matching messages.
+section: Server Configuration
+icon: arrow-path-rounded-square
+---
+
+import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
+
+Auto Responders let bored watch for message triggers and then send a saved reply, assign roles, remove roles, or combine those actions together.
+
+By default, a trigger uses a **strict match**, which means the full message has to match the trigger exactly. bored stops after the first matching autoresponder, so keep your trigger list intentional.
+
+## Available flags
+
+<Accordions>
+  <Accordion title="Not strict">
+    Changes the trigger from an exact full-message match to a looser contains match.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+--not_strict
+```
+
+  </Tab>
+  <Tab>
+
+```text
+--not_strict
+```
+
+  </Tab>
+</Tabs>
+  </Accordion>
+  <Accordion title="Self destruct">
+    Deletes the autoresponder message after a delay. bored accepts values from `6` to `60` seconds.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+--self_destruct (seconds)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+--self_destruct 10
+```
+
+  </Tab>
+</Tabs>
+  </Accordion>
+  <Accordion title="Delete trigger">
+    Deletes the member's original message after the autoresponder runs.
+
+```text
+--delete
+```
+  </Accordion>
+  <Accordion title="Reply">
+    Sends the autoresponder as a reply to the triggering message instead of a normal channel message.
+
+```text
+--reply
+```
+  </Accordion>
+  <Accordion title="Ignore command check">
+    Lets an autoresponder respond even if the trigger message looks like a bored command. Without this flag, bored skips autoresponders that would interfere with a real command.
+
+```text
+--ignore_command_check
+```
+  </Accordion>
+</Accordions>
+
+## Add an autoresponder
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+autoresponder add (trigger), (response) [flags]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+autoresponder add welc, welcome to the server! --self_destruct 10 --reply
+```
+
+  </Tab>
+</Tabs>
+
+Trigger and response are separated with a comma. The response can be plain text or bored's embed script format.
+
+In the example above, the trigger is `welc`, the saved response replies to the message, and the autoresponder message deletes itself after `10` seconds.
+
+## Update an autoresponder
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+autoresponder update (trigger), (response) [flags]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+autoresponder update welc, welcome back! --not_strict
+```
+
+  </Tab>
+</Tabs>
+
+`update` uses the same format and flags as `add`. bored also treats `add` as an update when the trigger already exists.
+
+## View one autoresponder
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+autoresponder view (trigger)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+autoresponder view welc
+```
+
+  </Tab>
+</Tabs>
+
+Use this to inspect the saved response, match mode, self-destruct setting, and any role actions attached to that trigger.
+
+## List configured triggers
+
+```text
+autoresponder list
+```
+
+This shows every configured trigger in the server, including role-only triggers.
+
+## Remove one autoresponder
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+autoresponder remove (trigger)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+autoresponder remove welc
+```
+
+  </Tab>
+</Tabs>
+
+This removes the saved text or embed response for that trigger.
+
+## Reset everything
+
+```text
+autoresponder reset
+```
+
+This removes every autoresponder in the server after a confirmation prompt.
+
+## Exclusive access
+
+Use exclusive access when a trigger should only work in one channel or only for members with a specific role.
+
+### Toggle exclusive access
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+autoresponder exclusive (role or channel) (trigger)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+autoresponder exclusive #general welc
+```
+
+  </Tab>
+</Tabs>
+
+Run the same command again to remove that exclusive target from the trigger.
+
+### List exclusive targets
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+autoresponder exclusive list (trigger)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+autoresponder exclusive list welc
+```
+
+  </Tab>
+</Tabs>
+
+## Assign roles on trigger
+
+### Toggle role assignment
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+autoresponder role add (role) (trigger)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+autoresponder role add @verified welc
+```
+
+  </Tab>
+</Tabs>
+
+Run the same command again to remove that role assignment from the trigger.
+
+### List assigned roles
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+autoresponder role add list (trigger)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+autoresponder role add list welc
+```
+
+  </Tab>
+</Tabs>
+
+## Remove roles on trigger
+
+### Toggle role removal
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+autoresponder role remove (role) (trigger)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+autoresponder role remove @unverified welc
+```
+
+  </Tab>
+</Tabs>
+
+Run the same command again to remove that role-removal action from the trigger.
+
+### List removed roles
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+autoresponder role remove list (trigger)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+autoresponder role remove list welc
+```
+
+  </Tab>
+</Tabs>

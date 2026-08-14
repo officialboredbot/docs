@@ -1,0 +1,322 @@
+---
+title: Voice Leveling
+description: Track voice activity, award XP and roles, run a crownboard, and log stream or camera time.
+section: Server Configuration
+icon: microphone
+---
+
+Voice leveling tracks time members spend in voice channels and turns it into XP, voice levels, reward roles, and leaderboard placement.
+
+Members earn voice XP while they stay in a non-ignored voice channel. bored awards **10 XP per minute** before your server's XP multiplier is applied, and checks about once per minute while someone remains in voice.
+
+<Callout type="warning" title="Disabled by default">
+**Voice leveling** stays off until someone with **Manage Server** enables it with `voicelevel enable`.
+</Callout>
+
+## Start here
+
+<Steps>
+  <Step title="Enable voice leveling">
+    Turn the system on first.
+
+```text
+voicelevel enable
+```
+
+    Members can start gaining voice XP after this is enabled.
+  </Step>
+  <Step title="Add reward roles or a level-up channel">
+    Optional setup for roles at specific voice levels or level-up posts in a text channel.
+
+```text
+voicelevel role 5 @Voice Legend
+```
+
+```text
+voicelevel channel #voice-levels
+```
+  </Step>
+  <Step title="Enable stream tracking separately">
+    Stream and camera time use the `stream` command group and stay off until you enable them.
+
+```text
+stream enable
+```
+  </Step>
+</Steps>
+
+## Check a voice rank card
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+voicelevel [member]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+voicelevel @member
+```
+
+  </Tab>
+</Tabs>
+
+Use this without a member to view your own **Voice Level**, server rank, XP progress, total voice time, and session count.
+
+## Turn voice leveling on or off
+
+### Enable voice leveling
+
+```text
+voicelevel enable
+```
+
+This turns voice leveling on for the server and allows members to start gaining voice XP.
+
+### Disable voice leveling
+
+```text
+voicelevel disable
+```
+
+This turns voice leveling off until it is enabled again.
+
+## Reward roles
+
+Reward roles let bored assign a saved role when someone reaches a voice level you choose.
+
+### View reward roles
+
+```text
+voicelevel roles
+```
+
+Use this to review every configured reward role together with its required level and total XP.
+
+### Add a reward role
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+voicelevel role (level) (role)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+voicelevel role 5 @Voice Legend
+```
+
+  </Tab>
+</Tabs>
+
+In the example above, members receive `@Voice Legend` when they reach voice level `5`. The role must sit below bored's highest role.
+
+### Remove a reward role
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+voicelevel roleremove (role)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+voicelevel roleremove @Voice Legend
+```
+
+  </Tab>
+</Tabs>
+
+This removes that role from the voice level reward list.
+
+### Stack reward roles
+
+```text
+voicelevel stackroles
+```
+
+When stacking is on, members keep earlier voice reward roles as they level up. When stacking is off, bored keeps only the highest reward role it can manage.
+
+### Sync reward roles
+
+```text
+voicelevel sync
+```
+
+Run this after changing reward roles or stacking behavior if you want bored to re-apply the current setup across the server.
+
+## Level-up channel
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+voicelevel channel [channel]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+voicelevel channel #voice-levels
+```
+
+  </Tab>
+</Tabs>
+
+Run `voicelevel channel` with no channel to clear the level-up notification channel. When a member levels up in voice, bored posts in the channel you set here.
+
+## Ignored voice channels
+
+### Toggle an ignored channel
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+voicelevel ignore (channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+voicelevel ignore #afk-voice
+```
+
+  </Tab>
+</Tabs>
+
+Run the same command again to stop ignoring that channel. Time in ignored channels does not count toward voice XP or sessions.
+
+## Crownboard
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+voicelevel crownboard (channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+voicelevel crownboard #general
+```
+
+  </Tab>
+</Tabs>
+
+bored posts a live embed in that channel listing the top voice members. The crownboard refreshes every **10 minutes**.
+
+## Leaderboard
+
+### Open the leaderboard
+
+```text
+voicelevel leaderboard
+```
+
+This shows the top members in the server by total voice time, with level and XP on each line. Results are paginated when the list is long.
+
+## Config panel
+
+```text
+voicelevel config
+```
+
+This opens bored's voice level config panel so you can review whether voice leveling is on, stack roles, the XP multiplier, the level-up channel, crownboard channel, reward roles, and ignored channels in one place.
+
+## Reset and cleanup
+
+### Reset one member
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+voicelevel reset (member)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+voicelevel reset @member
+```
+
+  </Tab>
+</Tabs>
+
+This clears that member's voice XP and updates their reward roles.
+
+### Reset all voice level data
+
+```text
+voicelevel resetconfig
+```
+
+This requires **Manage Server** and confirmation. bored clears all voice level data, reward roles, ignored channels, and crownboard settings for the server, then disables voice leveling.
+
+## Stream and camera tracking
+
+Stream tracking is separate from voice XP. It records how long members stream or use camera while they are in voice.
+
+<Callout type="warning" title="Disabled by default">
+**Stream tracking** stays off until someone with **Manage Server** enables it with `stream enable`.
+</Callout>
+
+### View stream stats
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+stream [user]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+stream @member
+```
+
+  </Tab>
+</Tabs>
+
+Use this to view current activity, stream time, camera time, and session counts. If the member is live in voice, bored includes time from their current session.
+
+### Enable stream tracking
+
+```text
+stream enable
+```
+
+This turns stream and camera tracking on for the server.
+
+### Disable stream tracking
+
+```text
+stream disable
+```
+
+This turns stream and camera tracking off until it is enabled again.
+
+### Open the stream leaderboard
+
+```text
+stream leaderboard
+```
+
+This ranks members by combined stream and camera time.

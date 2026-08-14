@@ -1,0 +1,160 @@
+---
+title: Vanity Roles
+description: Award roles when a member's custom status matches your server vanity substring.
+section: Server Configuration
+icon: identification
+---
+
+Vanity Roles are handled by the dedicated [**bored vanity**](https://discord.com/oauth2/authorize?client_id=1459869503289561293) bot, not the main bored bot. They award one or more roles when a member's custom status matches the vanity substring you configure.
+
+<Callout type="warning" title="Server requirement">
+Your server must have a **vanity URL**, be **Level 3**, and have at least **14 boosts** before vanity rewards can be used.
+</Callout>
+
+<Callout type="warning" title="Main bot required">
+**bored vanity** only joins servers that already have the main [**bored**](https://discord.com/oauth2/authorize?client_id=1456564317494317197) bot. Add bored first, then invite bored vanity. If bored is missing on a **new join**, vanity leaves that server. Existing servers are not swept on restart.
+</Callout>
+
+<Callout type="info" title="Permissions">
+`vanity role add` and `vanity role remove` require **Manage Roles**. The rest of the vanity setup commands use **Manage Server**.
+</Callout>
+
+## Set the vanity substring
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+/vanity set substring:(text)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/vanity set substring:/boredbot
+```
+
+  </Tab>
+</Tabs>
+
+This is the custom status text bored-vanity looks for before it awards the configured roles.
+
+Use `vanity view substring` any time you want to confirm the saved substring, the current match mode, and whether offline handling is enabled.
+
+## Add or remove reward roles
+
+<Tabs items={["Add role", "Remove role"]}>
+  <Tab>
+
+```text
+/vanity role add role:@Vanity
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/vanity role remove role:@Vanity
+```
+
+  </Tab>
+</Tabs>
+
+Use `vanity role list` to view every configured vanity reward role in the server.
+
+## Choose strict or loose matching
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+/vanity strict setting:yes|no
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/vanity strict setting:yes
+```
+
+  </Tab>
+</Tabs>
+
+Strict mode requires the full custom status to exactly match the saved substring. Non-strict mode matches the substring anywhere inside the custom status.
+
+## Choose how offline members are handled
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+/vanity offline setting:yes|no
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/vanity offline setting:no
+```
+
+  </Tab>
+</Tabs>
+
+`/vanity offline no` is the default behavior. It keeps already-awarded vanity roles while a member is offline or invisible, which stops online or offline flips from removing the role and sending the award message again later (leading to spam).
+
+Award messages are sent only on a **new** grant. If the bot reapplies a role it already recorded (repair, sync, or out-of-order presence), that step is silent, so there is no duplicate award message. The vanity bot only removes roles it granted; roles added by other users are left alone.
+
+Turn `/vanity offline yes` on only if you want the stricter behavior where offline members can lose vanity rewards when their status no longer matches.
+
+## Configure the award message
+
+<Tabs items={["Set message", "View message", "Clear message", "Set award channel", "Clear award channel"]}>
+  <Tab>
+
+```text
+/vanity message message:(text or embed script)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/vanity view message
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/vanity message clear:true
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/vanity award channel channel:#logs
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/vanity award channel clear:true
+```
+
+  </Tab>
+</Tabs>
+
+The vanity bot can send an award message when someone matches the status. Award messages can use the shared embed-script variables, plus `{guild.vanity}` for the vanity code and `{guild.vanity_url}` for the full invite URL.
+
+Use `\n` when you want new lines inside the vanity message. Since new lines are a bit limited in slash commands, you will need to use `\n`.
+
+`/vanity view message` and running `/vanity message` without a new message both show the saved vanity award message.
+
+If you set an award channel, bored vanity checks permissions before saving it. The bot must be able to view and send in that channel.
+
+Running `/vanity award channel` with no new channel shows the currently saved target. Running `/vanity award channel clear:true` removes the saved channel so vanity award messages stop sending until you set a new one.

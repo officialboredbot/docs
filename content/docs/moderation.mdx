@@ -1,0 +1,252 @@
+---
+title: Moderation
+description: Set up bored's jail, modlog, and mute-role systems before using moderation commands.
+section: Server Security
+icon: gavel
+---
+
+Before using any moderation-related commands like `ban`, `kick`, `mute`, and more, bored's system requires a simple setup before they can be used.
+
+`setup` requires **Administrator**. `setupmute` requires **Manage Server**.
+
+## First-time setup
+
+<Steps>
+  <Step title="Run `setup`">
+    This creates the base jail system for the server.
+
+```text
+setup
+```
+
+    bored creates or reuses `Jailed`, `#jail`, and `#jail-log`, and points the modlog channel at `#jail-log`. This is the default jail mode.
+  </Step>
+  <Step title="Run `setupmute`">
+    This creates the saved roles used by bored's image mute and reaction mute commands.
+
+```text
+setupmute
+```
+
+    bored creates or reuses `Image Muted` and `Reaction Muted`.
+  </Step>
+</Steps>
+
+## What you end up with
+
+| Command | Result |
+| --- | --- |
+| `setup` | `Jailed`, `#jail`, `#jail-log`, and modlog set to `#jail-log` |
+| `setupmute` | `Image Muted`, `Reaction Muted` |
+
+`timeout` is separate from this setup, as it uses Discord's latest timeout system. It does not need `setupmute`.
+
+## Change the defaults later
+
+Use these only if you want something different from what the setup commands create.
+
+### Channels
+
+#### Jail channel
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+settings jail (channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+settings jail #jail
+```
+
+  </Tab>
+</Tabs>
+
+`#jail` is the default jail destination. To change the legacy channel, run
+`settings jail #staff-jail`.
+
+![Settings jail command configuring the jail channel](/images/moderation/jail-channel.png)
+
+#### Private jail threads
+
+Enable this to give each jailed member a private thread for talking with
+staff. `#jail` stays as a normal text channel and becomes the parent for those
+threads. The channel is read-only and shows a short notice.
+
+Each thread includes the jailed member, the moderator, the server owner, and
+configured staff members. bored archives and locks the thread when the member
+is unjailed or their jail ends.
+
+<Tabs items={["Enable", "Disable"]}>
+  <Tab>
+
+```text
+settings jailthreads on
+```
+
+  </Tab>
+  <Tab>
+
+```text
+settings jailthreads off
+```
+
+  </Tab>
+</Tabs>
+
+#### Modlog channel
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+settings modlog [channel]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+settings modlog #jail-log
+```
+
+  </Tab>
+</Tabs>
+
+If you leave the channel out, bored uses the current text channel (the one you ran the command in).
+
+![Settings modlog command configuring the modlog channel](/images/moderation/modlog-channel.png)
+
+### Roles
+
+#### Image muted role
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+settings imuted (role/none)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+settings imuted @Image Muted
+```
+
+  </Tab>
+</Tabs>
+
+![Settings imuted command configuring the image muted role](/images/moderation/image-muted-role.png)
+
+#### Reaction muted role
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+settings rmuted (role/none)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+settings rmuted @Reaction Muted
+```
+
+  </Tab>
+</Tabs>
+
+![Settings rmuted command configuring the reaction muted role](/images/moderation/reaction-muted-role.png)
+
+Use `none` to clear any saved mute-role setting.
+
+### Jail behavior
+
+#### Custom jail message
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+settings jailmsg (message)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+settings jailmsg Read the rules and wait for staff.
+```
+
+  </Tab>
+</Tabs>
+
+Use `reset`, `off`, or `none` with `settings jailmsg` to clear the saved message. Jail messages support the same moderation template variables used by invoke punishment messages, including `{moderator.mention}`, `{duration}`, `{reason}`, `{user.mention}`, and `{guild}`.
+
+![Settings jailmsg command configuring a custom jail message](/images/moderation/custom-jail-message.png)
+
+## Invoke messages
+
+Invoke messages customize the DM and channel response used by moderation actions such as ban, kick, timeout, jail, and warn.
+
+```text
+invoke list
+invoke test (action) (dm or message) [member]
+invoke reset
+```
+
+`invoke list` shows every configured action and response type. `invoke test` previews the saved message in the current channel with test moderation variables. `invoke reset` confirms before clearing every saved invoke message in the server.
+
+Use `invoke (action) dm` and `invoke (action) message` to set, view, or clear an individual response.
+
+## Appeal server
+
+Point punished members at a separate server where they can appeal, instead of having them DM staff one by one. Once set, every punishment DM carries an **Appeal Server** button and the invite itself, so they can join straight from the message that punished them.
+
+Requires **Manage Server**. `settings appeal` and `settings appeals` are aliases.
+
+```text
+settings appealserver (invite or none)
+settings appealserver https://discord.com/invite/UePr2KBcFY
+```
+
+It has to be a Discord invite to a **different** server, since someone who was banned cannot rejoin the server that banned them. bored only links members there; set that server up however you like, with an appeal channel, a ticket panel, or a form bot.
+
+Clear it with `none`, `off`, or `reset` and punishment DMs stop linking a server.
+
+#### Jail message channel
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+settings jailmsgchannel (channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+settings jailmsgchannel #jail
+```
+
+  </Tab>
+</Tabs>
+
+This sets where the custom jail message is posted in legacy channel mode.
+When unset, bored uses the active jail destination. In private jail-thread
+mode, `settings jailmsg` is posted as the first message in the member's
+private thread. Use `none`, `off`, or `reset` to clear the override.
+
+Jailed members always have their assignable roles saved and removed while
+jailed. When they are unjailed, bored restores roles that still exist and can
+be assigned.
+
+Once this is done, bored can use the moderation setup for commands like `jail`, `unjail`, `imute`, `rmute`, and `runmute`.

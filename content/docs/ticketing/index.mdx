@@ -1,0 +1,61 @@
+---
+title: Overview
+description: How bored ticketing works, panels vs ticket options, and where to go next.
+section: Server Configuration
+icon: information-circle
+---
+
+Ticketing lets members open private support channels from a public panel message. Staff can claim tickets, manage access, close and reopen channels, and use secure transcript links — all from Discord.
+
+bored supports both slash `/ticket` commands and matching prefix `ticket` commands. `tickets` works as a prefix alias.
+
+## How it works
+
+A **panel** is the public message members see: the embed, the channel it lives in, and limits such as how many tickets one person can have open.
+
+A **ticket option** is a button on that message. Each option is its own ticket type — with its own category, welcome message, forms, claiming rules, support roles, and button style.
+
+One panel can show up to **25** enabled options as buttons or in one dropdown. To add another way to open a ticket, add another option under **Ticket Options** instead of creating a second panel message.
+
+| Setting | Panel | Option |
+| --- | --- | --- |
+| Display name | Panel name | Option name |
+| Max open tickets per user | Yes | — |
+| Public embed and channel | Yes | — |
+| Log channel override | Yes | Optional |
+| Create button (label, emoji, style) | — | Yes |
+| Support and required roles | — | Yes |
+| Ticket category | Server default | Yes |
+| Welcome message and controls | — | Yes |
+| Forms | — | Yes |
+| Claiming | — | Yes |
+| Ping support / opener can close | — | Yes |
+| Channel name format | — | Yes |
+
+<Callout type="info" title="Older setups">
+If your server used linked panels before, bored migrates them automatically. Each old panel becomes an option on the panel that owned it.
+</Callout>
+
+## What you can configure
+
+- Quick setup for a default panel and option
+- Multiple panels across different channels
+- Multiple create buttons per panel
+- Per-option support roles, categories, and access rules
+- Optional forms before a ticket opens
+- Custom panel embeds and per-option welcome messages
+- Claim, claim-lock, and unclaim workflows
+- Add and remove access on open tickets
+- Auto-close, close requests, and close-on-leave
+- Optional closed-ticket category, channel-name format, and delayed deletion
+- Reopen and delete controls on closed tickets
+- Optional close-log DMs to the ticket opener (on by default)
+- Opener self-close controls (on by default)
+- Secure transcripts generated automatically when tickets close
+
+## Where to start
+
+1. [Quick setup](/ticketing/setup) — get a working panel in a few prompts.
+2. [Panels and options](/ticketing/panels-and-options) — build multi-button panels and manage the configurator.
+3. [Customization](/ticketing/customization) — panel embeds, welcome messages, forms, and variables.
+4. [Commands](/ticketing/commands) — staff tools, admin commands, closing, reopening, and deletion.

@@ -1,0 +1,69 @@
+---
+title: Suggestions
+description: Collect, review, vote on, and manage server suggestions.
+section: Miscellaneous
+icon: light-bulb
+---
+
+Suggestions can post directly to a public channel or pass through a private staff review queue first.
+
+## Setup
+
+```text
+suggest setup (channel) [review channel]
+```
+
+The first channel receives approved suggestions. When a review channel is provided, new submissions wait there for staff approval.
+
+```text
+suggest config
+suggest channel (channel)
+suggest review (channel or off)
+suggest enable
+suggest disable
+```
+
+These settings require **Manage Server**.
+
+## Submit
+
+```text
+suggest (idea)
+suggest submit (idea)
+```
+
+Members can also reply to a message and run `suggest` without text to submit that message.
+
+## Voting and threads
+
+```text
+suggest emoji (upvote emoji) (downvote emoji)
+suggest threads (on or off)
+```
+
+Discussion threads are created on suggestion posts when enabled.
+
+## Staff statuses
+
+```text
+suggest approve (suggestion ID or message)
+suggest deny (suggestion ID or message)
+suggest consider (suggestion ID or message)
+suggest progress (suggestion ID or message)
+suggest pending (suggestion ID or message)
+suggest status (status) (suggestion ID or message)
+```
+
+Staff can use a suggestion ID, message link, or a reply to the suggestion message.
+
+## Ignore members and roles
+
+```text
+suggest ignore (member or role)
+suggest ignore add (member or role)
+suggest ignore remove (member or role)
+suggest ignore list
+suggest ignore reset
+```
+
+Ignored members cannot submit suggestions. Ignored roles apply to every member who holds that role.

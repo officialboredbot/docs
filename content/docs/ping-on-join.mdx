@@ -1,0 +1,91 @@
+---
+title: Ping on Join
+description: Ping new members in selected channels or categories when they join.
+section: Server Configuration
+icon: megaphone
+---
+
+Ping on Join sends a short mention message when someone joins, then deletes that ping again after a short delay.
+
+The default delay is **5 seconds**, and you can change it between **3** and **10** seconds. Rapid joins in the same channel are batched for about **2 seconds** into one ping message.
+
+You can configure up to `7` text channels per server. If you target a category, bored adds or removes every text channel inside it until the server reaches that limit.
+
+## Add a channel or category
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+pingonjoin add (channel or category)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+pingonjoin add #welcome
+```
+
+  </Tab>
+</Tabs>
+
+You can use a channel mention, category name, raw ID, or `here` / `this` for the current text channel.
+
+## List configured channels
+
+```text
+pingonjoin list
+```
+
+This shows every saved ping-on-join channel in the server.
+
+## Remove a channel or category
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+pingonjoin remove (channel or category)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+pingonjoin remove #welcome
+```
+
+  </Tab>
+</Tabs>
+
+If you remove a category, bored removes every configured text channel inside that category.
+
+## Change the deletion delay
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+pingonjoin time (seconds)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+pingonjoin time 7
+```
+
+  </Tab>
+</Tabs>
+
+The delay must be between **3** and **10** seconds. If you leave it unset, bored uses **5** seconds.
+
+## Reset everything
+
+```text
+pingonjoin reset
+```
+
+This clears every saved ping-on-join channel in the server after a confirmation prompt. `pingonjoin clear` works as an alias.

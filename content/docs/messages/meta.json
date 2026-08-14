@@ -1,0 +1,9 @@
+{
+  "title": "Messages",
+  "icon": "envelope",
+  "pages": [
+    "welcome-messages",
+    "leave-messages",
+    "boost-messages"
+  ]
+}

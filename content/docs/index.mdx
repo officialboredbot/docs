@@ -1,0 +1,60 @@
+---
+title: Introduction
+description: Start here to understand bored and find the right setup guide.
+section: Overview
+icon: home
+---
+
+import {
+  FaFileLines,
+  FaGear,
+  FaPalette,
+  FaShieldHalved,
+  FaWandMagicSparkles
+} from "react-icons/fa6";
+
+bored is a multi-purpose Discord bot for moderation, automation, configuration, and everyday server management.
+
+<Callout type="info" title="Default prefix">
+The default server prefix is `,`. Use `,prefix set (symbol)` to change it for your server, or mention bored to view the active prefixes available there.
+</Callout>
+
+## Guides
+
+<Cards>
+  <Card
+    title="Customization"
+    icon={<FaPalette />}
+    href="/customization"
+  >
+    Change bored's server profile with a custom avatar, banner, bio, nickname, or a full reset back to default.
+  </Card>
+  <Card
+    title="Server Security"
+    icon={<FaShieldHalved />}
+    href="/moderation"
+  >
+    Start with moderation setup, then move into antinuke and the rest of bored's server protection tools.
+  </Card>
+  <Card
+    title="Server Configuration"
+    icon={<FaGear />}
+    href="/messages/welcome-messages"
+  >
+    Set up roles, system messages, invite tracking, automation, and other server features.
+  </Card>
+  <Card
+    title="Miscellaneous"
+    icon={<FaWandMagicSparkles />}
+    href="/message-tracking"
+  >
+    Manage message tracking, autosnipe, counter channels, giveaways, and related utility features.
+  </Card>
+  <Card
+    title="Resources"
+    icon={<FaFileLines />}
+    href="/scripting/embeds"
+  >
+    Find shared embed scripting and variable reference material used across the bot.
+  </Card>
+</Cards>

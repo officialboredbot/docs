@@ -1,0 +1,429 @@
+---
+title: Leveling
+description: Track message activity, award XP, and configure reward roles and level-up messages.
+section: Server Configuration
+icon: academic-cap
+---
+
+Leveling tracks server message activity and turns it into XP, ranks, reward roles, and leaderboard placement.
+
+Members can gain XP once every `60` seconds, and bored awards a random `15` to `25` XP before your multiplier is applied.
+
+<Callout type="warning" title="Disabled by default">
+**Leveling** stays off until someone with **Manage Server** enables it with `levels enable`.
+</Callout>
+
+## Check a rank card
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+levels [member]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+levels @member
+```
+
+  </Tab>
+</Tabs>
+
+Use this without a member to view your own current rank, XP, and progress to the next level.
+
+## Turn leveling on or off
+
+### Enable leveling
+
+```text
+levels enable
+```
+
+This turns the system on for the server and allows members to start gaining XP.
+
+### Disable leveling
+
+```text
+levels disable
+```
+
+This turns leveling off until it is enabled again.
+
+## XP rate
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+levels setrate (multiplier)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+levels setrate 1.5
+```
+
+  </Tab>
+</Tabs>
+
+The multiplier must be greater than `0`. In the example above, bored scales the normal `15` to `25` XP gain by `1.5`.
+
+## Reward roles
+
+Reward roles let bored assign a saved role when someone reaches a level you choose.
+
+### View reward roles
+
+```text
+levels roles
+```
+
+Use this to review every configured reward role together with its required level and XP.
+
+### Add a reward role
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+levels add (role) (rank)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+levels add @LevelFive 5
+```
+
+  </Tab>
+</Tabs>
+
+In the example above, members receive `@LevelFive` when they reach level `5`.
+
+### Update a reward role
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+levels update (role) (rank)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+levels update @LevelFive 10
+```
+
+  </Tab>
+</Tabs>
+
+This moves an existing reward role to a different required level.
+
+### Remove a reward role
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+levels remove (rank)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+levels remove 5
+```
+
+  </Tab>
+</Tabs>
+
+This removes the reward role that was configured for that level.
+
+### Stack reward roles
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+levels stackroles (on or off)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+levels stackroles off
+```
+
+  </Tab>
+</Tabs>
+
+When stacking is on, members keep earlier reward roles as they level up. When stacking is off, bored keeps only the highest reward role it can manage.
+
+### Sync reward roles
+
+```text
+levels sync
+```
+
+Run this after changing reward roles or stacking behavior if you want bored to re-apply the current setup across the server.
+
+## Level-up messages
+
+You can save a custom level-up message and choose where bored sends it.
+
+### Set the level-up message
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+levels message (text)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+levels message Congrats {user.mention} on reaching level {level.new_rank} in {guild.name}!
+```
+
+  </Tab>
+</Tabs>
+
+The saved message must include `{guild.name}`. Plain text and bored's embed script format are both supported.
+
+### Preview the current message
+
+```text
+levels message view
+```
+
+Use this to preview the currently saved level-up message.
+
+### Choose where messages go
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+levels messagemode (pm, context, none, or channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+levels messagemode #level-up
+```
+
+  </Tab>
+</Tabs>
+
+`pm` sends the message to the member directly, `context` sends it where they spoke, `none` disables level-up messages, and a channel sends every message there.
+
+### Personal message toggle
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+levels messages (on or off)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+levels messages off
+```
+
+  </Tab>
+</Tabs>
+
+This only changes level-up messages for the member running the command.
+
+## Ignore targets
+
+Ignore targets stop bored from awarding XP in specific channels, categories, or roles.
+
+### Toggle an ignored target
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+levels ignore (channel, category, or role)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+levels ignore #spam
+```
+
+  </Tab>
+</Tabs>
+
+Run the same command again to remove that ignore target.
+
+### View ignored targets
+
+```text
+levels list
+```
+
+Ignored categories also cover the channels inside them.
+
+## Leaderboard
+
+### Open the leaderboard
+
+```text
+levels leaderboard
+```
+
+This shows the current top members in the server by total XP. `levels lb` and `levels top` work as aliases. You can also check ranks with `rank`, `level`, `lvl`, or `xp`.
+
+### Post a live crownboard
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+levels crownboard (channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+levels crownboard #levels
+```
+
+  </Tab>
+</Tabs>
+
+This posts a live top-10 message-XP embed in that channel and refreshes it every **10 minutes**.
+
+### Rename the leaderboard
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+levels leaderboard rename (text)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+levels leaderboard rename Server XP Leaderboard
+```
+
+  </Tab>
+</Tabs>
+
+This changes the embed title used by `levels leaderboard`.
+
+## Config panel
+
+```text
+levels config
+```
+
+This opens bored's leveling config panel so you can review the current system state in one place.
+
+## Manual adjustments
+
+### Set a member's XP
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+setxp (member) (amount)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+setxp @member 10000
+```
+
+  </Tab>
+</Tabs>
+
+This sets the member's total XP directly and updates reward roles from the resulting level.
+
+### Remove XP from a member
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+removexp (member) (amount)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+removexp @member 500
+```
+
+  </Tab>
+</Tabs>
+
+This subtracts XP, clamps the result at `0`, and then updates reward roles.
+
+### Set a member's level directly
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+setlevel (member) (level)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+setlevel @member 5
+```
+
+  </Tab>
+</Tabs>
+
+This converts the target level into the matching total XP and then updates reward roles.
+
+## Reset and cleanup
+
+### Reset all leveling data
+
+```text
+levels reset
+```
+
+This requires **Administrator**. bored clears saved XP data for the server and removes any reward roles it can manage.
+
+### Remove absent members from saved data
+
+```text
+levels cleanup
+```
+
+This is limited to the **server owner** and removes saved level data for members who are no longer in the server.

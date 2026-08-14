@@ -1,0 +1,13 @@
+{
+  "title": "Roles",
+  "icon": "users",
+  "pages": [
+    "auto-roles",
+    "reaction-roles",
+    "button-roles",
+    "dropdown-role-menus",
+    "vanity-roles",
+    "booster-roles",
+    "guild-tag-roles"
+  ]
+}

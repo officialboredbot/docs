@@ -1,0 +1,110 @@
+---
+title: Button Roles
+description: Let members assign themselves roles with clickable buttons on a bored message.
+section: Server Configuration
+icon: cursor-arrow-ripple
+---
+
+Button Roles let members give themselves roles from buttons attached to a message instead of using emoji reactions.
+
+## Add a button role
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+buttonrole add (message link) (role) (style) [emoji] [label] [--exclusive]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+buttonrole add https://discord.com/channels/1/2/3 @Verified green ✅ Verify Here
+```
+
+  </Tab>
+</Tabs>
+
+The style must be `green`, `blurple`, `gray`, or `red`. Style defaults to `gray` when omitted. If you leave the emoji out, bored creates a label-only button. If you leave the label out, bored uses the role name as the button text.
+
+You can target a message by link, message ID, or by replying to the message. One message can hold up to **25** button-role buttons, and button labels must stay within Discord's **80** character limit.
+
+### Exclusive button roles
+
+Add `--exclusive` when members should only keep one role from a button set on the same message.
+
+```text
+buttonrole add https://discord.com/channels/1/2/3 @18+ green 🔞 18+ --exclusive
+buttonrole add https://discord.com/channels/1/2/3 @18- red 🚫 18- --exclusive
+```
+
+If a member clicks the `18+` button, bored gives them `@18+`. If they later click the `18-` button, bored removes `@18+` and gives them `@18-`.
+
+Only button roles added with `--exclusive` conflict with each other. Normal button roles on the same message still stack normally.
+
+<Callout type="warning" title="Bot message only">
+`buttonrole add` only works on messages sent by **bored**. The bot needs to edit that message to attach the button row.
+</Callout>
+
+<Callout type="info" title="Custom emojis">
+If you use a custom emoji from another server, bored can prompt to import that emoji into the current server before it builds the button.
+</Callout>
+
+## Remove one button role
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+buttonrole remove (message link) (index)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+buttonrole remove https://discord.com/channels/1/2/3 1
+```
+
+  </Tab>
+</Tabs>
+
+The index is the button position on that message, counted from left to right starting at `1`.
+
+## Remove every button role from one message
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+buttonrole removeall (message link)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+buttonrole removeall https://discord.com/channels/1/2/3
+```
+
+  </Tab>
+</Tabs>
+
+Use this when you want to remove the full button role row from one message.
+
+## List saved button roles
+
+```text
+buttonrole list
+```
+
+This shows every saved button role in the server.
+
+## Reset all button roles
+
+```text
+buttonrole reset
+```
+
+This removes every saved button role in the server after a confirmation prompt.

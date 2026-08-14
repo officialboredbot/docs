@@ -1,0 +1,119 @@
+---
+title: Auto Roles
+description: Give roles automatically when members or bots join your server.
+section: Server Configuration
+icon: user-group
+---
+
+Auto Roles assigns saved roles to new joins. You can configure roles for everyone, roles only for bots, or roles only for humans.
+
+You need `Manage Server` and `Manage Roles` to configure auto roles. Bored also needs to be able to manage the roles you save.
+
+## Everyone
+
+<Tabs items={["Add", "Remove", "List", "Reset"]}>
+  <Tab>
+
+```text
+autorole add (roles)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+autorole remove (roles)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+autorole list
+```
+
+  </Tab>
+  <Tab>
+
+```text
+autorole reset
+```
+
+  </Tab>
+</Tabs>
+
+Roles in the main `autorole` list apply to both bot and human joins. Prefix `autorole add` and `autorole remove` accept comma-separated roles. Slash `/autorole` stays single-role.
+
+## Bots
+
+<Tabs items={["Add", "Remove", "List", "Reset"]}>
+  <Tab>
+
+```text
+autorole bots add (roles)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+autorole bots remove (roles)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+autorole bots list
+```
+
+  </Tab>
+  <Tab>
+
+```text
+autorole bots reset
+```
+
+  </Tab>
+</Tabs>
+
+Bot auto roles only apply when the joining member is a bot account.
+
+## Humans
+
+<Tabs items={["Add", "Remove", "List", "Reset"]}>
+  <Tab>
+
+```text
+autorole humans add (roles)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+autorole humans remove (roles)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+autorole humans list
+```
+
+  </Tab>
+  <Tab>
+
+```text
+autorole humans reset
+```
+
+  </Tab>
+</Tabs>
+
+Human auto roles only apply when the joining member is not a bot account.
+
+<Callout type="warn" title="Role hierarchy">
+Discord role hierarchy still applies. Bored cannot give roles that are above its highest role or otherwise unmanageable by the bot.
+</Callout>

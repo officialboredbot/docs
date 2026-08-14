@@ -1,0 +1,262 @@
+---
+title: Dropdown Role Menus
+description: Let members assign themselves roles from persistent dropdown menus on bored messages.
+section: Server Configuration
+icon: queue-list
+---
+
+Dropdown Role Menus attach persistent self-role selects to messages sent by bored. Members can add or remove several roles, or choose one role from an exclusive set.
+
+You need `Manage Server` and `Manage Roles` to configure role menus. bored also needs `Manage Roles`, and every selectable role must be below both your highest role and bored's highest role. The server owner is not limited by their own role position.
+
+<Callout type="warning" title="Bot messages only">
+Role menus can only be attached to messages sent by bored. A target message cannot already contain unrelated buttons, selects, or other controls.
+</Callout>
+
+Prefix `rolemenu` also works as `selectrole`. Slash commands use `/rolemenu`.
+
+## Modes
+
+Role menus support two selection modes.
+
+- `multiple` lets members toggle more than one role. Selecting a role they already have removes it.
+- `exclusive` allows one selected role. Choosing another role from that menu removes the previous one; choosing the held role again removes it.
+
+New multiple menus allow up to **25 selections** by default. New exclusive menus always allow exactly **1 selection**.
+
+## Create a menu
+
+Creating a menu adds its first role and uses the next free menu row on the message.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+rolemenu create (message link) (role) [multiple or exclusive] [placeholder]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+rolemenu create https://discord.com/channels/1/2/3 @Announcements multiple Choose your roles
+```
+
+  </Tab>
+</Tabs>
+
+The mode defaults to `multiple`. The placeholder defaults to `Choose a role` and can contain up to **150 characters**.
+
+Prefix commands can target a replied bored message instead:
+
+```text
+rolemenu create @Announcements multiple Choose your roles
+```
+
+Slash `/rolemenu create` always takes a message link, a typed role, an optional mode, and an optional placeholder.
+
+## View a message's menus
+
+Use `view` before editing or removing options. It shows each dropdown number, its placeholder and selection behavior, and every numbered role option.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+rolemenu view (message link)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+rolemenu view https://discord.com/channels/1/2/3
+```
+
+  </Tab>
+</Tabs>
+
+You can also reply to the message and run `rolemenu view`. The aliases are `rolemenu show` and `rolemenu info`. Slash `/rolemenu view` requires the message link.
+
+## Add roles
+
+Add another role to one of the message's numbered menus.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+rolemenu add (message link) (menu) (role) [label]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+rolemenu add https://discord.com/channels/1/2/3 1 @Events Event Alerts
+```
+
+  </Tab>
+</Tabs>
+
+When you reply to the target message, leave out its link:
+
+```text
+rolemenu add 1 @Events Event Alerts
+```
+
+The label defaults to the role name and can contain up to **100 characters**. A role cannot appear twice in the same menu.
+
+Slash `/rolemenu add` also supports an optional description and emoji. Descriptions can contain up to **100 characters**. If the emoji is unavailable in the server, bored can prompt to import it before saving the option.
+
+## Edit a menu
+
+Change a menu's mode, maximum selections, or placeholder.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+rolemenu edit (message link) (menu) (mode or limit or placeholder) (value)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+rolemenu edit https://discord.com/channels/1/2/3 1 limit 3
+```
+
+  </Tab>
+</Tabs>
+
+Use `mode multiple`, `mode exclusive`, `limit 1-25`, or `placeholder <text>`. Changing a menu to `exclusive` forces its selection limit to `1`.
+
+Reply targeting also works:
+
+```text
+rolemenu edit 1 placeholder Choose one color
+```
+
+The prefix forms are:
+
+```text
+rolemenu edit (message link) (menu) mode multiple
+rolemenu edit (message link) (menu) limit 3
+rolemenu edit (message link) (menu) placeholder Choose your roles
+```
+
+Slash `/rolemenu edit` exposes mode, maximum selections, and placeholder as separate typed options.
+
+## Remove one option
+
+Remove a role by its option index inside the selected menu.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+rolemenu remove (message link) (menu) (option)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+rolemenu remove https://discord.com/channels/1/2/3 1 2
+```
+
+  </Tab>
+</Tabs>
+
+Reply targeting uses only the menu and option indexes:
+
+```text
+rolemenu remove 1 2
+```
+
+Removing the last role from a menu also removes that empty menu.
+
+## Delete one menu
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+rolemenu delete (message link) (menu)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+rolemenu delete https://discord.com/channels/1/2/3 1
+```
+
+  </Tab>
+</Tabs>
+
+When replying to the target message:
+
+```text
+rolemenu delete 1
+```
+
+This removes one dropdown row while leaving the message's other role menus intact.
+
+## Clear one message
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+rolemenu clear (message link)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+rolemenu clear https://discord.com/channels/1/2/3
+```
+
+  </Tab>
+</Tabs>
+
+You can also reply to the message and run:
+
+```text
+rolemenu clear
+```
+
+`rolemenu removeall` remains an alias. bored asks for confirmation and names the number of dropdowns that will be removed.
+
+## List role menus
+
+```text
+rolemenu list
+```
+
+`rolemenu ls` is an alias. The list links each configured message and shows its menu index, number of roles, mode, and maximum selections.
+
+## Reset the server
+
+```text
+rolemenu reset
+```
+
+After confirmation, this removes every saved role menu in the server and clears the controls from messages that bored can still edit. The confirmation includes both the dropdown and message counts.
+
+## Limits and cleanup
+
+- One message can hold up to **5** role-menu rows.
+- One menu can hold up to **25** role options.
+- Labels and descriptions can contain up to **100 characters**.
+- Placeholders can contain up to **150 characters**.
+- Menu and option indexes start at `1`.
+
+bored removes deleted roles from saved menus. If a menu has no roles left, bored removes the menu itself. Deleting the source message or channel also removes its stored role-menu records.
+
+<Callout type="info" title="Components V2 scripts">
+The `{component}` scripting format does not currently create dropdown role menus. Use the persistent `rolemenu` commands on this page for self-assignable role selects.
+</Callout>

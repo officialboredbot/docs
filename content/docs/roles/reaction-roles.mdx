@@ -1,0 +1,104 @@
+---
+title: Reaction Roles
+description: Let members assign themselves roles with emoji reactions on a message.
+section: Server Configuration
+icon: hand-thumb-up
+---
+
+Reaction Roles let members give themselves roles by reacting to one message with a saved emoji.
+
+## Add a reaction role
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+reactionrole add (message link) (reaction) (role) [--exclusive]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+reactionrole add https://discord.com/channels/1/2/3 ✅ @Verified
+```
+
+  </Tab>
+</Tabs>
+
+You can also reply to the target message instead of pasting a link. bored adds the reaction for you after the role assignment is saved. Prefix can attach more than one role to the same reaction in one command. Slash `/reactionrole add` stays single-role.
+
+### Exclusive reaction roles
+
+Add `--exclusive` when members should only keep one role from a set on the same message.
+
+```text
+reactionrole add https://discord.com/channels/1/2/3 🔞 @18+ --exclusive
+reactionrole add https://discord.com/channels/1/2/3 🚫 @18- --exclusive
+```
+
+If a member reacts with `🔞`, bored gives them `@18+`. If they later react with `🚫`, bored removes `@18+`, gives them `@18-`, and removes their old `🔞` reaction from the message.
+
+Only reaction roles added with `--exclusive` conflict with each other. Normal reaction roles on the same message still stack normally.
+
+<Callout type="info" title="Custom emojis">
+If you use a custom emoji from another server, bored can prompt to import that emoji into the current server before it saves the reaction role.
+</Callout>
+
+## Remove one reaction role
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+reactionrole remove (message link) (reaction)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+reactionrole remove https://discord.com/channels/1/2/3 ✅
+```
+
+  </Tab>
+</Tabs>
+
+This removes the saved role assignment for that reaction on the target message.
+
+## Remove every reaction role from one message
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+reactionrole removeall (message link)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+reactionrole removeall https://discord.com/channels/1/2/3
+```
+
+  </Tab>
+</Tabs>
+
+Use this when you want to clear the entire reaction role setup from one message at once.
+
+## List saved reaction roles
+
+```text
+reactionrole list
+```
+
+This shows every saved reaction role in the server, including the target message and the role attached to each emoji.
+
+## Reset all reaction roles
+
+```text
+reactionrole reset
+```
+
+This removes every saved reaction role in the server after a confirmation prompt.

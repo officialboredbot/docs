@@ -1,0 +1,5 @@
+{
+  "title": "Scripting",
+  "icon": "code-bracket",
+  "pages": ["embeds", "components", "pagination", "variables"]
+}

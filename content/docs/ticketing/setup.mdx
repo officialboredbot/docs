@@ -1,0 +1,97 @@
+---
+title: Quick setup
+description: Create the default Support panel and open the ticket configurator.
+section: Server Configuration
+icon: cog-6-tooth
+---
+
+Use quick setup when you want a working ticket panel without configuring everything by hand.
+
+## Run quick setup
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+ticket quicksetup
+```
+
+  </Tab>
+  <Tab>
+
+```text
+ticket quicksetup
+```
+
+  </Tab>
+</Tabs>
+
+`/ticket setup` and prefix `ticket setup` run the same flow.
+
+Quick setup asks for:
+
+- support roles for the default `Support` option
+- the channel where close logs should be sent
+- the channel where the public panel should be posted
+
+Then bored:
+
+- creates a `Tickets` category
+- saves server-wide ticket settings
+- creates a `Support` panel with one default option
+- posts the public panel message in the channel you chose
+
+<Callout type="info" title="Already configured">
+If tickets are already set up, quick setup tells you to use **`ticket config`** instead.
+</Callout>
+
+## Open the configurator
+
+After quick setup — or anytime you need more control — run:
+
+```text
+ticket config
+```
+
+The configurator opens with two choices:
+
+| Section | What it covers |
+| --- | --- |
+| **Ticket Settings** | Server-wide defaults and what happens after a ticket closes |
+| **Manage Ticket Panels** | Panels, public messages, options, forms, and per-option behavior |
+
+Use **Manage Ticket Panels** to add panels, extra ticket choices, or per-option settings. See [Panels and options](/ticketing/panels-and-options) for the full walkthrough.
+
+## Ticket settings
+
+Open **Ticket Settings** to manage defaults that apply across tickets:
+
+- **Log channel** — where close logs and ticket actions are recorded
+- **Ticket category** — fallback category when an option does not set its own
+- **Ticket cooldown** — wait time before someone can open another ticket
+- **Default auto-close** — fallback hours for `ticket autoclose` when no value is given
+- **Close on user leave** — close a member's open tickets when they leave the server
+- **Send close log to user** — DM the ticket opener a close log with the transcript link (on by default)
+- **Auto Delete on Close** — delete a closed ticket after a delay from **1 minute** to **30 days**, or leave it off
+- **Closed Ticket Category** — move closed ticket channels into a separate category
+- **Closed Channel Name** — rename closed channels with a template such as `closed-{ticket.number}`
+
+<Callout type="warning" title="Note">
+Keeping **Auto Delete on Close** set to **Off** and keeping the channels archived will allow for images to render in transcripts.
+</Callout>
+
+Per-panel and per-option settings override these where it makes sense — for example, each option can set its own category and support roles.
+
+## Closed ticket behavior
+
+Closing a ticket preserves and locks the channel instead of deleting it immediately. The closed message includes **Reopen** and **Delete** controls.
+
+When configured, bored can move the channel into the closed-ticket category, rename it, and schedule automatic deletion. Closed channel names support:
+
+- `{}` or `{ticket.number}` — padded ticket number
+- `{ticket.id}` — internal ticket record ID
+- `{ticket.creator.username}` — opener username
+- `{panel.name}` — panel name
+- `{channel.name}` — channel name before the rename
+
+Reopening cancels scheduled deletion, restores the original category, name, permissions, and main ticket controls, then removes the closed notice.

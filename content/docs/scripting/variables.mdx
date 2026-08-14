@@ -1,0 +1,273 @@
+---
+title: Variables
+description: Browse the shared variables bored can fill in dynamically across supported commands.
+section: Resources
+icon: variable
+---
+
+Variables fill themselves in when the command runs. Most message systems share the core guild, user, channel, and date variables below. Context-only variables only appear in systems that actually provide that data.
+
+If a value does not exist in the current context, bored usually falls back to `n/a`.
+
+<Callout type="info" title="Aliases">
+`{guild}` resolves to the server name, and `{channel}` resolves to the current channel name.
+</Callout>
+
+<Callout type="info" title="VoiceMaster announcements">
+In VoiceMaster announcements, `{user.*}` refers to the channel creator, and `{channel.*}` refers to the newly created voice channel.
+</Callout>
+
+<Tabs items={["Guild", "User", "Channel", "Date & Time", "Invite", "Leveling", "Boost", "Bump Reminder", "Punishments", "Ticketing", "Last.fm"]}>
+  <Tab>
+
+| Variable | Output |
+| --- | --- |
+| `{guild}` | Server name shortcut. |
+| `{guild.name}` | Server name. |
+| `{guild.id}` | Server ID. |
+| `{guild.count}` | Server member count. |
+| `{membercount}` | Alias for the server member count. |
+| `{member_count}` | Alias for the server member count. |
+| `{guild.region}` | Legacy guild region value when available. |
+| `{guild.shard}` | bored shard ID for the server. |
+| `{guild.owner_id}` | Server owner ID. |
+| `{guild.created_at}` | Server creation date in UTC. |
+| `{guild.created_at_timestamp}` | Server creation date as a Unix timestamp. |
+| `{guild.emoji_count}` | Total emoji count. |
+| `{guild.role_count}` | Total role count. |
+| `{guild.boost_count}` | Total server boosts. |
+| `{guild.boost_tier}` | Server boost tier. Returns `No Level` when there is no boost tier. |
+| `{guild.preferred_locale}` | Server preferred locale. |
+| `{guild.key_features}` | Guild feature list joined into text. |
+| `{guild.icon}` | Server icon URL. |
+| `{guild.banner}` | Server banner URL. |
+| `{guild.splash}` | Invite splash URL when available. |
+| `{guild.discovery}` | Discovery splash URL when available. |
+| `{guild.max_presences}` | Maximum presences value reported by Discord. |
+| `{guild.max_members}` | Maximum members value reported by Discord. |
+| `{guild.max_video_channel_users}` | Maximum video channel users value reported by Discord. |
+| `{guild.afk_timeout}` | AFK timeout in seconds. |
+| `{guild.afk_channel}` | AFK channel mention. |
+| `{guild.channels}` | Text list of all guild channels. |
+| `{guild.channels_count}` | Total channel count. |
+| `{guild.text_channels}` | Text list of text channels. |
+| `{guild.text_channels_count}` | Text channel count. |
+| `{guild.voice_channels}` | Text list of voice channels. |
+| `{guild.voice_channels_count}` | Voice channel count. |
+| `{guild.category_channels}` | Text list of category channels. |
+| `{guild.category_channels_count}` | Category channel count. |
+| `{guild.vanity}` | Vanity code for the server when one exists. |
+
+  </Tab>
+  <Tab>
+
+| Variable | Output |
+| --- | --- |
+| `{user}` | Username. For normal Discord accounts this matches `{user.name}`. |
+| `{user.id}` | User ID. |
+| `{user.mention}` | User mention. |
+| `{user.name}` | Username. |
+| `{user.tag}` | Discriminator value. On modern accounts this is usually `0`. |
+| `{user.avatar}` | User avatar URL. Falls back to the display avatar when needed. |
+| `{user.guild_avatar}` | Server-specific avatar URL. |
+| `{user.display_avatar}` | Best available avatar URL. |
+| `{user.joined_at}` | Guild join date in UTC. |
+| `{user.joined_at_timestamp}` | Guild join date as a Unix timestamp. |
+| `{user.created_at}` | Account creation date in UTC. |
+| `{user.created_at_timestamp}` | Account creation date as a Unix timestamp. |
+| `{user.display_name}` | Current display name. |
+| `{user.boost}` | `Yes` or `No` depending on whether the user is boosting. |
+| `{user.boost_since}` | Initial boost date in UTC. |
+| `{user.boost_since_timestamp}` | Initial boost date as a Unix timestamp. |
+| `{user.color}` | Top role color as a hex value. |
+| `{user.top_role}` | Highest role name. |
+| `{user.role_list}` | Mentioned role list. |
+| `{user.role_text_list}` | Role names as plain text. |
+| `{user.bot}` | `Yes` or `No` depending on whether the target is a bot. |
+| `{user.badges_icons}` | Reserved badge icon output. Currently returns `n/a`. |
+| `{user.badges}` | Reserved badge text output. Currently returns `n/a`. |
+| `{user.join_position}` | Reserved join position output. Currently returns `n/a`. |
+| `{user.join_position_suffix}` | Reserved join position with suffix. Currently returns `n/a`. |
+
+  </Tab>
+  <Tab>
+
+| Variable | Output |
+| --- | --- |
+| `{channel}` | Channel name shortcut. |
+| `{channel.name}` | Channel name. |
+| `{channel.id}` | Channel ID. |
+| `{channel.mention}` | Channel mention. |
+| `{channel.topic}` | Channel topic when one exists. |
+| `{channel.type}` | Discord channel type. |
+| `{channel.category_id}` | Parent category ID. |
+| `{channel.category_name}` | Parent category name. |
+| `{channel.position}` | Channel position in the server list. |
+| `{channel.slowmode_delay}` | Slowmode delay in seconds. |
+
+  </Tab>
+  <Tab>
+
+| Variable | Output |
+| --- | --- |
+| `{date.now}` | Current date and time in Pacific time. |
+| `{date.utc_timestamp}` | Current Unix timestamp. |
+| `{date.now_proper}` | Long formatted date in Pacific time. |
+| `{date.now_short}` | Short formatted date in Pacific time. |
+| `{date.now_shorter}` | Shorter formatted date in Pacific time. |
+| `{time.now}` | Current 12-hour time in Pacific time. |
+| `{time.now_military}` | Current 24-hour time in Pacific time. |
+| `{date.utc_now}` | Current date and time in UTC. |
+| `{date.utc_now_proper}` | Long formatted date in UTC. |
+| `{date.utc_now_short}` | Short formatted date in UTC. |
+| `{date.utc_now_shorter}` | Shorter formatted date in UTC. |
+| `{time.utc_now}` | Current 12-hour time in UTC. |
+| `{time.utc_now_military}` | Current 24-hour time in UTC. |
+
+  </Tab>
+  <Tab>
+
+Invite variables are only available in systems that know which invite was used.
+
+| Variable | Output |
+| --- | --- |
+| `{inviter}` | Inviter name. |
+| `{inviter.id}` | Inviter ID. |
+| `{inviter.mention}` | Inviter mention. |
+| `{inviter_invites_total}` | Total invites tracked for that inviter. |
+| `{inviter_invites_joins}` | Join count tracked for that inviter. |
+| `{inviter_invites_leaves}` | Leave count tracked for that inviter. |
+| `{inviter_invites_bonus}` | Bonus invite count tracked for that inviter. |
+| `{invite_code}` | Invite code that was used. |
+| `{invite_channel}` | Invite channel text when available. |
+| `{invite_uses}` | Current use count for that invite. |
+
+  </Tab>
+  <Tab>
+
+Leveling variables are only available in systems that provide level-up context.
+
+| Variable | Output |
+| --- | --- |
+| `{level.new_rank}` | Member's new level or rank. |
+| `{level.old_rank}` | Member's previous level or rank. |
+| `{level.current_xp}` | Current XP after the update. |
+| `{level.next_xp}` | XP needed for the next level target. |
+| `{level.total_xp}` | Total accumulated XP. |
+| `{level.user_xp}` | Member XP value used in the level message context. |
+
+  </Tab>
+  <Tab>
+
+Boost variables are only available in boost-aware systems.
+
+| Variable | Output |
+| --- | --- |
+| `{boost.count}` | `1` if the member is currently boosting, otherwise `0`. |
+| `{guild.boost_count}` | Total boost count for the server. |
+
+  </Tab>
+  <Tab>
+
+Bump reminder variables are only available in bump reminder messages.
+
+| Variable | Output |
+| --- | --- |
+| `{bumpreminder.last_user_bump}` | The last user to bump the server. |
+| `{bumpreminder.next_bump}` | Relative timestamp for the next bump. |
+
+  </Tab>
+  <Tab>
+
+Punishment variables are only available in invoke and punishment message templates such as ban, kick, timeout, jail, warn, and similar DM or response messages.
+
+| Variable | Output |
+| --- | --- |
+| `{user}` | Target user's name and discriminator. |
+| `{user_id}` | Target user ID. |
+| `{moderator}` | Moderator display name. |
+| `{moderator_id}` | Moderator ID. |
+| `{moderator.name}` | Moderator username. |
+| `{moderator.tag}` | Moderator discriminator value. |
+| `{moderator.avatar}` | Moderator display avatar URL. |
+| `{moderator.bot}` | `True` or `False` depending on whether the moderator is a bot. |
+| `{moderator.color}` | Moderator top-role color. |
+| `{moderator.created_at}` | Moderator account creation timestamp. |
+| `{moderator.id}` | Moderator ID. |
+| `{moderator.mention}` | Moderator mention. |
+| `{guild}` | Server name. |
+| `{reason}` | Punishment reason. |
+| `{duration}` | Duration string for time-based punishments. |
+| `{invite_url}` | Softban reinvite URL when one is generated. |
+| `{action}` | Action name, such as `ban` or `timeout`. |
+
+  </Tab>
+  <Tab>
+
+ Ticketing variables are available in ticket welcome message content.
+
+| Variable | Output |
+| --- | --- |
+| `{user}` | Ticket opener mention shortcut. |
+| `{ticket.id}` | Internal ticket record ID. |
+| `{ticket.number}` | Ticket number without padding. |
+| `{ticket.number.padded}` | Ticket number padded to four digits, such as `0007`. |
+| `{ticket.channel}` | Ticket channel mention. |
+| `{ticket.channel.id}` | Ticket channel ID. |
+| `{ticket.channel.mention}` | Ticket channel mention. |
+| `{ticket.creator}` | Ticket opener mention. |
+| `{ticket.creator.id}` | Ticket opener ID. |
+| `{ticket.creator.mention}` | Ticket opener mention. |
+| `{ticket.creator.name}` | Ticket opener username. |
+| `{ticket.creator.display_name}` | Ticket opener display name. |
+| `{panel.name}` | Ticket panel name. |
+| `{panel.button_label}` | Public button label for the ticket option the member clicked. |
+
+Ticket welcome messages can also use the shared variables from the `Guild`, `User`, `Channel`, and `Date & Time` tabs above.
+
+In ticket welcome messages, the shared user variables refer to the ticket opener and the shared channel variables refer to the created ticket channel.
+
+Ticket channel naming is separate from the normal variable system. See [Ticketing customization](/ticketing/customization#channel-names) for the built-in formats.
+
+  </Tab>
+  <Tab>
+
+Last.fm variables are only available in Last.fm custom embeds and use Last.fm-specific context instead of the normal Discord user context.
+
+| Variable | Output |
+| --- | --- |
+| `{user.name}` | Last.fm username. |
+| `{user.avatar}` | Last.fm profile picture. |
+| `{user.plays}` | Total Last.fm scrobbles. |
+| `{proper(user.plays)}` | Total Last.fm scrobbles as a formatted number. |
+| `{user.artist_crown}` | Crown marker when the user holds the artist crown. |
+| `{user.url}` | Last.fm profile URL. |
+| `{author}` | Discord author name and discriminator. |
+| `{author.name}` | Discord author username. |
+| `{author.nickname}` | Discord author nickname. |
+| `{author.discriminator}` | Discord author discriminator value. |
+| `{album.name}` | Current album name. |
+| `{lower(album.name)}` | Current album name in lowercase. |
+| `{album.url}` | Current album URL. |
+| `{album.cover}` | Current album cover image. |
+| `{track.name}` | Current track name. |
+| `{lower(track.name)}` | Current track name in lowercase. |
+| `{track.status}` | Listening state, such as `is listening to` or `last listened to`. |
+| `{track.nowplaying}` | `true` while the track is currently playing, otherwise `false`. |
+| `{track.played_at}` | Unix timestamp for when a previous scrobble was played, or `n/a` while currently playing. |
+| `{track.url}` | Current track URL from Last.fm. |
+| `{track.spotify_url}` | Current track URL from Spotify. |
+| `{track.release_date}` | Current track release date from Spotify, with Last.fm album metadata as fallback. |
+| `{track.duration}` | Current track duration from Spotify, with Last.fm track metadata as fallback. |
+| `{track.plays}` | Current track playcount. |
+| `{proper(track.plays)}` | Current track playcount as a formatted number. |
+| `{artist.name}` | Current artist name. |
+| `{lower(artist.name)}` | Current artist name in lowercase. |
+| `{artist.plays}` | Current artist playcount. |
+| `{artist.url}` | Current artist URL. |
+| `{artist.image}` | Current artist image. |
+
+`lower(...)` and `proper(...)` only apply to Last.fm custom embeds.
+
+  </Tab>
+</Tabs>

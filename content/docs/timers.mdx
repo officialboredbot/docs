@@ -1,0 +1,81 @@
+---
+title: Timers
+description: Send repeating channel messages on a saved interval.
+section: Server Configuration
+icon: clock
+---
+
+Timers send saved messages to text channels on a repeating interval. Timer messages support normal embed scripting and shared variables, with invite variables disabled for this context.
+
+The minimum interval is `60` seconds.
+
+## Add a timer
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+timer add (channel) (interval) (message)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+timer add #updates 6h Check the latest server updates.
+```
+
+  </Tab>
+</Tabs>
+
+Intervals use duration text such as `30m`, `1h`, or `1d`.
+
+## Preview or remove
+
+<Tabs items={["Preview", "Remove"]}>
+  <Tab>
+
+```text
+timer view (channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+timer remove (channel)
+```
+
+  </Tab>
+</Tabs>
+
+`timer view` renders the saved message in the current channel so you can check plain text or embed script output.
+
+## List timers
+
+```text
+timer list
+```
+
+This shows every configured timer channel and its saved interval.
+
+## Activity requirement
+
+<Tabs items={["On", "Off"]}>
+  <Tab>
+
+```text
+timer activity on
+```
+
+  </Tab>
+  <Tab>
+
+```text
+timer activity off
+```
+
+  </Tab>
+</Tabs>
+
+When activity requirement is on, bored only sends a timer message if the channel had recent activity within the last `30` minutes.

@@ -1,0 +1,260 @@
+---
+title: Commands
+description: Staff ticket commands, admin tools, closing, reopening, and deletion.
+section: Server Configuration
+icon: command-line
+---
+
+This page covers commands you run inside ticket channels or as a server administrator. Setup and configuration live on [Quick setup](/ticketing/setup) and [Panels and options](/ticketing/panels-and-options).
+
+## Who can run what
+
+- **Support roles** on the ticket option can claim, close, manage access, and view ticket information.
+- **Manage Server** (`manage_guild`) can use admin commands and all staff tools.
+- The **ticket opener** can use `closerequest` and may be able to close their own ticket when that option allows it.
+
+## Staff commands
+
+Run these inside the ticket channel.
+
+### Claim
+
+```text
+ticket claim
+```
+
+Marks the ticket as claimed and updates the controls in the channel.
+
+If **Claim Lock** is enabled for the ticket option, claiming also locks the ticket to the claimer. Other support staff can still read the channel, but only the claimer can answer until the ticket is unclaimed.
+
+### Unclaim
+
+```text
+ticket unclaim
+```
+
+Clears the current claim. Usually the claimer or someone with broader management access should do this.
+
+If Claim Lock was active, unclaiming restores normal support-role send access.
+
+### Add access
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+ticket add (member or role)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+ticket add @helper
+```
+
+  </Tab>
+</Tabs>
+
+Grants the member or role access to the current ticket channel.
+
+### Remove access
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+ticket remove (member or role)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+ticket remove @helper
+```
+
+  </Tab>
+</Tabs>
+
+Removes access for that member or role. bored will not remove the opener or the option's configured support roles.
+
+### Ticket info
+
+```text
+ticket info
+```
+
+Shows the ticket number, panel, opener, claimer, and open time. Also shows auto-close or close-request timers when one is active.
+
+## Closing and automation
+
+### Close immediately
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+ticket close [reason]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+ticket close issue resolved
+```
+
+  </Tab>
+</Tabs>
+
+Closes and locks the channel, generates a private transcript, and posts persistent **Reopen** and **Delete** controls. The close log and optional opener DM include a **View Transcript** button.
+
+If a ticket is reopened and closed again, bored replaces the old transcript with the updated conversation, rotates its private link, and updates the existing log and DM buttons instead of posting duplicate notifications.
+
+### Close request
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+ticket closerequest [timeout] [reason]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+ticket closerequest 10m issue resolved
+```
+
+  </Tab>
+</Tabs>
+
+Posts a close request in the channel. Staff can confirm or cancel it. The ticket opener can also use the close-request buttons, even when the option does not allow opener self-close. If you set a timeout (for example `10m`), the ticket closes automatically unless the request is canceled first.
+
+### Auto-close
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+ticket autoclose [hours]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+ticket autoclose 24
+```
+
+  </Tab>
+</Tabs>
+
+Schedules the ticket to close after the given number of hours. Without a value, bored uses **Default Auto-Close** from **Ticket Settings**, or **48** hours if none is set.
+
+Any new non-bot message in the ticket cancels a pending auto-close.
+
+### Reopen and delete
+
+```text
+ticket reopen [ticket id] [reason]
+ticket delete [ticket id] [reason]
+```
+
+Reopen restores the saved permissions, original category and channel name, and the main ticket controls. It also cancels any scheduled deletion and removes the closed notice.
+
+Delete works on open or closed tickets. bored posts a colorless notice that the ticket will be deleted in **3 seconds**, then removes the channel without a confirmation prompt. Closed tickets keep the transcript generated at closure; deleting an open ticket generates its transcript first. bored keeps the ticket record and saved transcript after the channel is gone.
+
+<Callout type="info" title="Transcript access">
+Ticket transcripts are generated when a ticket closes or when an open ticket is deleted. There is no separate transcript command, which prevents repeated regeneration and unnecessary database writes.
+</Callout>
+
+<Callout type="warning" title="Note">
+Keeping **Auto Delete on Close** set to **Off** and keeping the channels archived will allow for images to render in transcripts.
+</Callout>
+
+### Move
+
+```text
+/ticket move (category)
+```
+
+Moves the current open ticket to another category and records the previous and new category.
+
+### List and stats
+
+```text
+/ticket list [status] [member]
+/ticket stats [member]
+```
+
+List filters open, closed, deleted, or all tickets. Stats show total, open, closed, deleted, claimed, and average close-time counts for the server or one opener.
+
+## Admin commands
+
+These require **Manage Server** and work outside the configurator.
+
+### Blacklist
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+ticket blacklist (member or role)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+ticket blacklist @member
+```
+
+  </Tab>
+</Tabs>
+
+Blocks the member or role from opening new tickets. Run the same command again on the same target to remove the entry.
+
+### Force open
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+ticket force (member) [panel]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+ticket force @member Support
+```
+
+  </Tab>
+</Tabs>
+
+Creates a ticket channel for the member on the named panel, or on the default panel if you omit the name. Bypasses normal open limits and blacklist checks still apply.
+
+### Update close reason
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+ticket reason (ticket id) (reason)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+ticket reason 7 resolved after follow-up
+```
+
+  </Tab>
+</Tabs>
+
+Updates the stored close reason for that ticket number. If a close log embed already exists, bored refreshes the reason there too.

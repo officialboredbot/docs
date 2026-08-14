@@ -1,0 +1,176 @@
+---
+title: Logging
+description: Send server event logs to one or more channels and customize what each channel receives.
+section: Server Configuration
+icon: clipboard-document-list
+---
+
+Logging lets bored send server event logs to the channels you choose.
+
+You can log different event groups into different channels, give each event its own color per channel, and ignore specific members, channels, or categories when needed. Each event points to only **one** channel at a time. Reassigning an event replaces the previous target.
+
+## Start here
+
+```text
+log setup
+```
+
+This creates or reuses a private `logs` category, hides it from `@everyone`, and creates dedicated channels for messages, members, roles, channels, invites, emojis, voice, and moderation. Each event is enabled in its matching channel.
+
+## Supported events
+
+- `messages` — deleted messages, edited messages, and bulk deletes
+- `members` — joins, leaves, nickname changes, and role updates
+- `roles` — role creation, deletion, and updates
+- `channels` — channel creation, deletion, and updates
+- `invites` — invite creation and deletion
+- `emojis` — emoji creation and deletion
+- `voice` — joins, leaves, and moves in voice channels
+- `moderation` — native Discord moderation actions from the audit log
+
+## View the current config
+
+```text
+log config
+```
+
+`log list` works as an alias. This shows every log event and which channel it currently points to.
+
+## Add logging to a channel
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+log add (channel) [event]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+log add #logs messages
+```
+
+  </Tab>
+</Tabs>
+
+This enables one event group in that channel.
+
+<Callout type="info" title="No event provided">
+If you only run `log add #channel` without an event, bored will enable **all events** in that channel.
+</Callout>
+
+## Remove logging from a channel
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+log remove (channel) [event]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+log remove #logs messages
+```
+
+  </Tab>
+</Tabs>
+
+This removes one event group from that channel.
+
+If you leave the event out and only run `log remove #channel`, bored removes every saved log event from that channel.
+
+## Event colors
+
+You can give one event its own embed color inside one logging channel.
+
+### Set a color
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+log color (channel) (event) (hex)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+log color #logs messages 2a2d31
+```
+
+  </Tab>
+</Tabs>
+
+The event must already be enabled in that channel before bored will save a color for it.
+
+### View colors for a channel
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+log color list (channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+log color list #logs
+```
+
+  </Tab>
+</Tabs>
+
+This shows each enabled event in that channel together with its saved color or the default embed color.
+
+## Ignore logging for a target
+
+Use ignores when you do not want bored to create logs for a specific member, channel, or category.
+
+### Toggle an ignore target
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+log ignore (member, channel, or category)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+log ignore #counting
+```
+
+  </Tab>
+</Tabs>
+
+Run the same command again to remove that ignore target.
+
+If you ignore a category, bored also skips the channels inside that category where applicable.
+
+### View ignored targets
+
+```text
+log ignore list
+```
+
+This lists every member, channel, and category currently ignored by the logging system.
+
+## Reset logging
+
+```text
+log reset
+```
+
+After confirmation, this clears every configured log event, custom log color, and ignored target. It does not delete the Discord channels that previously received logs.
+
+`log clear` is an alias.

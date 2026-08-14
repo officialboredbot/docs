@@ -1,0 +1,118 @@
+---
+title: Bump Reminder
+description: Remind members to run DISBOARD bumps and optionally keep the bump channel clean.
+section: Server Configuration
+icon: bell-alert
+---
+
+Bump Reminder watches a configured channel for successful DISBOARD bumps, sends a thank-you message, then reminds the server when the next bump is ready.
+
+Reminders are scheduled `2` hours after a successful bump. Custom reminder and thank-you messages support normal embed scripting plus bump-specific variables.
+
+## Start here
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+bumpreminder channel (channel)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+bumpreminder channel #bump
+```
+
+  </Tab>
+</Tabs>
+
+Run `/bump` in the configured channel so bored can detect DISBOARD's success message there.
+
+## Reminder message
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+bumpreminder message (message) [--pingable on or off] [--remind_once on or off]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+bumpreminder message {bumpreminder.last_user}, please run /bump again. --pingable on
+```
+
+  </Tab>
+</Tabs>
+
+Use `--pingable on` when the reminder should allow user, role, or everyone mentions. Use `--remind_once on` when bored should send one reminder and stop rescheduling until the next successful bump.
+
+### Preview the reminder
+
+```text
+bumpreminder message view
+```
+
+## Thank-you message
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+bumpreminder thankyou (message) [--pingable on or off]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+bumpreminder thankyou Thanks for bumping, {bumpreminder.last_user}! --pingable off
+```
+
+  </Tab>
+</Tabs>
+
+### Preview the thank-you
+
+```text
+bumpreminder thankyou view
+```
+
+## Cleanup and locking
+
+<Tabs items={["Auto-lock", "Auto-clean"]}>
+  <Tab>
+
+```text
+bumpreminder autolock (on or off)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+bumpreminder autoclean (on or off)
+```
+
+  </Tab>
+</Tabs>
+
+`autolock` denies `@everyone` sending messages after a successful bump and unlocks the channel when the next reminder is due. `autoclean` deletes non-bump messages in the bump channel, while leaving DISBOARD and bored messages alone.
+
+## Variables
+
+- `{bumpreminder.last_user}` - the member who last bumped, or `n/a`.
+- `{bumpreminder.last_user_bump}` - same value as the last bumper.
+- `{bumpreminder.next_bump}` - a relative timestamp for the next bump window, or `n/a`.
+
+## View config
+
+```text
+bumpreminder config
+```
+
+This shows the saved channel, message modes, next bump time, auto-clean, and auto-lock status.
