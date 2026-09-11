@@ -29,11 +29,11 @@ export function baseOptions() {
     nav: {
       title: (
         <Image
-          src="/logo/bored2d.png"
+          src="/logo/design3transparent.png"
           alt="bored"
-          width={36}
-          height={36}
-          className="docs-brand-logo"
+          width={34}
+          height={34}
+          className="docs-brand-logo select-none rounded-md"
           priority
         />
       )

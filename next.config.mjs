@@ -7,5 +7,13 @@ const withMDX = createMDX({
 export default withMDX({
   turbopack: {
     root: new URL(".", import.meta.url).pathname
+  },
+  async rewrites() {
+    return [
+      {
+        source: "/logo/bored2d.png",
+        destination: "/logo/design3transparent.png"
+      }
+    ];
   }
 });

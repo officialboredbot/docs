@@ -23,9 +23,9 @@ export const metadata = {
   },
   description: "Documentation for the bored Discord bot.",
   icons: {
-    icon: "/logo/bored2d.png",
-    shortcut: "/logo/bored2d.png",
-    apple: "/logo/bored2d.png"
+    icon: "/logo/design3transparent.png",
+    shortcut: "/logo/design3transparent.png",
+    apple: "/logo/design3transparent.png"
   }
 };
 
