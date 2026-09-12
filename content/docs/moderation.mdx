@@ -240,3 +240,45 @@ jailed. When they are unjailed, bored restores roles that still exist and can
 be assigned.
 
 Once this is done, bored can use the moderation setup for commands like `jail`, `unjail`, `imute`, `rmute`, and `runmute`.
+
+## Silent moderation actions
+
+User-invoked moderation commands that send punishment DMs (`ban`, `softban`, `tempban`, `unban`, `kick`, `warn`, `timeout`, `untimeout`, `untimeout all`, `jail`, and `hardban`) support a `--silent` flag (with alias `--s`) to suppress punishment DMs to the target user.
+
+The flag can be placed anywhere in the duration or reason tail of the command:
+
+<Tabs items={["Syntax", "Example (--silent)", "Example (--s)"]}>
+  <Tab>
+
+```text
+ban (member) [history] [reason] [--silent | --s]
+kick (member) [reason] [--silent | --s]
+timeout (member) [duration] [reason] [--silent | --s]
+warn (member) (reason) [--silent | --s]
+jail (member) [duration] [reason] [--silent | --s]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+ban @member spamming invites --silent
+timeout @member 1h toxicity --silent
+warn @member advertising in general --silent
+jail @member 2h raiding chat --silent
+```
+
+  </Tab>
+  <Tab>
+
+```text
+ban @member spamming invites --s
+timeout @member 1h toxicity --s
+warn @member advertising in general --s
+jail @member 2h raiding chat --s
+```
+
+  </Tab>
+</Tabs>
+
+When `--silent` or `--s` is passed, bored executes the moderation action normally, logs it to your modlog, and records any applicable case history, while skipping the direct message to the punished user.
