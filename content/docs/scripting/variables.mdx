@@ -17,7 +17,7 @@ If a value does not exist in the current context, bored usually falls back to `n
 In VoiceMaster announcements, `{user.*}` refers to the channel creator, and `{channel.*}` refers to the newly created voice channel.
 </Callout>
 
-<Tabs items={["Guild", "User", "Channel", "Date & Time", "Invite", "Leveling", "Boost", "Bump Reminder", "Punishments", "Ticketing", "Last.fm"]}>
+<Tabs items={["Guild", "User", "Channel", "Date & Time", "Invite", "Leveling", "Boost", "Bump Reminder", "Punishments", "Ticketing", "Last.fm", "Honeypot"]}>
   <Tab>
 
 | Variable | Output |
@@ -268,6 +268,25 @@ Last.fm variables are only available in Last.fm custom embeds and use Last.fm-sp
 | `{artist.image}` | Current artist image. |
 
 `lower(...)` and `proper(...)` only apply to Last.fm custom embeds.
+
+  </Tab>
+  <Tab>
+
+Honeypot variables are available in custom honeypot notice messages and embed scripts.
+
+| Variable | Output |
+| --- | --- |
+| `{honeypot.punished}` | Configured honeypot punishment list (e.g. `softban`, `timeout, ban`). |
+| `{honeypot.punishment_formatted}` | Human-readable formatted punishment list (e.g. `**timeout** and **ban**`). |
+| `{honeypot.caught}` | Total count of compromised accounts caught. |
+| `{honeypot.channel}` | Honeypot channel mention. |
+| `{honeypot.channel.name}` | Honeypot channel name. |
+| `{honeypot.channel.id}` | Honeypot channel ID. |
+| `{honeypot.alert_channel}` | Honeypot alert channel mention. |
+| `{honeypot.alert_channel.name}` | Honeypot alert channel name. |
+| `{honeypot.alert_channel.id}` | Honeypot alert channel ID. |
+
+Honeypot messages can also use the shared variables from the `Guild`, `User`, `Channel`, and `Date & Time` tabs above.
 
   </Tab>
 </Tabs>

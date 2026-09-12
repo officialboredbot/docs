@@ -68,13 +68,57 @@ Supported punishments are `kick`, `ban`, `softban`, and `timeout`. You can combi
 
 `timeout` lasts `1` day. `ban` and `softban` delete `1` day of message history. `mute` and `tempban` are accepted as aliases for `timeout`.
 
+## Custom notice message
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+honeypot message (message)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+honeypot message {embed}$v{title: Trap Channel}$v{description: This channel is a trap for compromised accounts. Sending any message here results in {honeypot.punishment}!}$v{footer: Accounts Caught: {honeypot.caught}}
+```
+
+  </Tab>
+</Tabs>
+
+Customize the warning notice shown in `#honeypot`. Messages support plain text, bored's embed script format, or [Components V2 container scripts](/scripting/components). `honeypot msg` and `honeypot embed` work as aliases.
+
+Whenever a member triggers the honeypot, the notice message automatically refreshes with the updated `{honeypot.caught}` count.
+
+<Tabs items={["View notice", "Reset notice"]}>
+  <Tab>
+
+```text
+honeypot message view
+```
+
+Preview the active notice message or default Components V2 layout.
+
+  </Tab>
+  <Tab>
+
+```text
+honeypot message reset
+```
+
+Reset the notice message back to the default layout.
+
+  </Tab>
+</Tabs>
+
 ## View settings
 
 ```text
 honeypot settings
 ```
 
-This shows whether Honeypot is enabled, the trap channel, the alert channel, the punishment list, and the current caught count.
+This shows whether Honeypot is enabled, the trap channel, the alert channel, the punishment list, the notice message status (Default or Custom), and the current caught count.
 
 ## Disable
 
