@@ -1,0 +1,164 @@
+---
+title: Greet
+description: Send a customizable greet message when a member sends their first message in a channel.
+section: Server Configuration
+icon: hand-raised
+---
+
+Greet sends a saved reply when a member sends their first message in a configured channel.
+
+Welcome messages send as soon as someone joins the server. Greet waits until the member actually sends a message in chat, which helps direct new members to roles, introductions, or rules.
+
+<Callout type="info" title="Limits">
+Each server can set one greet channel. Greet only triggers on a member's first genuine chat message, capped at 3 greets every 3 seconds.
+</Callout>
+
+<Callout type="warning" title="Raid state">
+When **raid state** is active through AntiRaid, greet messages are paused until the raid batch is cleared or raid state is turned off.
+</Callout>
+
+## Set up a greet message
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+greet add (channel) (message) [--pingable on or off] [--self-destruct seconds]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+greet add #general Welcome to {guild.name}, {user.mention}! Grab roles in #roles and introduce yourself in #introduce. --self-destruct 60
+```
+
+  </Tab>
+</Tabs>
+
+You need **Manage Server** to configure Greet. Messages support plain text, embed scripts (`{embed}$v...`), and [Components V2 container scripts](/scripting/components).
+
+`--pingable` defaults to `on` and controls whether bored mentions the member. `--self-destruct` deletes the reply after the given number of seconds.
+
+## Update message content
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+greet message (message)
+```
+
+  </Tab>
+  <Tab>
+
+```text
+greet message Hey {user.mention}, check out #roles for roles!
+```
+
+  </Tab>
+</Tabs>
+
+This updates your saved greet message without changing the configured channel or toggles.
+
+## View configuration
+
+```text
+greet config
+```
+
+This shows the saved channel, mention toggle, self-destruct timer, and total members greeted. `greet view` and `greet settings` work as aliases.
+
+## Mentions and auto-delete
+
+<Tabs items={["Pingable", "Self-destruct"]}>
+  <Tab>
+
+```text
+greet pingable (on or off)
+```
+
+Toggle whether replies mention the member without editing the message.
+
+  </Tab>
+  <Tab>
+
+```text
+greet selfdestruct (seconds or off)
+```
+
+Set how many seconds before the reply deletes itself, or pass `off` to keep messages permanently. `greet autodelete` works as an alias.
+
+  </Tab>
+</Tabs>
+
+## Test a greeting
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+greet test [channel] [member]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+greet test #general @member
+```
+
+  </Tab>
+</Tabs>
+
+This sends a test greet reply in the configured channel to preview formatting and variables. If you leave the member out, bored uses you.
+
+## Member history
+
+<Tabs items={["Reset member", "Clear all history"]}>
+  <Tab>
+
+```text
+greet resetuser (member)
+```
+
+Clears a member from greet tracking history so bored greets them on their next message. `greet untrack` works as an alias.
+
+  </Tab>
+  <Tab>
+
+```text
+greet clearhistory
+```
+
+Wipes the server's entire member greeting history after a confirmation prompt.
+
+  </Tab>
+</Tabs>
+
+## Remove or reset
+
+<Tabs items={["Remove", "Reset"]}>
+  <Tab>
+
+```text
+greet remove
+```
+
+Removes the configured greet channel. `greet delete` works as an alias.
+
+  </Tab>
+  <Tab>
+
+```text
+greet reset
+```
+
+Clears the entire greet configuration for the server after a confirmation prompt. `greet clear` works as an alias.
+
+  </Tab>
+</Tabs>
+
+<Callout type="info" title="Slash commands">
+Greet commands are also available under `/greet`.
+</Callout>

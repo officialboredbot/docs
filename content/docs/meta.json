@@ -16,6 +16,7 @@
     "roles",
     "ticketing",
     "messages",
+    "greet",
     "bump-reminder",
     "invite-tracking",
     "confessions",
