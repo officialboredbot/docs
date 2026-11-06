@@ -5,85 +5,95 @@ section: Server Configuration
 icon: academic-cap
 ---
 
-Leveling tracks server message activity and turns it into XP, ranks, reward roles, and leaderboard placement.
+import { Steps, Step } from "fumadocs-ui/components/steps";
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
 
-Members can gain XP once every `60` seconds, and bored awards a random `15` to `25` XP before your multiplier is applied.
+Leveling tracks server message activity, awarding XP, unlocking reward roles, and powering server rankings and live crownboards.
 
-<Callout type="warning" title="Disabled by default">
-**Leveling** stays off until someone with **Manage Server** enables it with `levels enable`.
-</Callout>
+Members can gain XP once every `60` seconds, awarding a random base of `15` to `25` XP before server and role multipliers are applied.
 
-## Check a rank card
+## Quickstart
+
+<Steps>
+  <Step title="Enable leveling">
+    Leveling is disabled by default. Enable it with:
+
+```text
+/levels enable
+```
+  </Step>
+  <Step title="Check your rank">
+    View your current rank card, level, and XP progress.
+
+```text
+/levels rank
+```
+  </Step>
+</Steps>
+
+## XP rate & multipliers
+
+### Global server rate
+
+Scale all XP gains across the server by a global multiplier:
 
 <Tabs items={["Syntax", "Example"]}>
   <Tab>
 
 ```text
-levels [member]
+/levels setrate multiplier:<multiplier>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-levels @member
+/levels setrate multiplier:1.5
 ```
 
   </Tab>
 </Tabs>
 
-Use this without a member to view your own current rank, XP, and progress to the next level.
+### Role XP multipliers
 
-## Turn leveling on or off
+Grant bonus XP multipliers to specific roles (e.g. Server Boosters, VIPs, or Patrons).
 
-### Enable leveling
-
-```text
-levels enable
-```
-
-This turns the system on for the server and allows members to start gaining XP.
-
-### Disable leveling
-
-```text
-levels disable
-```
-
-This turns leveling off until it is enabled again.
-
-## XP rate
-
-<Tabs items={["Syntax", "Example"]}>
+<Tabs items={["Add/Set", "List", "Remove", "Reset"]}>
   <Tab>
 
 ```text
-levels setrate (multiplier)
+/levels multiplier role role:<role> rate:<multiplier>
+```
+
+Example: `/levels multiplier role role:@Booster rate:2.0`
+
+  </Tab>
+  <Tab>
+
+```text
+/levels multiplier list
 ```
 
   </Tab>
   <Tab>
 
 ```text
-levels setrate 1.5
+/levels multiplier remove role:<role>
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/levels multiplier reset
 ```
 
   </Tab>
 </Tabs>
-
-The multiplier must be greater than `0`. In the example above, bored scales the normal `15` to `25` XP gain by `1.5`.
 
 ## Reward roles
 
-Reward roles let bored assign a saved role when someone reaches a level you choose.
-
-### View reward roles
-
-```text
-levels roles
-```
-
-Use this to review every configured reward role together with its required level and XP.
+Automatically award roles when members reach specific milestone levels.
 
 ### Add a reward role
 
@@ -91,339 +101,202 @@ Use this to review every configured reward role together with its required level
   <Tab>
 
 ```text
-levels add (role) (rank)
+/levels add role:<role> rank:<level>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-levels add @LevelFive 5
+/levels add role:@Level 5 rank:5
 ```
 
   </Tab>
 </Tabs>
 
-In the example above, members receive `@LevelFive` when they reach level `5`.
+### Update or remove reward roles
 
-### Update a reward role
-
-<Tabs items={["Syntax", "Example"]}>
+<Tabs items={["Update", "Remove", "List"]}>
   <Tab>
 
 ```text
-levels update (role) (rank)
+/levels update role:<role> rank:<level>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-levels update @LevelFive 10
-```
-
-  </Tab>
-</Tabs>
-
-This moves an existing reward role to a different required level.
-
-### Remove a reward role
-
-<Tabs items={["Syntax", "Example"]}>
-  <Tab>
-
-```text
-levels remove (rank)
+/levels remove rank:<level>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-levels remove 5
+/levels roles
 ```
 
   </Tab>
 </Tabs>
-
-This removes the reward role that was configured for that level.
 
 ### Stack reward roles
 
+Control whether members accumulate all previous reward roles or only keep their single highest role:
+
 <Tabs items={["Syntax", "Example"]}>
   <Tab>
 
 ```text
-levels stackroles (on or off)
+/levels stackroles setting:<on or off>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-levels stackroles off
+/levels stackroles setting:off
 ```
 
   </Tab>
 </Tabs>
-
-When stacking is on, members keep earlier reward roles as they level up. When stacking is off, bored keeps only the highest reward role it can manage.
 
 ### Sync reward roles
 
+Re-evaluate and backfill reward roles for all server members:
+
 ```text
-levels sync
+/levels sync
 ```
 
-Run this after changing reward roles or stacking behavior if you want bored to re-apply the current setup across the server.
+## Level-up notifications
 
-## Level-up messages
-
-You can save a custom level-up message and choose where bored sends it.
-
-### Set the level-up message
+### Custom message
 
 <Tabs items={["Syntax", "Example"]}>
   <Tab>
 
 ```text
-levels message (text)
+/levels message text:<template>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-levels message Congrats {user.mention} on reaching level {level.new_rank} in {guild.name}!
+/levels message text:Congrats {user.mention} on reaching level {level.new_rank} in {guild.name}!
 ```
 
   </Tab>
 </Tabs>
 
-The saved message must include `{guild.name}`. Plain text and bored's embed script format are both supported.
+### Dispatch destination
 
-### Preview the current message
-
-```text
-levels message view
-```
-
-Use this to preview the currently saved level-up message.
-
-### Choose where messages go
+Control where level-up alerts are posted:
 
 <Tabs items={["Syntax", "Example"]}>
   <Tab>
 
 ```text
-levels messagemode (pm, context, none, or channel)
+/levels messagemode mode:<pm|context|none|channel> [channel:<channel>]
 ```
 
   </Tab>
   <Tab>
 
 ```text
-levels messagemode #level-up
+/levels messagemode mode:channel channel:#level-up
 ```
 
   </Tab>
 </Tabs>
 
-`pm` sends the message to the member directly, `context` sends it where they spoke, `none` disables level-up messages, and a channel sends every message there.
+Modes: `pm` (direct message), `context` (channel where the member sent the message), `channel` (designated channel), or `none` (silent).
 
-### Personal message toggle
+## Ignore channels & roles
+
+Prevent XP gain in spam or bot channels:
+
+<Tabs items={["Ignore target", "List ignored"]}>
+  <Tab>
+
+```text
+/levels ignore [channel:<channel>] [category:<category>] [role:<role>]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/levels list
+```
+
+  </Tab>
+</Tabs>
+
+## Leaderboards & Crownboards
+
+### View leaderboard
+
+```text
+/levels leaderboard
+```
+
+### Live updating crownboard
+
+Post an automatically updating top-10 leaderboard embed in a dedicated channel:
 
 <Tabs items={["Syntax", "Example"]}>
   <Tab>
 
 ```text
-levels messages (on or off)
+/levels crownboard channel:<channel>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-levels messages off
+/levels crownboard channel:#levels
 ```
 
   </Tab>
 </Tabs>
 
-This only changes level-up messages for the member running the command.
+Refreshes automatically every **10 minutes**.
 
-## Ignore targets
+## Manual adjustments & moderation
 
-Ignore targets stop bored from awarding XP in specific channels, categories, or roles.
+Modify member XP or levels directly:
 
-### Toggle an ignored target
-
-<Tabs items={["Syntax", "Example"]}>
+<Tabs items={["Set XP", "Remove XP", "Set Level"]}>
   <Tab>
 
 ```text
-levels ignore (channel, category, or role)
+/levels setxp member:<user> amount:<amount>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-levels ignore #spam
-```
-
-  </Tab>
-</Tabs>
-
-Run the same command again to remove that ignore target.
-
-### View ignored targets
-
-```text
-levels list
-```
-
-Ignored categories also cover the channels inside them.
-
-## Leaderboard
-
-### Open the leaderboard
-
-```text
-levels leaderboard
-```
-
-This shows the current top members in the server by total XP. `levels lb` and `levels top` work as aliases. You can also check ranks with `rank`, `level`, `lvl`, or `xp`.
-
-### Post a live crownboard
-
-<Tabs items={["Syntax", "Example"]}>
-  <Tab>
-
-```text
-levels crownboard (channel)
+/levels removexp member:<user> amount:<amount>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-levels crownboard #levels
+/levels setlevel member:<user> level:<level>
 ```
 
   </Tab>
 </Tabs>
 
-This posts a live top-10 message-XP embed in that channel and refreshes it every **10 minutes**.
+## Reset
 
-### Rename the leaderboard
-
-<Tabs items={["Syntax", "Example"]}>
-  <Tab>
+Reset all leveling data and purge saved member XP:
 
 ```text
-levels leaderboard rename (text)
+/levels reset
 ```
-
-  </Tab>
-  <Tab>
-
-```text
-levels leaderboard rename Server XP Leaderboard
-```
-
-  </Tab>
-</Tabs>
-
-This changes the embed title used by `levels leaderboard`.
-
-## Config panel
-
-```text
-levels config
-```
-
-This opens bored's leveling config panel so you can review the current system state in one place.
-
-## Manual adjustments
-
-### Set a member's XP
-
-<Tabs items={["Syntax", "Example"]}>
-  <Tab>
-
-```text
-setxp (member) (amount)
-```
-
-  </Tab>
-  <Tab>
-
-```text
-setxp @member 10000
-```
-
-  </Tab>
-</Tabs>
-
-This sets the member's total XP directly and updates reward roles from the resulting level.
-
-### Remove XP from a member
-
-<Tabs items={["Syntax", "Example"]}>
-  <Tab>
-
-```text
-removexp (member) (amount)
-```
-
-  </Tab>
-  <Tab>
-
-```text
-removexp @member 500
-```
-
-  </Tab>
-</Tabs>
-
-This subtracts XP, clamps the result at `0`, and then updates reward roles.
-
-### Set a member's level directly
-
-<Tabs items={["Syntax", "Example"]}>
-  <Tab>
-
-```text
-setlevel (member) (level)
-```
-
-  </Tab>
-  <Tab>
-
-```text
-setlevel @member 5
-```
-
-  </Tab>
-</Tabs>
-
-This converts the target level into the matching total XP and then updates reward roles.
-
-## Reset and cleanup
-
-### Reset all leveling data
-
-```text
-levels reset
-```
-
-This requires **Administrator**. bored clears saved XP data for the server and removes any reward roles it can manage.
-
-### Remove absent members from saved data
-
-```text
-levels cleanup
-```
-
-This is limited to the **server owner** and removes saved level data for members who are no longer in the server.

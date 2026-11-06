@@ -1,0 +1,173 @@
+---
+title: Counting
+description: Keep your community engaged with a collaborative counting minigame channel.
+section: Server Configuration
+icon: calculator
+---
+
+import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+Counting turns a text channel into an interactive counting minigame. Members work together to count up by one. If someone makes a mistake, the count resets to zero, celebratory records are tracked, and customizable fail roles and emoji reactions are applied.
+
+## Quickstart
+
+<Steps>
+  <Step title="Designate a counting channel">
+    Select the channel where members should count.
+
+```text
+/counting channel channel:#counting
+```
+  </Step>
+  <Step title="Review the settings">
+    View your server's counting dashboard to see the active channel, current count, high score, and rules.
+
+```text
+/counting config
+```
+  </Step>
+  <Step title="Start counting!">
+    Send `1` in the configured channel. Members must alternate numbers in sequence: `1`, `2`, `3`, and so on.
+  </Step>
+</Steps>
+
+## Channel management
+
+### Set or change channel
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+/counting channel channel:<channel>
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/counting channel channel:#counting
+```
+
+  </Tab>
+</Tabs>
+
+### Disable counting
+
+To turn off counting and remove the channel binding, use:
+
+```text
+/counting disable
+```
+
+### Reset count
+
+Reset the active count back to `0` without affecting the server's all-time high score or historical stats.
+
+```text
+/counting reset
+```
+
+## Settings & rules
+
+View and adjust counting game rules using `/counting config`.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+/counting config [math:<on or off>] [same_user:<on or off>] [strict:<on or off>]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/counting config math:on same_user:off strict:off
+```
+
+  </Tab>
+</Tabs>
+
+### Game options
+
+* **Math mode (`math`)**: When enabled, members can type arithmetic math expressions (e.g. `2+2`, `10*5`, `2^3`) instead of plain numbers. All expressions are safely evaluated. Default: `on`.
+* **Same-user / Consecutive counts (`same_user`)**: When disabled, a member cannot submit two counts in a row; two different members must alternate. Default: `off`.
+* **Strict mode (`strict`)**: When enabled, any message in the channel that is not a valid number or math expression counts as a mistake and breaks the streak. When disabled, normal chatter is ignored. Default: `off`.
+
+## Reactions
+
+Bored reacts to counts automatically to give instant visual feedback.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+/counting reactions [correct:<emoji>] [fail:<emoji>] [enabled:<on or off>]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/counting reactions correct:✅ fail:❌ enabled:on
+```
+
+  </Tab>
+</Tabs>
+
+* **Correct count reaction**: Defaults to `✅`. Multiples of `100` celebrate with `💯`, and beating the all-time server record celebrates with `🎉`.
+* **Fail reaction**: Defaults to `❌` when someone makes a mistake.
+* **Toggle reactions**: Disable or enable bot reactions completely by setting `enabled:off` or `enabled:on`.
+
+## Fail role
+
+Give a role of shame to whoever ruins the count! When a user enters the wrong number or violates a rule, the fail role is stripped from the previous ruiner and given to the new one.
+
+<Tabs items={["Syntax", "Example", "Clear"]}>
+  <Tab>
+
+```text
+/counting failrole [role:<role>] [clear:<yes>]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/counting failrole role:@Count Ruiner
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/counting failrole clear:yes
+```
+
+  </Tab>
+</Tabs>
+
+<Callout type="info" title="Role hierarchy">
+Make sure bored's highest role is positioned above the fail role in your server's role list so the bot has permission to assign and remove it.
+</Callout>
+
+## Statistics & leaderboards
+
+### Server statistics
+
+View comprehensive server metrics including current count, next expected count, all-time high score, total counts, and total resets.
+
+```text
+/counting stats
+```
+
+### Server leaderboard
+
+View the top counters in the server ranked by total successful counts and accuracy.
+
+```text
+/counting leaderboard
+```

@@ -5,7 +5,9 @@ section: Server Configuration
 icon: clock
 ---
 
-Timers send saved messages to text channels on a repeating interval. Timer messages support normal embed scripting and shared variables, with invite variables disabled for this context.
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+
+Timers automatically broadcast recurring messages to text channels on a scheduled interval. Messages support plain text, embed scripting, and dynamic server variables.
 
 The minimum interval is `60` seconds.
 
@@ -15,67 +17,65 @@ The minimum interval is `60` seconds.
   <Tab>
 
 ```text
-timer add (channel) (interval) (message)
+/server timer add channel:<channel> interval:<duration> message:<text or embed>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-timer add #updates 6h Check the latest server updates.
+/server timer add channel:#announcements interval:6h message:Remember to check out the latest server updates and events!
 ```
 
   </Tab>
 </Tabs>
 
-Intervals use duration text such as `30m`, `1h`, or `1d`.
+Intervals accept duration formats like `30m`, `1h`, or `1d`.
 
-## Preview or remove
+## Preview or remove timers
 
-<Tabs items={["Preview", "Remove"]}>
+<Tabs items={["Preview message", "Remove timer"]}>
   <Tab>
 
 ```text
-timer view (channel)
+/server timer view channel:#announcements
 ```
 
   </Tab>
   <Tab>
 
 ```text
-timer remove (channel)
+/server timer remove channel:#announcements
 ```
 
   </Tab>
 </Tabs>
 
-`timer view` renders the saved message in the current channel so you can check plain text or embed script output.
-
-## List timers
+## View active timers
 
 ```text
-timer list
+/server timer list
 ```
-
-This shows every configured timer channel and its saved interval.
 
 ## Activity requirement
 
-<Tabs items={["On", "Off"]}>
+Prevent timer messages from spamming inactive or dead channels:
+
+<Tabs items={["Enable activity gate", "Disable activity gate"]}>
   <Tab>
 
 ```text
-timer activity on
+/server timer activity setting:on
 ```
 
   </Tab>
   <Tab>
 
 ```text
-timer activity off
+/server timer activity setting:off
 ```
 
   </Tab>
 </Tabs>
 
-When activity requirement is on, bored only sends a timer message if the channel had recent activity within the last `30` minutes.
+When enabled, bored only dispatches a timer message if the channel had chat activity within the last `30` minutes.

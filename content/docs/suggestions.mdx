@@ -5,65 +5,165 @@ section: Miscellaneous
 icon: light-bulb
 ---
 
-Suggestions can post directly to a public channel or pass through a private staff review queue first.
+bored's suggestion engine allows community members to pitch ideas, vote via custom reaction emojis, engage in attached discussion threads, and route submissions through optional staff moderation queues.
 
-## Setup
+## Setup and routing
 
-```text
-suggest setup (channel) [review channel]
-```
+Configure destination channels for suggestions and staff review.
 
-The first channel receives approved suggestions. When a review channel is provided, new submissions wait there for staff approval.
-
-```text
-suggest config
-suggest channel (channel)
-suggest review (channel or off)
-suggest enable
-suggest disable
-```
-
-These settings require **Manage Server**.
-
-## Submit
+<Tabs items={["Setup", "Channel", "Review queue", "Config"]}>
+  <Tab>
 
 ```text
-suggest (idea)
-suggest submit (idea)
+/suggest setup channel:<channel> [review_channel:<channel>]
 ```
 
-Members can also reply to a message and run `suggest` without text to submit that message.
-
-## Voting and threads
+  </Tab>
+  <Tab>
 
 ```text
-suggest emoji (upvote emoji) (downvote emoji)
-suggest threads (on or off)
+/suggest channel channel:<channel>
 ```
 
-Discussion threads are created on suggestion posts when enabled.
-
-## Staff statuses
+  </Tab>
+  <Tab>
 
 ```text
-suggest approve (suggestion ID or message)
-suggest deny (suggestion ID or message)
-suggest consider (suggestion ID or message)
-suggest progress (suggestion ID or message)
-suggest pending (suggestion ID or message)
-suggest status (status) (suggestion ID or message)
+/suggest review channel:<channel>
 ```
 
-Staff can use a suggestion ID, message link, or a reply to the suggestion message.
-
-## Ignore members and roles
+  </Tab>
+  <Tab>
 
 ```text
-suggest ignore (member or role)
-suggest ignore add (member or role)
-suggest ignore remove (member or role)
-suggest ignore list
-suggest ignore reset
+/suggest config
 ```
 
-Ignored members cannot submit suggestions. Ignored roles apply to every member who holds that role.
+  </Tab>
+</Tabs>
+
+If a review channel is configured, submissions will wait for staff approval before publishing to the public suggestions channel.
+
+## Member submission
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+/suggest submit suggestion:<string>
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/suggest submit suggestion:Add a dedicated media channel for photography
+```
+
+  </Tab>
+</Tabs>
+
+## Voting emojis and threads
+
+<Tabs items={["Voting reactions", "Discussion threads"]}>
+  <Tab>
+
+```text
+/suggest emoji upvote:<string> downvote:<string>
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/suggest threads enabled:<on|off>
+```
+
+  </Tab>
+</Tabs>
+
+Enabling discussion threads automatically spawns a dedicated Discord thread under every published suggestion.
+
+## Staff moderation
+
+Review and update the status of submitted suggestions. The `target` accepts the suggestion ID or message link.
+
+<Tabs items={["Approve", "Deny", "Consider", "In Progress", "Pending", "Custom status"]}>
+  <Tab>
+
+```text
+/suggest approve target:<id>
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/suggest deny target:<id>
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/suggest consider target:<id>
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/suggest progress target:<id>
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/suggest pending target:<id>
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/suggest status status:<string> target:<id>
+```
+
+  </Tab>
+</Tabs>
+
+## Member and role ignore list
+
+Prevent trolls or specific roles from submitting suggestions.
+
+<Tabs items={["Add", "Remove", "List", "Reset"]}>
+  <Tab>
+
+```text
+/suggest ignore add target:<mentionable>
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/suggest ignore remove target:<mentionable>
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/suggest ignore list
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/suggest ignore reset
+```
+
+  </Tab>
+</Tabs>

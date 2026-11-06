@@ -7,9 +7,9 @@ icon: gift-top
 
 import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
 
-Giveaways posts a giveaway message, collects entries from reactions, checks eligibility when the giveaway ends, and announces the selected winners.
+Giveaways post a giveaway embed, collect entries via reactions, verify eligibility automatically when the timer expires, and announce the selected winners.
 
-Staff need `Manage Channels` for the main giveaway commands. Winner role rewards require `Manage Roles`.
+Staff members need `Manage Channels` to manage giveaways. Awarding winner roles requires the bot and runner to have `Manage Roles`.
 
 ## Start a giveaway
 
@@ -17,108 +17,99 @@ Staff need `Manage Channels` for the main giveaway commands. Winner role rewards
   <Tab>
 
 ```text
-giveaways start [channel] (duration) (winners) (prize) [flags]
+/giveaway start duration:<string> winners:<integer> prize:<string> [channel:<channel>] [description:<string>] [hosts:<string>] [requiredroles:<string>] [roles:<string>] [voice:<string>] [minlevel:<integer>] [maxlevel:<integer>] [invites:<integer>] [messages:<integer>] [voicelevel:<integer>] [age:<integer>] [stay:<integer>] [color:<string>] [thumbnail:<string>] [image:<string>] [bonus_target:<mentionable>] [bonus_entries:<integer>]
 ```
 
   </Tab>
   <Tab>
 
 ```text
-giveaways start #giveaways 24h 2 Nitro --requiredroles @Member --bonusentries @Booster 2
+/giveaway start duration:24h winners:2 prize:Discord Nitro channel:#giveaways requiredroles:@Member bonus_target:@Booster bonus_entries:2
 ```
 
   </Tab>
 </Tabs>
 
-If you omit the channel, bored uses the configured default giveaway channel. If no default is set, it uses the current channel.
+If you omit `channel`, bored uses the configured default giveaway channel. If no default is configured, it sends to the channel where the command was invoked.
 
-## Start flags
+## Giveaway parameters
 
 <Accordions>
   <Accordion title="Description">
-    Adds extra text above the giveaway status block. Plain text and embed script descriptions are supported.
+    Adds additional copy above the giveaway status block. Plain text and bored embed scripting are supported.
 
 ```text
---description (text)
+description:<text>
 ```
   </Accordion>
   <Accordion title="Hosts">
-    Sets one or more visible hosts instead of only the command runner.
+    Sets visible hosts in the giveaway embed instead of only the command runner.
 
 ```text
---host (members)
---hosts (members)
+hosts:<@members>
 ```
   </Accordion>
   <Accordion title="Required roles">
-    Requires entrants to have one of the listed roles.
+    Requires entrants to possess at least one of the listed roles.
 
 ```text
---requiredroles (roles)
+requiredroles:<@roles>
 ```
   </Accordion>
   <Accordion title="Winner roles">
-    Gives the listed roles to winners when the giveaway ends. This requires `Manage Roles`.
+    Automatically awards the listed roles to winners upon completion. Requires `Manage Roles`.
 
 ```text
---roles (roles)
+roles:<@roles>
 ```
   </Accordion>
   <Accordion title="Bonus entries">
-    Gives a member or role extra entries. Each configured target can receive up to `100` extra entries.
+    Grants a specific role or member extra entries (up to 100 bonus entries).
 
 ```text
---bonusentries (target amount)
---bonusentry (target amount)
+bonus_target:<@role|@member> bonus_entries:<count>
 ```
   </Accordion>
-  <Accordion title="Voice">
-    Requires entrants to be in a voice channel. `--voice` by itself turns the requirement on.
+  <Accordion title="Voice requirement">
+    Requires entrants to be actively connected to a voice channel.
 
 ```text
---voice
---voice on
---voice off
+voice:on
 ```
   </Accordion>
-  <Accordion title="Levels">
-    Requires bored's message leveling data. Use minimum and maximum together when the giveaway should stay inside a level range.
+  <Accordion title="Chat levels">
+    Requires bored's message leveling data. Set `minlevel` and `maxlevel` to constrain entry to a specific level window.
 
 ```text
---minlevel (level)
---maxlevel (level)
+minlevel:<level> maxlevel:<level>
 ```
   </Accordion>
   <Accordion title="Invites and messages">
-    Requires invite tracking or message tracking to be enabled before the giveaway starts.
+    Requires invite tracking or message tracking activity thresholds before entry is valid.
 
 ```text
---invites (amount)
---messages (amount)
+invites:<count> messages:<count>
 ```
   </Accordion>
   <Accordion title="Voice level">
-    Requires bored's voice leveling data to be enabled.
+    Requires bored's voice leveling data to meet or exceed a specific voice level.
 
 ```text
---voicelevel (level)
+voicelevel:<level>
 ```
   </Accordion>
-  <Accordion title="Age and stay">
-    Requires a minimum account age or minimum time in the server, measured in days.
+  <Accordion title="Account age and server stay">
+    Requires a minimum Discord account age or minimum time in this server (specified in days).
 
 ```text
---age (days)
---stay (days)
+age:<days> stay:<days>
 ```
   </Accordion>
-  <Accordion title="Color and media">
-    Sets the giveaway accent color, thumbnail, or main image. `--thumbnail` and `--image` can use a direct URL or the first attachment on the command message.
+  <Accordion title="Appearance and media">
+    Sets a custom embed color, thumbnail, or main banner image via URL or direct attachment upload.
 
 ```text
---color (hex)
---thumbnail (url)
---image (url)
+color:<hex> thumbnail:<url> image:<url>
 ```
   </Accordion>
 </Accordions>
@@ -129,130 +120,108 @@ If you omit the channel, bored uses the configured default giveaway channel. If 
   <Tab>
 
 ```text
-giveaways channel (channel)
+/giveaway channel channel:<channel>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-giveaways channel clear
+/giveaway channel
 ```
 
   </Tab>
 </Tabs>
 
-`giveaways set` works as an alias for `giveaways channel`.
+Omit the `channel` parameter to clear the default giveaway channel.
 
-## Manage a giveaway
+## Manage giveaways
 
 <Tabs items={["End", "Cancel", "Reroll"]}>
   <Tab>
 
 ```text
-giveaways end [message link]
+/giveaway end message_id:<id>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-giveaways cancel [message link]
+/giveaway cancel message_id:<id>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-giveaways reroll [message link] [winners]
+/giveaway reroll message_id:<id> [winners:<count>]
 ```
 
   </Tab>
 </Tabs>
-
-You can run management commands with a message link, by replying to the giveaway message, or with no target to use the latest giveaway message in the current channel.
 
 ## Edit a giveaway
 
-<Tabs items={["Basics", "Roles", "Requirements", "Media"]}>
+Modify properties of an active giveaway message without restarting it.
+
+<Tabs items={["Syntax", "Example"]}>
   <Tab>
 
 ```text
-giveaways edit prize [message link] (prize)
-giveaways edit host [message link] (members)
-giveaways edit duration [message link] (duration)
-giveaways edit winners [message link] (amount)
-giveaways edit description [message link] (description)
+/giveaway edit message_id:<id> [prize:<string>] [duration:<string>] [winners:<integer>] [description:<string>] [hosts:<string>] [requiredroles:<string>] [roles:<string>] [voice:<string>] [minlevel:<integer>] [maxlevel:<integer>] [invites:<integer>] [messages:<integer>] [bonus_target:<mentionable>] [bonus_entries:<integer>]
 ```
 
   </Tab>
   <Tab>
 
 ```text
-giveaways edit requiredroles [message link] [roles]
-giveaways edit roles [message link] [roles]
-giveaways edit bonusentries [message link] (target amount)
-```
-
-  </Tab>
-  <Tab>
-
-```text
-giveaways edit minlevel [message link] (level)
-giveaways edit maxlevel [message link] (level)
-giveaways edit age [message link] (days)
-giveaways edit stay [message link] (days)
-giveaways edit invites [message link] (amount)
-giveaways edit messages [message link] (amount)
-giveaways edit voicelevel [message link] (level)
-giveaways edit voice [message link] (on or off)
-```
-
-  </Tab>
-  <Tab>
-
-```text
-giveaways edit color [message link] (hex)
-giveaways edit thumbnail [message link] (url)
-giveaways edit image [message link] (url)
+/giveaway edit message_id:123456789012345678 prize:$50 Steam Card winners:3
 ```
 
   </Tab>
 </Tabs>
 
-For prefix edits, omitting roles clears `requiredroles` or winner `roles`. Use `0` to clear invite, message, voice-level, or bonus-entry targets. Use `off` to clear the voice requirement.
-
 ## Blacklists
+
+Restrict specific members or roles from entering giveaways across the server.
 
 <Tabs items={["Toggle", "List"]}>
   <Tab>
 
 ```text
-giveaways blacklist (member or role)
+/giveaway blacklist target:<member|role>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-giveaways blacklists
+/giveaway blacklists
 ```
 
   </Tab>
 </Tabs>
 
-Running `giveaways blacklist` again on the same member or role removes them from the blacklist.
+Running `/giveaway blacklist` on an already blacklisted member or role will unblacklist them.
 
-## Lists and cleanup
+## Overview and cleanup
 
-```text
-giveaways list
-```
-
-Shows saved giveaways in the server.
+<Tabs items={["List", "Clear"]}>
+  <Tab>
 
 ```text
-giveaways clear
+/giveaway list
 ```
 
-Clears ended or cancelled giveaways from the saved giveaway list after a confirmation prompt.
+  </Tab>
+  <Tab>
+
+```text
+/giveaway clear
+```
+
+  </Tab>
+</Tabs>
+
+`/giveaway clear` removes ended or cancelled giveaways from the stored registry.

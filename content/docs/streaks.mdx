@@ -5,74 +5,155 @@ section: Miscellaneous
 icon: fire
 ---
 
-Streaks reward members for meeting a daily message goal and claiming each completed day.
+Streaks incentivize active participation by challenging members to meet a daily message threshold and claim their streak daily.
 
-## Setup
+## Server configuration
 
-Members with **Manage Server** can enable streaks and configure the schedule.
+Configure timezone, daily message volume requirement, and reset schedules.
+
+<Tabs items={["Enable", "Disable", "Timezone", "Reset time", "Requirement"]}>
+  <Tab>
 
 ```text
-streak enable
-streak config timezone America/New_York
-streak config reset 12 AM
-streak config requirement 5
+/streak enable
 ```
 
-Reset times accept 12-hour and 24-hour input, including `12 AM`, `8:30 PM`, `00:00`, and `20:30`. The time is interpreted in the configured timezone.
+  </Tab>
+  <Tab>
+
+```text
+/streak disable
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/streak timezone timezone:<string>
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/streak reset reset:<string>
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/streak requirement messages:<integer>
+```
+
+  </Tab>
+</Tabs>
+
+Reset time supports 12-hour and 24-hour formats (such as `12 AM`, `8:30 PM`, `00:00`, and `20:30`). The requirement specifies the message quota needed before a streak can be claimed (1–1,000 messages).
 
 ## Member commands
 
-```text
-streak [member]
-streak claim
-streak restore
-streak leaderboard
-```
-
-`streak claim` works after the member reaches the daily message requirement. A missed day can be restored when the member has a restore credit and the missed period is still inside the configured restore window.
-
-## Restore settings
+<Tabs items={["Profile", "Claim", "Restore", "Leaderboard"]}>
+  <Tab>
 
 ```text
-streak config restores (amount)
-streak config restorewindow (days)
-streak grantrestore (member) [amount]
+/streak profile [member:<user>]
 ```
 
-Starting restores can be set from `0` to `100`. The restore window can be set from `1` to `30` days. `streak grantrestore` gives additional credits to one member.
-
-## Streak roles
-
-Members with **Manage Roles** can award roles at specific streak lengths.
+  </Tab>
+  <Tab>
 
 ```text
-streak add @Active 7
-streak add @Dedicated 30
-streak roles
+/streak claim
 ```
 
-Reward roles stack. A member with a 30-day current streak receives both configured roles in this example. Claims and restores update rewards automatically.
+  </Tab>
+  <Tab>
 
 ```text
-streak update @Active 14
-streak remove 30
-streak sync
+/streak restore
 ```
 
-`streak update` changes a role's required streak, while `streak remove` removes the reward at that day threshold. `streak sync` recalculates every member from their current streak and removes rewards they no longer qualify for.
-
-The bot needs **Manage Roles**, and each reward must be below both the manager's and bot's highest roles. `@everyone` and integration-managed roles cannot be used.
-
-## Other settings
+  </Tab>
+  <Tab>
 
 ```text
-streak config
-streak config timezone (timezone)
-streak config reset (time)
-streak config requirement (messages)
-streak disable
+/streak leaderboard
 ```
 
-The daily message requirement can be set from `1` to `1,000`.
+  </Tab>
+</Tabs>
 
-Slash commands use `/streak`. Prefix `streaks` is an alias for `streak`.
+`/streak claim` unlocks as soon as the daily message target is fulfilled. Missed streaks can be repaired with `/streak restore` if the user holds restore credits within the configured grace window.
+
+## Restores and grace period
+
+<Tabs items={["Starting restores", "Grace window", "Grant credits"]}>
+  <Tab>
+
+```text
+/streak restores amount:<integer>
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/streak restorewindow days:<integer>
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/streak grantrestore member:<user> [amount:<integer>]
+```
+
+  </Tab>
+</Tabs>
+
+Default starting credits range from `0` to `100`. The restore window can be set between `1` and `30` days.
+
+## Reward roles
+
+Staff with `Manage Roles` can assign milestone roles to reward continuous streaks.
+
+<Tabs items={["Add", "Update", "Remove", "List", "Sync"]}>
+  <Tab>
+
+```text
+/streak add role:<role> streak:<integer>
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/streak update role:<role> streak:<integer>
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/streak remove streak:<integer>
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/streak roles
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/streak sync
+```
+
+  </Tab>
+</Tabs>
+
+Milestone roles stack. Running `/streak sync` re-evaluates all members and reclaims roles from members whose streaks lapsed.

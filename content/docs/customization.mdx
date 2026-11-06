@@ -8,62 +8,64 @@ icon: paint-brush
 Use customization to change how bored appears inside your server with a server-specific avatar, banner, bio, and nickname.
 
 <Callout type="warning" title="Access and cooldowns">
-Customization is available to the **server owner** and **antinuke admins**. Avatar, banner, bio, and reset each have a **6 hour** cooldown. `customize name` has a **5 minute** cooldown.
+Customization is available to the **server owner** and **antinuke admins**. Avatar, banner, bio, and reset each have a **6 hour** cooldown. `/customize name` has a **5 minute** cooldown.
 </Callout>
-
-## Interactive customize
-
-Running bare `customize` opens a button for the invoker. Clicking it opens a modal where you can update avatar URL, banner URL, and bio in one flow.
-
-Attachment uploads still work through `customize avatar` and `customize banner`.
 
 ## Update avatar
 
-Set bored's server avatar for the current server.
+Set bored's server avatar for the current server using an image URL or direct file upload.
 
-<Tabs items={["Syntax", "Example"]}>
+<Tabs items={["Syntax", "Example", "Upload"]}>
   <Tab>
 
 ```text
-customize avatar (image URL)
+/customize avatar [url:<image URL>] [attachment:<file>]
 ```
 
   </Tab>
   <Tab>
 
 ```text
-customize avatar https://cdn.example.com/avatar.png
+/customize avatar url:https://cdn.example.com/avatar.png
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/customize avatar attachment:<uploaded image>
 ```
 
   </Tab>
 </Tabs>
-
-You can also send `customize avatar` with an image attached to the same message. `customize pfp` works as an alias.
-
-If Discord rejects the image format, bored replies that the image format is not supported.
 
 ## Update banner
 
-Set bored's server banner for the current server.
+Set bored's server banner for the current server using a banner image URL or file upload.
 
-<Tabs items={["Syntax", "Example"]}>
+<Tabs items={["Syntax", "Example", "Upload"]}>
   <Tab>
 
 ```text
-customize banner (image URL)
+/customize banner [url:<image URL>] [attachment:<file>]
 ```
 
   </Tab>
   <Tab>
 
 ```text
-customize banner https://cdn.example.com/banner.png
+/customize banner url:https://cdn.example.com/banner.png
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/customize banner attachment:<uploaded image>
 ```
 
   </Tab>
 </Tabs>
-
-You can also send `customize banner` with an image attached to the same message.
 
 ## Update bio
 
@@ -73,14 +75,14 @@ Set bored's server bio text. The final bio must stay within `190` characters aft
   <Tab>
 
 ```text
-customize bio (text)
+/customize bio text:<bio text>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-customize bio support server @ discord.gg/boredbot
+/customize bio text:support server @ discord.gg/boredbot
 ```
 
   </Tab>
@@ -94,14 +96,14 @@ Set bored's nickname in the current server.
   <Tab>
 
 ```text
-customize name (nickname)
+/customize name nickname:<nickname>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-customize name bored
+/customize name nickname:bored
 ```
 
   </Tab>
@@ -114,5 +116,5 @@ This only changes the server nickname. It uses the shorter **5 minute** cooldown
 Reset bored's server avatar, banner, bio, and nickname back to the default profile for your server.
 
 ```text
-customize reset
+/customize reset
 ```

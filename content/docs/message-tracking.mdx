@@ -5,142 +5,198 @@ section: Miscellaneous
 icon: chat-bubble-bottom-center-text
 ---
 
-Message Tracking tracks member message totals after it is enabled. It can show individual stats, rank members by total messages, and award roles at configured message counts.
+Message Tracking records member message totals once enabled. It powers individual stats, server activity leaderboards, and automated milestone award roles.
 
-The tracker ignores bot and webhook messages. Ignored channels, categories, and roles can also be excluded from counting.
+Bot and webhook messages are automatically ignored. Channels, categories, and roles can also be explicitly excluded from tracking.
 
-## Start here
+## Enable tracking
 
-```text
-messages enable
-```
-
-New message data starts recording after the system is enabled. `messages disable` stops new counting without deleting saved totals.
-
-## View stats
-
-<Tabs items={["Your stats", "Member stats"]}>
+<Tabs items={["Enable", "Disable"]}>
   <Tab>
 
 ```text
-messages
+/messages enable
 ```
 
   </Tab>
   <Tab>
 
 ```text
-messages @user
+/messages disable
 ```
 
   </Tab>
 </Tabs>
 
-Stats include total messages, messages sent today, and messages sent in the last `7` days.
+New message counts start recording immediately once enabled. Disabling tracking pauses new increments without clearing recorded totals.
 
-## Leaderboard
+## View statistics
 
 <Tabs items={["Syntax", "Example"]}>
   <Tab>
 
 ```text
-messages leaderboard [page]
+/messages view [member:<user>]
 ```
 
   </Tab>
   <Tab>
 
 ```text
-messages leaderboard 2
+/messages view member:@zorex
 ```
 
   </Tab>
 </Tabs>
 
-`messages lb` works as an alias.
+Displays lifetime message count, daily volume, and a rolling 7-day activity breakdown.
+
+## Leaderboard
+
+View the most active members ranked by message count.
+
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
+
+```text
+/messages leaderboard [page:<integer>]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/messages leaderboard page:2
+```
+
+  </Tab>
+</Tabs>
 
 ## Ignored targets
 
-<Tabs items={["Toggle", "List"]}>
+Exclude spam channels, staff channels, or privileged roles from inflating message statistics.
+
+<Tabs items={["Ignore", "List"]}>
   <Tab>
 
 ```text
-messages ignore (channel or category or role)
+/messages ignore [channel:<channel>] [role:<role>]
 ```
 
   </Tab>
   <Tab>
 
 ```text
-messages list
+/messages list
 ```
 
   </Tab>
 </Tabs>
 
-Running `messages ignore` again on the same target resumes tracking there.
+Running `/messages ignore` on an already ignored channel or role un-ignores it.
 
-## Award roles
+## Milestone award roles
+
+Automatically reward members with specific roles when reaching message thresholds.
 
 <Tabs items={["Add", "Remove", "View"]}>
   <Tab>
 
 ```text
-messages awards add (role) (messages)
+/messages awards add role:<role> messages:<integer>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-messages awards remove (messages)
+/messages awards remove messages:<integer>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-messages awards
+/messages awards view
 ```
 
   </Tab>
 </Tabs>
 
-When a member reaches a configured total, bored gives them the matching award role. Run `messages sync` after changing awards if you want bored to re-check every current member.
+Run `/messages sync` after adding or editing award roles to reconcile roles across existing members.
+
+<Tabs items={["Sync"]}>
+  <Tab>
+
+```text
+/messages sync
+```
+
+  </Tab>
+</Tabs>
 
 ## Manual adjustments
 
-Manual adjustments require **Manage Server**.
+Staff with `Manage Server` can manually credit or debit message counts.
 
 <Tabs items={["Add", "Remove"]}>
   <Tab>
 
 ```text
-messages add (member) (amount)
+/messages add member:<user> amount:<integer>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-messages remove (member) (amount)
+/messages remove member:<user> amount:<integer>
 ```
 
   </Tab>
 </Tabs>
 
-Manual changes also re-check the member's award roles.
+Modifying balances triggers an automatic check for matching award roles.
 
-## Reset and cleanup
+## Sticky messages
+
+Pin dynamic repeating messages at the bottom of busy channels.
+
+<Tabs items={["Add", "View", "List", "Remove"]}>
+  <Tab>
 
 ```text
-messages reset
+/messages stickymessage add channel:<channel> message:<string> [pingable:<string>] [ignore_bots:<string>]
 ```
 
-This requires `Administrator`, asks for confirmation, removes saved message data, and clears award roles from members.
+  </Tab>
+  <Tab>
 
 ```text
-messages cleanup
+/messages stickymessage view channel:<channel>
 ```
 
-Only the server owner can use cleanup. It removes saved message data for users who are no longer in the server.
+  </Tab>
+  <Tab>
+
+```text
+/messages stickymessage list
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/messages stickymessage remove channel:<channel>
+```
+
+  </Tab>
+</Tabs>
+
+## Reset tracking
+
+Wipe all tracked message data and revoke awarded roles server-wide.
+
+```text
+/messages reset
+```

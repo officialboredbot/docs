@@ -5,105 +5,100 @@ section: Miscellaneous
 icon: camera
 ---
 
-AutoPFP can rotate Pinterest media into configured channels and can also fetch one-off profile pictures, GIFs, and banners on demand.
+AutoPFP automates regular aesthetic image, GIF, and header drops directly from curated Pinterest collections into dedicated server channels. It also provides on-demand generation for immediate avatars and banners.
 
-Scheduled drops run across a `5` minute cycle and send up to `10` images when a configured collection is due. Bored uses its own channel webhook when it can manage webhooks, then falls back to a normal bot message.
+Scheduled cycles execute every 5 minutes and post batches of up to 10 images into designated channels using webhook pipelines when permitted.
 
-## Collections
+## Supported collections
 
-The automatic drop options are `females`, `female gifs`, `males`, `male gifs`, `banners`, and `banner gifs`.
+Available categories include:
+- `females`
+- `female gifs`
+- `males`
+- `male gifs`
+- `banners`
+- `banner gifs`
 
-## Set up a drop
+## Setup drops
 
-<Tabs items={["Syntax", "Example"]}>
-  <Tab>
-
-```text
-autopfp setup (option) (channel)
-```
-
-  </Tab>
-  <Tab>
-
-```text
-autopfp setup female gifs #pfps
-```
-
-  </Tab>
-</Tabs>
-
-You need `Manage Server` to add, remove, or reset AutoPFP drops. The target channel must let bored view the channel, embed links, attach files, and either send messages or manage webhooks.
-
-## View active drops
-
-```text
-autopfp status
-```
-
-`autopfp list` works as an alias.
-
-## Remove a drop
+Configure an automated drop pipeline to target a specific text channel.
 
 <Tabs items={["Syntax", "Example"]}>
   <Tab>
 
 ```text
-autopfp remove (option)
+/autopfp setup collection:<string> channel:<channel>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-autopfp remove banners
+/autopfp setup collection:"female gifs" channel:#pfps
 ```
 
   </Tab>
 </Tabs>
 
-## Reset every drop
+Requires `Manage Server`. The bot needs permissions to send messages, embed links, attach files, and optionally manage webhooks.
 
-```text
-autopfp reset
-```
+## Monitor and manage
 
-This clears every AutoPFP configuration for the server after a confirmation prompt.
-
-## Manual fetch commands
-
-<Tabs items={["Profile picture", "GIF", "Banner", "Banner GIF"]}>
+<Tabs items={["Status", "Remove", "Reset"]}>
   <Tab>
 
 ```text
-getpfp female
+/autopfp status
 ```
 
   </Tab>
   <Tab>
 
 ```text
-getgif male
+/autopfp remove collection:<string>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-getbanner
-```
-
-  </Tab>
-  <Tab>
-
-```text
-getbanner gif
+/autopfp reset
 ```
 
   </Tab>
 </Tabs>
 
-`getpfp` accepts `female` or `male`. `getgif` accepts `female` or `male`. `getbanner` fetches a normal banner by default, and `getbanner gif` fetches an animated banner.
+## On-demand avatars and banners
 
-<Callout type="info" title="Slash commands">
-AutoPFP setup is also available under `/autopfp`. Manual fetches are also available as `/getpfp`, `/getgif`, and `/getbanner`.
-</Callout>
+Fetch immediate aesthetic media assets directly to chat.
+
+<Tabs items={["Avatar", "GIF avatar", "Banner", "GIF banner"]}>
+  <Tab>
+
+```text
+/getpfp gender:<female|male>
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/getgif gender:<female|male>
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/getbanner
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/autopfp getbanner gif
+```
+
+  </Tab>
+</Tabs>

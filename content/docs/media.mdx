@@ -1,39 +1,128 @@
 ---
 title: Media Tools
-description: Edit images, GIFs, and videos from attachments, replies, links, or member avatars.
+description: Manipulate images, GIFs, and videos from attachments, URLs, or member avatars.
 section: Miscellaneous
 icon: photo
 ---
 
-Media commands use the first usable source from the command, attachment, replied message, embed, sticker, or member avatar.
+bored's media engine applies high-performance transformations across images, animated GIFs, and video clips. Media sources can be supplied via direct attachment upload, image URL, or member avatar.
 
-Prefix `m` is an alias for `media`. Common subcommands such as `caption` and `gif` also work directly.
+## Captions and meme templates
 
-## Commands
-
-```text
-media speechbubble [image] [--solid] [--flip] [--bottom] [--scale 0.01-1]
-media caption [image] (text) [--bottom] [--black]
-media gif [media] [--width 720] [--fps 15] [--speed 1]
-media grayscale [image]
-media invert [image]
-media reverse [gif or video]
-media speed [gif or video] (factor 0.5-4)
-media blur [image] [strength 1-20]
-media info [media]
-media url [source]
-```
-
-`makegif` is an alias for `media gif`.
-
-## Reply usage
-
-Reply to a message containing media and omit the source:
+<Tabs items={["Caption", "Speechbubble", "Ah shit"]}>
+  <Tab>
 
 ```text
-media caption bottom text --bottom
-media speechbubble --flip --bottom --scale 0.3
-media reverse
+/media caption text:<string> [attachment:<attachment>] [url:<string>] [member:<user>] [bottom:<string>] [black:<string>]
 ```
 
-The global slash surface uses `/media`.
+  </Tab>
+  <Tab>
+
+```text
+/media speechbubble [attachment:<attachment>] [url:<string>] [member:<user>] [solid:<string>] [flip:<string>] [bottom:<string>] [scale:<number>]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/media ahshit [attachment:<attachment>] [url:<string>] [member:<user>]
+```
+
+  </Tab>
+</Tabs>
+
+## GIF and video conversions
+
+<Tabs items={["Convert to GIF", "Playback speed", "Reverse"]}>
+  <Tab>
+
+```text
+/media gif [attachment:<attachment>] [url:<string>] [width:<integer>] [fps:<integer>] [speed:<number>]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/media speed speed:<number> [attachment:<attachment>] [url:<string>]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/media reverse [attachment:<attachment>] [url:<string>]
+```
+
+  </Tab>
+</Tabs>
+
+## Visual filters and distortion
+
+Apply stylistic filters, blurs, color inversions, and liquid distortions.
+
+<Tabs items={["Magik", "Deepfry", "Blur", "Bloom", "Invert", "Pixelate"]}>
+  <Tab>
+
+```text
+/media magik [attachment:<attachment>] [url:<string>] [member:<user>]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/media deepfry [attachment:<attachment>] [url:<string>] [member:<user>]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/media blur [attachment:<attachment>] [url:<string>] [member:<user>] [strength:<number>]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/media bloom [attachment:<attachment>] [url:<string>] [member:<user>] [radius:<integer>] [brightness:<number>]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/media invert [attachment:<attachment>] [url:<string>] [member:<user>]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/media pixelate [attachment:<attachment>] [url:<string>] [member:<user>] [strength:<number>]
+```
+
+  </Tab>
+</Tabs>
+
+## Inspection and direct URLs
+
+<Tabs items={["Media info", "Direct URL"]}>
+  <Tab>
+
+```text
+/media info [attachment:<attachment>] [url:<string>]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/media url [attachment:<attachment>] [url:<string>]
+```
+
+  </Tab>
+</Tabs>

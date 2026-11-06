@@ -5,9 +5,9 @@ section: Miscellaneous
 icon: calculator
 ---
 
-Counter channels keep a channel or category name updated with a server statistic. They can show member counts, channel counts, boost counts, or a countdown from a Unix timestamp.
+Counter channels display dynamic server statistics directly in channel or category titles. They automatically update member metrics, channel totals, boost counts, or live countdown timers to a Unix timestamp.
 
-You need `Manage Channels` to add, remove, or list counters. bored also needs permission to create the channel type you choose.
+Managing counters requires `Manage Channels`. The bot must also possess permissions to create and rename channels.
 
 ## Add a counter
 
@@ -15,40 +15,39 @@ You need `Manage Channels` to add, remove, or list counters. bored also needs pe
   <Tab>
 
 ```text
-counter add (option) (type)
+/server counter add metric:<string> channel_type:<string>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-counter add members voice
+/server counter add metric:members channel_type:voice
 ```
 
   </Tab>
 </Tabs>
 
-bored creates the channel and saves it as a managed counter.
+bored creates the managed channel immediately and keeps its name synchronized with live server activity.
 
-## Options
+## Supported metrics
 
-Supported counter options are:
+Available metrics for `metric`:
+- `members` - Total guild members
+- `users_only` - Human members only
+- `bots_only` - Bot accounts only
+- `pending_members` - Members pending membership screening
+- `all_channels` - Total guild channels
+- `text_channels` - Text channels
+- `voice_channels` - Voice channels
+- `categories` - Category channels
+- `announcement_channels` - Announcement channels
+- `staging_channels` - Stage channels
+- `boosts` - Current server boost count
+- `booster_count` - Distinct server booster member count
+- `<timestamp>` - Unix epoch timestamp (renders a live countdown)
 
-- `members` - total server members.
-- `users_only` - human members.
-- `bots_only` - bot members.
-- `pending_members` - members still pending screening.
-- `all_channels` - all guild channels.
-- `text_channels` - text channels.
-- `voice_channels` - voice channels.
-- `categories` - channel categories.
-- `announcement_channels` - announcement channels.
-- `staging_channels` - stage channels.
-- `boosts` - current boost count.
-- `booster_count` - current booster count.
-- A Unix timestamp - creates a countdown counter.
-
-Supported channel types are `voice`, `text`, `category`, `announce`, and `stage`.
+Supported channel types for `channel_type`: `voice`, `text`, `category`, `announce`, `stage`.
 
 ## Remove a counter
 
@@ -56,25 +55,25 @@ Supported channel types are `voice`, `text`, `category`, `announce`, and `stage`
   <Tab>
 
 ```text
-counter remove (channel)
+/server counter remove channel:<channel>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-counter remove #members-1200
+/server counter remove channel:#members-1200
 ```
 
   </Tab>
 </Tabs>
 
-Removing a counter stops bored from updating that channel. It does not delete the channel.
+Removing a counter unregisters it from background sync routines without deleting the channel.
 
-## List counters
+## List active counters
+
+Inspect all active counters tracked in the guild.
 
 ```text
-counter list
+/server counter list
 ```
-
-This shows every saved counter in the server, including counters whose channels were deleted.

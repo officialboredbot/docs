@@ -5,87 +5,94 @@ section: Server Configuration
 icon: megaphone
 ---
 
-Ping on Join sends a short mention message when someone joins, then deletes that ping again after a short delay.
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
 
-The default delay is **5 seconds**, and you can change it between **3** and **10** seconds. Rapid joins in the same channel are batched for about **2 seconds** into one ping message.
+Ping on Join sends a ghost ping mentioning new members when they join, automatically deleting the ping message shortly after to notify them without cluttering the chat.
 
-You can configure up to `7` text channels per server. If you target a category, bored adds or removes every text channel inside it until the server reaches that limit.
+The default deletion delay is **5 seconds** (configurable between **3** and **10** seconds). Rapid joins in the same channel are batched into a single ping message.
 
-## Add a channel or category
-
-<Tabs items={["Syntax", "Example"]}>
-  <Tab>
-
-```text
-pingonjoin add (channel or category)
-```
-
-  </Tab>
-  <Tab>
-
-```text
-pingonjoin add #welcome
-```
-
-  </Tab>
-</Tabs>
-
-You can use a channel mention, category name, raw ID, or `here` / `this` for the current text channel.
-
-## List configured channels
-
-```text
-pingonjoin list
-```
-
-This shows every saved ping-on-join channel in the server.
-
-## Remove a channel or category
+## Add a channel
 
 <Tabs items={["Syntax", "Example"]}>
   <Tab>
 
 ```text
-pingonjoin remove (channel or category)
+/welcome pingonjoin add target:<channel>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-pingonjoin remove #welcome
+/welcome pingonjoin add target:#welcome
 ```
 
   </Tab>
 </Tabs>
 
-If you remove a category, bored removes every configured text channel inside that category.
+You can configure up to `7` channels per server.
 
-## Change the deletion delay
+## View configured channels
+
+```text
+/welcome pingonjoin list
+```
+
+## Remove a channel
 
 <Tabs items={["Syntax", "Example"]}>
   <Tab>
 
 ```text
-pingonjoin time (seconds)
+/welcome pingonjoin remove target:<channel>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-pingonjoin time 7
+/welcome pingonjoin remove target:#welcome
 ```
 
   </Tab>
 </Tabs>
 
-The delay must be between **3** and **10** seconds. If you leave it unset, bored uses **5** seconds.
+## Adjust deletion delay
 
-## Reset everything
+<Tabs items={["Syntax", "Example"]}>
+  <Tab>
 
 ```text
-pingonjoin reset
+/welcome pingonjoin time seconds:<seconds>
 ```
 
-This clears every saved ping-on-join channel in the server after a confirmation prompt. `pingonjoin clear` works as an alias.
+  </Tab>
+  <Tab>
+
+```text
+/welcome pingonjoin time seconds:7
+```
+
+  </Tab>
+</Tabs>
+
+Delay must be between `3` and `10` seconds.
+
+## Test & Reset
+
+<Tabs items={["Test ping", "Reset all"]}>
+  <Tab>
+
+```text
+/server pingonjoin test
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/welcome pingonjoin reset
+```
+
+  </Tab>
+</Tabs>

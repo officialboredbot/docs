@@ -5,6 +5,9 @@ section: Server Configuration
 icon: star
 ---
 
+import { Steps, Step } from "fumadocs-ui/components/steps";
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+
 Starboard lets bored repost popular messages into a dedicated channel once they collect enough configured reactions.
 
 By default, the threshold starts at `3`, the default emoji is `⭐`, `selfstar` is off, and jump URL, timestamp, and attachments are on.
@@ -16,21 +19,21 @@ By default, the threshold starts at `3`, the default emoji is `⭐`, `selfstar` 
     Choose where reposted messages should go.
 
 ```text
-starboard set #starboard
+/starboard set channel:#starboard
 ```
   </Step>
   <Step title="Confirm at least one emoji">
-    New servers start with `⭐`. You can change the watched emojis before enabling.
+    New servers start with `⭐`. You can add custom or standard emojis anytime.
 
 ```text
-starboard emoji add ⭐
+/starboard emoji add emojis:⭐
 ```
   </Step>
   <Step title="Enable Starboard">
     Turn the system on once a channel and at least one emoji are ready.
 
 ```text
-starboard enable
+/starboard enable
 ```
   </Step>
 </Steps>
@@ -40,37 +43,35 @@ Other setup commands still work while Starboard is disabled, so you can configur
 ## View the current config
 
 ```text
-starboard config
+/starboard config
 ```
 
-You can also run `starboard` by itself to open the same config view.
-
 ## Threshold
+
+Set the number of unique reactions required before bored reposts a message.
 
 <Tabs items={["Syntax", "Example"]}>
   <Tab>
 
 ```text
-starboard threshold (amount)
+/starboard threshold amount:<integer>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-starboard threshold 3
+/starboard threshold amount:3
 ```
 
   </Tab>
 </Tabs>
 
-The threshold must be at least `1`. In the example above, a message needs `3` unique reacting users before bored reposts it.
-
-The count is unique users across all configured Starboard emojis. If the same member reacts with two watched emojis, they still count once.
+The threshold must be at least `1`. The reaction count reflects unique users across all configured Starboard emojis. If the same member reacts with two watched emojis, they still count once.
 
 ## Emojis
 
-Starboard can watch up to `5` emojis at once. You can remove every configured emoji, including the default star. An empty emoji list means Starboard will not track reactions until you add one again.
+Starboard can watch up to `5` emojis at once.
 
 ### Add an emoji
 
@@ -78,14 +79,14 @@ Starboard can watch up to `5` emojis at once. You can remove every configured em
   <Tab>
 
 ```text
-starboard emoji add (emoji)
+/starboard emoji add emojis:<emoji>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-starboard emoji add ⭐
+/starboard emoji add emojis:⭐
 ```
 
   </Tab>
@@ -97,14 +98,14 @@ starboard emoji add ⭐
   <Tab>
 
 ```text
-starboard emoji remove (emoji)
+/starboard emoji remove emojis:<emoji>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-starboard emoji remove 🤡
+/starboard emoji remove emojis:🤡
 ```
 
   </Tab>
@@ -113,7 +114,7 @@ starboard emoji remove 🤡
 ### List configured emojis
 
 ```text
-starboard emoji list
+/starboard emoji list
 ```
 
 This shows every emoji Starboard is currently watching.
@@ -122,183 +123,154 @@ This shows every emoji Starboard is currently watching.
 
 ### Embed color
 
+Customize the accent bar color on starboard embeds.
+
 <Tabs items={["Syntax", "Example"]}>
   <Tab>
 
 ```text
-starboard color (hex)
+/starboard color color:<hex>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-starboard color ff3b30
+/starboard color color:#ff3b30
 ```
 
   </Tab>
 </Tabs>
-
-Use a six-character hex code without anything other than the color value itself.
 
 ### Jump URL
 
+Toggle whether the starboard embed includes a direct jump link to the original message.
+
 <Tabs items={["Syntax", "Example"]}>
   <Tab>
 
 ```text
-starboard jumpurl (on or off)
+/starboard jumpurl setting:<on or off>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-starboard jumpurl on
+/starboard jumpurl setting:on
 ```
 
   </Tab>
 </Tabs>
-
-When this is on, the Starboard embed includes a direct jump link back to the original message.
 
 ### Timestamp
 
+Toggle display of the original message timestamp.
+
 <Tabs items={["Syntax", "Example"]}>
   <Tab>
 
 ```text
-starboard timestamp (on or off)
+/starboard timestamp setting:<on or off>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-starboard timestamp on
+/starboard timestamp setting:on
 ```
 
   </Tab>
 </Tabs>
-
-This shows or hides the original message timestamp on the Starboard embed.
 
 ### Attachments
 
+Toggle whether images and video attachments are forwarded to the starboard post.
+
 <Tabs items={["Syntax", "Example"]}>
   <Tab>
 
 ```text
-starboard attachments (on or off)
+/starboard attachments setting:<on or off>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-starboard attachments true
+/starboard attachments setting:on
 ```
 
   </Tab>
 </Tabs>
-
-When this is on, bored includes supported image and video attachments in the Starboard post.
 
 ## Public-only sources
 
+Control whether restricted channels and private threads are eligible for starboard.
+
 <Tabs items={["Syntax", "Example"]}>
   <Tab>
 
 ```text
-starboard publiconly (on or off)
+/starboard publiconly setting:<on or off>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-starboard publiconly on
+/starboard publiconly setting:on
 ```
 
   </Tab>
 </Tabs>
 
-When `publiconly` is on, bored only reposts messages from channels that are
-visible to `@everyone` and, when your server has one configured, the base role.
-Private threads are also treated as non-public. Messages from restricted
-channels or private threads are skipped, and an existing Starboard repost is
-removed if its source is no longer eligible.
-
-Turn this off if you want Starboard to process otherwise eligible messages from
-restricted channels and private threads. The reaction threshold, ignored
-targets, `selfstar`, and the other Starboard settings still apply.
+When `publiconly` is on, bored only reposts messages from channels visible to `@everyone` (and the server base role, if configured). Messages from private channels or private threads are skipped.
 
 ## Self star
 
+Control whether message authors can star their own messages.
+
 <Tabs items={["Syntax", "Example"]}>
   <Tab>
 
 ```text
-starboard selfstar (on or off)
+/starboard selfstar setting:<on or off>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-starboard selfstar true
+/starboard selfstar setting:off
 ```
 
   </Tab>
 </Tabs>
-
-When `selfstar` is off, authors cannot count their own reaction toward the threshold. When it is on, their own reaction counts like any other.
 
 ## Ignore targets
 
-Ignore targets stop Starboard from processing reactions for that member, role, channel, or thread.
-
-### Toggle an ignored target
-
-<Tabs items={["Syntax", "Example"]}>
-  <Tab>
-
-```text
-starboard ignore (member, role, channel, or thread)
-```
-
-  </Tab>
-  <Tab>
-
-```text
-starboard ignore #giveaways
-```
-
-  </Tab>
-</Tabs>
-
-Run the same command again to remove that ignore target.
+Ignore targets prevent starboard from tracking reactions from specific members, roles, channels, or threads.
 
 ### List ignored targets
 
 ```text
-starboard ignore list
+/starboard ignore list
 ```
-
-This shows every saved ignored member, role, channel, and thread.
 
 ## Turn Starboard off
 
-```text
-starboard disable
-```
+Disable new starboard reposts without wiping your saved settings.
 
-This disables new Starboard reposts without deleting the saved configuration.
+```text
+/starboard disable
+```
 
 ## Reset everything
 
-```text
-starboard reset
-```
+Clear all starboard settings, ignore lists, and saved repost records for the server.
 
-This clears the Starboard config, ignore list, and saved repost records for the server.
+```text
+/starboard reset
+```

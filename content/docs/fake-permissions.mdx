@@ -5,43 +5,35 @@ section: Server Security
 icon: key
 ---
 
-## Why use fake permissions?
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
 
-Fake Permissions are useful when you want staff to use bored for moderation, but you do not want them holding the real Discord permissions behind those actions. This gives you tighter control over how moderation is done and reduces the chance of staff bypassing bored through native Discord tools.
+Fake Permissions let staff run bored's commands without holding native Discord administrative permissions. This prevents rogue moderators from abusing native Discord audit menus or bypassing the bot.
 
-## How do fake permissions work?
+## How Fake Permissions work
 
-When a role is given a fake permission such as `ban_members`, members with that role can pass bored's permission checks for commands that require it. That does not give them the native Discord permission itself, so the built-in Discord action stays unavailable unless they already have the real permission through Discord.
-
-## Access
+When a role is granted a fake permission (such as `ban_members`), members holding that role pass bored's command checks for ban commands. However, they do not gain native Discord ban permissions in server settings, so they cannot ban members natively or through other bots.
 
 <Callout type="warning" title="Server owner only">
 Only the **server owner** can manage fake permissions.
 </Callout>
 
-`fakeperms` and `fp` work as aliases for `fakepermissions`.
-
-## Finding the permission you need
-
-Use `help (command)` to see what permission a bored command expects. Fake Permissions should match that permission name exactly.
-
 ## Allowed fake permissions
 
-These are the fake permission names currently supported by bored:
+These are the permission identifiers recognized by bored:
 
-- `administrator` — allows full command access anywhere bored checks for administrator.
-- `ban_members` — allows ban commands that require ban permissions.
-- `kick_members` — allows kick commands that require kick permissions.
-- `manage_messages` — allows commands that require message-management access.
-- `moderate_members` — allows timeout and similar moderation commands.
-- `manage_guild` — allows commands that require server-level management access.
-- `manage_channels` — allows commands that require channel management access.
-- `manage_roles` — allows commands that require role management access.
-- `manage_nicknames` — allows nickname management commands.
-- `manage_webhooks` — allows webhook-related commands that require webhook management access.
-- `manage_expressions` — allows expression and emoji management commands.
-- `mention_everyone` — allows commands gated behind mention-everyone permission checks.
-- `view_audit_log` — allows commands that require audit-log access.
+- `administrator` — full command execution access.
+- `ban_members` — ban and unban commands.
+- `kick_members` — kick commands.
+- `manage_messages` — purge, clean, and message commands.
+- `moderate_members` — timeout, mute, and jail commands.
+- `manage_guild` — server configuration commands.
+- `manage_channels` — channel creation, deletion, and slowmode.
+- `manage_roles` — role award and modification commands.
+- `manage_nicknames` — nickname moderation.
+- `manage_webhooks` — webhook management.
+- `manage_expressions` — custom emoji and sticker management.
+- `mention_everyone` — commands with mention permissions.
+- `view_audit_log` — audit log viewer commands.
 
 ## Add fake permissions
 
@@ -49,20 +41,18 @@ These are the fake permission names currently supported by bored:
   <Tab>
 
 ```text
-fakepermissions add (role) (permissions)
+/settings fakepermissions add role:<role> permissions:<permissions>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-fakepermissions add @admin ban_members, kick_members
+/settings fakepermissions add role:@Moderator permissions:ban_members, kick_members
 ```
 
   </Tab>
 </Tabs>
-
-You can separate permission names with commas or spaces.
 
 ## Remove fake permissions
 
@@ -70,20 +60,18 @@ You can separate permission names with commas or spaces.
   <Tab>
 
 ```text
-fakepermissions remove (role) (permissions)
+/settings fakepermissions remove role:<role> permissions:<permissions>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-fakepermissions remove @admin ban_members, kick_members
+/settings fakepermissions remove role:@Moderator permissions:ban_members, kick_members
 ```
 
   </Tab>
 </Tabs>
-
-You can separate permission names with commas or spaces here as well.
 
 ## List fake permissions
 
@@ -91,27 +79,25 @@ You can separate permission names with commas or spaces here as well.
   <Tab>
 
 ```text
-fakepermissions list [role]
+/settings fakepermissions list [role:<role>]
 ```
 
   </Tab>
   <Tab>
 
 ```text
-fakepermissions list @admin
+/settings fakepermissions list role:@Moderator
 ```
 
   </Tab>
 </Tabs>
 
-If you leave the role out, bored lists every configured fake permission in the server.
+If you omit the role option, bored lists all active fake permission bindings across the entire server.
 
 ## Reset all fake permissions
 
+Clear every fake permission configured in the server:
+
 ```text
-fakepermissions reset
+/settings fakepermissions reset
 ```
-
-This removes every fake permission entry in the server after a confirmation prompt.
-
-## Example role setups

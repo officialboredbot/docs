@@ -5,220 +5,102 @@ section: Server Configuration
 icon: tag
 ---
 
-Guild tag roles award one or more roles when a member enables your server's **guild tag** on their profile.
+import { Steps, Step } from "fumadocs-ui/components/steps";
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+
+Guild tag roles award designated roles when a member equips your server's custom Discord **guild tag** badge on their profile.
 
 <Callout type="warning" title="Server requirement">
-Your server must support **guild tags**. If guild tags are unavailable on the server, `badge on` warns you and rewards cannot be enabled.
+Your server must have Discord guild tags unlocked.
 </Callout>
 
-## Start here
+## Quickstart
 
 <Steps>
-  <Step title="Enable badge rewards">
-    Turn rewards on first.
+  <Step title="Add reward roles">
+    Add the roles members should receive when sporting your server tag:
 
 ```text
-badge on
+/server badge role action:add role:@Tagged
 ```
-
-    bored only grants roles after rewards are enabled and your server supports guild tags.
   </Step>
-  <Step title="Add at least one reward role">
-    Save the roles members should receive when they enable your guild tag.
+  <Step title="Configure announcement channel">
+    Set where public celebratory messages are posted:
 
 ```text
-badge role add @Tagged
+/server badge channel channel:#tag-rewards
 ```
-
-    Role names also work without a mention, for example `badge role add Tagged`.
   </Step>
   <Step title="Sync existing members">
-    If members already had your guild tag enabled before setup, run a sync.
+    Backfill rewards for members who already have your server tag equipped:
 
 ```text
-badge sync
+/server badge sync
 ```
-
-    This grants or removes saved roles based on each member's current guild tag state.
   </Step>
 </Steps>
 
-## Permissions
+## Reward roles management
 
-- **Manage Server** — `badge on`, `badge off`, `badge config`, `badge sync`, `badge channel`, `badge message`, and all `badge role` subcommands.
-
-Role commands still require bored to manage the role you choose, and the role must sit below bored's highest role.
-
-## Turn badge rewards on or off
-
-### Enable badge rewards
-
-<Tabs items={["Syntax", "Example"]}>
+<Tabs items={["Add role", "Remove role", "List roles"]}>
   <Tab>
 
 ```text
-badge (on or off)
+/server badge role action:add role:@Tagged
 ```
 
   </Tab>
   <Tab>
 
 ```text
-badge on
-```
-
-  </Tab>
-</Tabs>
-
-### Disable badge rewards
-
-<Tabs items={["Syntax", "Example"]}>
-  <Tab>
-
-```text
-badge (on or off)
+/server badge role action:remove role:@Tagged
 ```
 
   </Tab>
   <Tab>
 
 ```text
-badge off
+/server badge role action:list
 ```
 
   </Tab>
 </Tabs>
 
-This stops automatic role grants without deleting your saved roles or message settings.
+## Award channel & messages
 
-## View the current config
-
-```text
-badge config
-```
-
-You can also use `badge settings` or `badge status`. This shows whether rewards are enabled, whether guild tags are available, the award channel, award message preview, and how many reward roles are saved.
-
-## Reward roles
-
-Reward roles are granted when a member enables your guild tag and removed when they turn it off.
-
-### Add a reward role
-
-<Tabs items={["Syntax", "Example"]}>
+<Tabs items={["Set channel", "Set message", "View message", "Clear message"]}>
   <Tab>
 
 ```text
-badge role add (role)
+/server badge channel channel:#tag-rewards
 ```
 
   </Tab>
   <Tab>
 
 ```text
-badge role add @Tagged
-```
-
-  </Tab>
-</Tabs>
-
-Managed roles and `@everyone` cannot be used.
-
-### List reward roles
-
-```text
-badge role list
-```
-
-This shows every role currently saved for guild tag rewards.
-
-### Remove a reward role
-
-<Tabs items={["Syntax", "Example"]}>
-  <Tab>
-
-```text
-badge role remove (role)
+/server badge message action:set text:{user.mention} just equipped our guild tag!
 ```
 
   </Tab>
   <Tab>
 
 ```text
-badge role remove @Tagged
+/server badge message action:view
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/server badge message action:clear
 ```
 
   </Tab>
 </Tabs>
 
-This removes that role from the guild tag reward list without affecting other saved roles.
-
-### Sync reward roles
+## View settings
 
 ```text
-badge sync
+/server badge config
 ```
-
-Requires `badge on`. bored scans every member, grants saved roles to members who currently have your guild tag enabled, and removes those roles from members who do not. Run this after changing your role list or enabling rewards for the first time.
-
-## Award channel
-
-<Tabs items={["Syntax", "Example"]}>
-  <Tab>
-
-```text
-badge channel (channel)
-```
-
-  </Tab>
-  <Tab>
-
-```text
-badge channel #tag-rewards
-```
-
-  </Tab>
-</Tabs>
-
-When a member enables your guild tag, bored can announce it in the channel you set here.
-
-## Award messages
-
-You can save a custom award message and preview it before members see it.
-
-### Set the award message
-
-<Tabs items={["Syntax", "Example"]}>
-  <Tab>
-
-```text
-badge message (message)
-```
-
-  </Tab>
-  <Tab>
-
-```text
-badge message {user.mention} just enabled our guild tag!
-```
-
-  </Tab>
-</Tabs>
-
-Plain text and bored's embed script format are both supported.
-
-### Preview the current message
-
-```text
-badge message view
-```
-
-Use this to preview the currently saved award message.
-
-### Clear the award message
-
-```text
-badge message clear
-```
-
-This removes the custom award message.

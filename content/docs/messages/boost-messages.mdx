@@ -5,9 +5,9 @@ section: Server Configuration
 icon: gift
 ---
 
-Boost Messages let bored send a saved thank-you message to each channel you configure when someone starts boosting the server.
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
 
-Messages support plain text or bored's embed script format. `--self_destruct` is optional and can be set from `6` to `60` seconds.
+Boost Messages automatically dispatch celebratory thank-you announcements when members boost your Discord server.
 
 ## Add a boost message
 
@@ -15,88 +15,47 @@ Messages support plain text or bored's embed script format. `--self_destruct` is
   <Tab>
 
 ```text
-boosts add (channel) (message)
+/settings boosts add channel:<channel> message:<text or embed script>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-boosts add #boosts thanks for boosting {user.mention} --self_destruct 30
+/settings boosts add channel:#boosts message:Thank you for boosting {guild.name}, {user.mention}! ✨
 ```
 
   </Tab>
 </Tabs>
 
-You can save one boost message per channel.
+## View & test boost messages
 
-## View a saved message
-
-<Tabs items={["Syntax", "Example"]}>
+<Tabs items={["View message", "Test live in channel", "List channels"]}>
   <Tab>
 
 ```text
-boosts view (channel)
+/settings boosts view channel:#boosts
 ```
 
   </Tab>
   <Tab>
 
 ```text
-boosts view #boosts
+/settings boosts test channel:#boosts
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/settings boosts list
 ```
 
   </Tab>
 </Tabs>
-
-Use this to check the saved content and whether `self_destruct` is enabled for that channel.
-
-## List configured channels
-
-```text
-boosts list
-```
-
-This shows every channel that currently has a boost message saved.
 
 ## Remove a boost message
 
-<Tabs items={["Syntax", "Example"]}>
-  <Tab>
-
 ```text
-boosts remove (channel)
+/settings boosts remove channel:#boosts
 ```
-
-  </Tab>
-  <Tab>
-
-```text
-boosts remove #boosts
-```
-
-  </Tab>
-</Tabs>
-
-This only removes the saved boost message for that channel.
-
-## Test a boost message
-
-<Tabs items={["Syntax", "Example"]}>
-  <Tab>
-
-```text
-boosts test (channel)
-```
-
-  </Tab>
-  <Tab>
-
-```text
-boosts test #boosts
-```
-
-  </Tab>
-</Tabs>
-
-This sends a preview of the saved boost message to that channel without waiting for a real boost event.

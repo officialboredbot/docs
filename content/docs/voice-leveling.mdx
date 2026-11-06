@@ -5,96 +5,35 @@ section: Server Configuration
 icon: microphone
 ---
 
-Voice leveling tracks time members spend in voice channels and turns it into XP, voice levels, reward roles, and leaderboard placement.
+import { Steps, Step } from "fumadocs-ui/components/steps";
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
 
-Members earn voice XP while they stay in a non-ignored voice channel. bored awards **10 XP per minute** before your server's XP multiplier is applied, and checks about once per minute while someone remains in voice.
+Voice leveling tracks time members spend connected to voice channels, awarding voice XP, milestone reward roles, and updating live crownboard displays.
 
-<Callout type="warning" title="Disabled by default">
-**Voice leveling** stays off until someone with **Manage Server** enables it with `voicelevel enable`.
-</Callout>
+Members earn **10 XP per minute** while connected to non-ignored voice channels.
 
-## Start here
+## Quickstart
 
 <Steps>
   <Step title="Enable voice leveling">
-    Turn the system on first.
+    Voice leveling is disabled by default. Enable it with:
 
 ```text
-voicelevel enable
-```
-
-    Members can start gaining voice XP after this is enabled.
-  </Step>
-  <Step title="Add reward roles or a level-up channel">
-    Optional setup for roles at specific voice levels or level-up posts in a text channel.
-
-```text
-voicelevel role 5 @Voice Legend
-```
-
-```text
-voicelevel channel #voice-levels
+/voicelevel enable
 ```
   </Step>
-  <Step title="Enable stream tracking separately">
-    Stream and camera time use the `stream` command group and stay off until you enable them.
+  <Step title="Check your voice stats">
+    View your total voice hours, rank, and XP progress:
 
 ```text
-stream enable
+/voicelevel stats
 ```
   </Step>
 </Steps>
 
-## Check a voice rank card
-
-<Tabs items={["Syntax", "Example"]}>
-  <Tab>
-
-```text
-voicelevel [member]
-```
-
-  </Tab>
-  <Tab>
-
-```text
-voicelevel @member
-```
-
-  </Tab>
-</Tabs>
-
-Use this without a member to view your own **Voice Level**, server rank, XP progress, total voice time, and session count.
-
-## Turn voice leveling on or off
-
-### Enable voice leveling
-
-```text
-voicelevel enable
-```
-
-This turns voice leveling on for the server and allows members to start gaining voice XP.
-
-### Disable voice leveling
-
-```text
-voicelevel disable
-```
-
-This turns voice leveling off until it is enabled again.
-
 ## Reward roles
 
-Reward roles let bored assign a saved role when someone reaches a voice level you choose.
-
-### View reward roles
-
-```text
-voicelevel roles
-```
-
-Use this to review every configured reward role together with its required level and total XP.
+Automatically award roles when members reach specific voice levels.
 
 ### Add a reward role
 
@@ -102,221 +41,194 @@ Use this to review every configured reward role together with its required level
   <Tab>
 
 ```text
-voicelevel role (level) (role)
+/voicelevel role [level:<integer>] [role:<role>]
 ```
 
   </Tab>
   <Tab>
 
 ```text
-voicelevel role 5 @Voice Legend
+/voicelevel role level:5 role:@Voice Legend
 ```
 
   </Tab>
 </Tabs>
 
-In the example above, members receive `@Voice Legend` when they reach voice level `5`. The role must sit below bored's highest role.
+### View & remove reward roles
 
-### Remove a reward role
+<Tabs items={["List roles", "Remove role"]}>
+  <Tab>
+
+```text
+/voicelevel roles
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/voicelevel roleremove role:@Voice Legend
+```
+
+  </Tab>
+</Tabs>
+
+### Stack roles & sync
+
+<Tabs items={["Stack roles", "Sync roles"]}>
+  <Tab>
+
+```text
+/voicelevel stackroles
+```
+
+Toggles role stacking so members either retain previous milestone roles or keep only their highest.
+
+  </Tab>
+  <Tab>
+
+```text
+/voicelevel sync
+```
+
+Backfills voice roles for all active members.
+
+  </Tab>
+</Tabs>
+
+## Channel notifications
+
+Configure where voice level-up notifications are dispatched:
 
 <Tabs items={["Syntax", "Example"]}>
   <Tab>
 
 ```text
-voicelevel roleremove (role)
+/voicelevel channel [channel:<channel>]
 ```
 
   </Tab>
   <Tab>
 
 ```text
-voicelevel roleremove @Voice Legend
+/voicelevel channel channel:#voice-levels
 ```
 
   </Tab>
 </Tabs>
 
-This removes that role from the voice level reward list.
+Omit the channel parameter to clear the announcement channel.
 
-### Stack reward roles
+## Ignored channels
 
-```text
-voicelevel stackroles
-```
-
-When stacking is on, members keep earlier voice reward roles as they level up. When stacking is off, bored keeps only the highest reward role it can manage.
-
-### Sync reward roles
-
-```text
-voicelevel sync
-```
-
-Run this after changing reward roles or stacking behavior if you want bored to re-apply the current setup across the server.
-
-## Level-up channel
+Prevent XP gain in AFK or muted voice channels:
 
 <Tabs items={["Syntax", "Example"]}>
   <Tab>
 
 ```text
-voicelevel channel [channel]
+/voicelevel ignore channel:<channel>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-voicelevel channel #voice-levels
+/voicelevel ignore channel:#afk-voice
 ```
 
   </Tab>
 </Tabs>
 
-Run `voicelevel channel` with no channel to clear the level-up notification channel. When a member levels up in voice, bored posts in the channel you set here.
+## Leaderboards & Crownboards
 
-## Ignored voice channels
+### Live crownboard
 
-### Toggle an ignored channel
+Post an automatically updating voice leaderboard embed:
 
 <Tabs items={["Syntax", "Example"]}>
   <Tab>
 
 ```text
-voicelevel ignore (channel)
+/voicelevel crownboard channel:<channel>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-voicelevel ignore #afk-voice
+/voicelevel crownboard channel:#general
 ```
 
   </Tab>
 </Tabs>
 
-Run the same command again to stop ignoring that channel. Time in ignored channels does not count toward voice XP or sessions.
+Refreshes every **10 minutes**.
 
-## Crownboard
+### Server leaderboard
 
-<Tabs items={["Syntax", "Example"]}>
+```text
+/voicelevel leaderboard
+```
+
+## Settings & Reset
+
+View configuration:
+
+```text
+/voicelevel config
+```
+
+Reset a single member or wipe all voice level data:
+
+<Tabs items={["Reset member", "Reset server"]}>
   <Tab>
 
 ```text
-voicelevel crownboard (channel)
+/voicelevel reset user:@member
 ```
 
   </Tab>
   <Tab>
 
 ```text
-voicelevel crownboard #general
-```
-
-  </Tab>
-</Tabs>
-
-bored posts a live embed in that channel listing the top voice members. The crownboard refreshes every **10 minutes**.
-
-## Leaderboard
-
-### Open the leaderboard
-
-```text
-voicelevel leaderboard
-```
-
-This shows the top members in the server by total voice time, with level and XP on each line. Results are paginated when the list is long.
-
-## Config panel
-
-```text
-voicelevel config
-```
-
-This opens bored's voice level config panel so you can review whether voice leveling is on, stack roles, the XP multiplier, the level-up channel, crownboard channel, reward roles, and ignored channels in one place.
-
-## Reset and cleanup
-
-### Reset one member
-
-<Tabs items={["Syntax", "Example"]}>
-  <Tab>
-
-```text
-voicelevel reset (member)
-```
-
-  </Tab>
-  <Tab>
-
-```text
-voicelevel reset @member
+/voicelevel resetconfig
 ```
 
   </Tab>
 </Tabs>
 
-This clears that member's voice XP and updates their reward roles.
+## Screen share & camera tracking
 
-### Reset all voice level data
+Track when members stream games or turn on video in voice rooms.
 
-```text
-voicelevel resetconfig
-```
-
-This requires **Manage Server** and confirmation. bored clears all voice level data, reward roles, ignored channels, and crownboard settings for the server, then disables voice leveling.
-
-## Stream and camera tracking
-
-Stream tracking is separate from voice XP. It records how long members stream or use camera while they are in voice.
-
-<Callout type="warning" title="Disabled by default">
-**Stream tracking** stays off until someone with **Manage Server** enables it with `stream enable`.
-</Callout>
-
-### View stream stats
-
-<Tabs items={["Syntax", "Example"]}>
+<Tabs items={["Enable", "Disable", "Stats", "Leaderboard"]}>
   <Tab>
 
 ```text
-stream [user]
+/voicelevel stream enable
 ```
 
   </Tab>
   <Tab>
 
 ```text
-stream @member
+/voicelevel stream disable
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/voicelevel stream stats [user:<user>]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/voicelevel stream leaderboard
 ```
 
   </Tab>
 </Tabs>
-
-Use this to view current activity, stream time, camera time, and session counts. If the member is live in voice, bored includes time from their current session.
-
-### Enable stream tracking
-
-```text
-stream enable
-```
-
-This turns stream and camera tracking on for the server.
-
-### Disable stream tracking
-
-```text
-stream disable
-```
-
-This turns stream and camera tracking off until it is enabled again.
-
-### Open the stream leaderboard
-
-```text
-stream leaderboard
-```
-
-This ranks members by combined stream and camera time.

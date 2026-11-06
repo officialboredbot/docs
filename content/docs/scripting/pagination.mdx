@@ -5,134 +5,153 @@ section: Resources
 icon: arrows-right-left
 ---
 
-Pagination lets members move through multiple embed pages on one message with left and right arrow reactions. Navigation wraps in both directions, so moving back from the first page opens the last page and moving forward from the last page returns to the first.
+Pagination allows members to navigate multi-page embed guides and menus on a single message using reaction arrows. Navigation wraps in both directions: stepping backwards from page 1 opens the final page, and moving forwards from the last page loops back to page 1.
 
-<Callout type="warning" title="Pagination is prefix-only">
-Use the `pagination` command group, or its `paginate` alias, with your server prefix. The message must already contain an embed sent by bored.
-</Callout>
-
-You need **Manage Messages** to configure pagination. bored also needs permission to add and manage reactions in the message's channel.
+You need **Manage Messages** to configure pagination. bored needs permissions to add and manage reactions in the target channel.
 
 ## Set up pagination
 
 <Steps>
-  <Step title="Send the first embed">
-    Create the embed that should become page 1 with a command such as `fakemessage`, `embed`, or another bored feature that sends an embed.
+  <Step title="Send the base embed">
+    Create the embed that will serve as page 1 using `/createembed`, a welcome message, or another bored command.
   </Step>
   <Step title="Enable pagination">
-    Copy the embed message's link, then enable pagination on it.
+    Copy the message link and initialize pagination on it.
 
     <Tabs items={["Syntax", "Example"]}>
       <Tab>
 
 ```text
-pagination set (message link)
+/pagination set message:<message_link>
 ```
 
       </Tab>
       <Tab>
 
 ```text
-,pagination set https://discord.com/channels/123456789012345678/234567890123456789/345678901234567890
+/pagination set message:https://discord.com/channels/123456789012345678/234567890123456789/345678901234567890
 ```
 
       </Tab>
     </Tabs>
 
-    bored stores the current message as page 1 and adds the navigation reactions.
+    bored registers the current message content as page 1 and attaches navigation reactions.
   </Step>
-  <Step title="Add another page">
-    Add an embed script or Discord JSON payload as the next page.
+  <Step title="Add pages">
+    Append additional embed script or Discord JSON payloads.
 
     <Tabs items={["Syntax", "Example"]}>
       <Tab>
 
 ```text
-pagination add (message link) (embed code)
+/pagination add message:<message_link> code:<embed_script>
 ```
 
       </Tab>
       <Tab>
 
 ```text
-,pagination add https://discord.com/channels/123456789012345678/234567890123456789/345678901234567890 {embed}$v{title: Page 2}$v{description: Use the arrows to move between pages.}
+/pagination add message:https://discord.com/channels/123456789012345678/234567890123456789/345678901234567890 code:{embed}$v{title: Page 2}$v{description: Use the arrows to browse sections.}
 ```
 
       </Tab>
     </Tabs>
 
-    `pagination add` opens the new page after saving it. Repeat the command for every additional page.
+    Repeat for any number of subsequent pages.
   </Step>
 </Steps>
 
-For prefix commands, you can reply to the target message instead of including its message link. Keep the embed code after the command when using a reply.
-
 ## Page variables
 
-Pagination scripts support two variables that update whenever the page changes.
+Dynamic pagination variables update automatically whenever a user turns a page:
 
 | Variable | Value |
 | --- | --- |
-| `{page.current}` | The page currently being displayed. |
-| `{page.total}` | The total number of saved pages. |
+| `{page.current}` | Current page number being displayed. |
+| `{page.total}` | Total number of saved pages in the collection. |
 
 ```text
-{embed}$v{title: Server guide}$v{description: This is page {page.current} of {page.total}.}
+{embed}$v{title: Server Rules}$v{description: Page {page.current} of {page.total}}
 ```
 
-Variables from the main [Variables](/scripting/variables) reference also work. Mentions rendered by a page are suppressed and do not notify members or roles.
+All standard [Scripting Variables](/scripting/variables) are also supported.
+
+## Restrict access
+
+Lock page navigation controls so only a specific member or role can turn pages.
+
+<Tabs items={["Restrict to role", "Restrict to user", "Clear restriction"]}>
+  <Tab>
+
+```text
+/pagination restrict message:<message_link> target:@VIP
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/pagination restrict message:<message_link> target:@member
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/pagination restrict message:<message_link> target:clear
+```
+
+  </Tab>
+</Tabs>
 
 ## Manage pages
 
-### Update a page
-
-Replace one saved page with new embed code. Page IDs begin at `1`.
-
-```text
-pagination update (message link) (page ID) (embed code)
-```
+<Tabs items={["Update page", "Remove page", "Restore reactions"]}>
+  <Tab>
 
 ```text
-,pagination update https://discord.com/channels/123456789012345678/234567890123456789/345678901234567890 2 {embed}$v{title: Updated page}$v{description: Page {page.current} of {page.total}}
+/pagination update message:<message_link> page:<number> code:<embed_script>
 ```
 
-The alias is `pagination edit`.
-
-### Remove a page
+  </Tab>
+  <Tab>
 
 ```text
-pagination remove (message link) (page ID)
+/pagination remove message:<message_link> page:<number>
 ```
 
-Removing a page renumbers every page after it so the IDs remain continuous. A pagination message must keep at least one page; use `pagination delete` when you want to disable pagination entirely.
-
-The alias is `pagination rm`.
-
-### Restore reactions
-
-Use this when someone removes one or both navigation reactions.
+  </Tab>
+  <Tab>
 
 ```text
-pagination restorereactions (message link)
+/pagination restorereactions message:<message_link>
 ```
 
-The aliases are `pagination restore` and `pagination reactions`.
+  </Tab>
+</Tabs>
 
-## View or delete pagination
+## Overview and cleanup
 
-| Command | What it does |
-| --- | --- |
-| `pagination list` | Lists every configured pagination message in the server. |
-| `pagination delete (message link)` | Removes pagination data and navigation reactions from one message. |
-| `pagination reset` | Removes all saved pagination data for the server after confirmation. |
+<Tabs items={["List", "Delete message pagination", "Reset all"]}>
+  <Tab>
 
-`pagination delete` does not delete the Discord message. Its alias is `pagination del`, and `pagination list` can also be used as `pagination ls`.
+```text
+/pagination list
+```
 
-`pagination reset` requires **Administrator**. Its alias is `pagination clear`.
+  </Tab>
+  <Tab>
 
-## Limits
+```text
+/pagination delete message:<message_link>
+```
 
-- Each page must contain at least one embed.
-- Pages can use bored embed scripts or Discord JSON message payloads.
-- Buttons and Components V2 are not supported on pagination pages.
-- The target must be an existing message sent by bored in the same server.
+  </Tab>
+  <Tab>
+
+```text
+/pagination reset
+```
+
+  </Tab>
+</Tabs>

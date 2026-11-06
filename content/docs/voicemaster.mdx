@@ -5,51 +5,32 @@ section: Server Configuration
 icon: speaker-wave
 ---
 
-VoiceMaster creates a temporary voice channel when someone joins the saved **Join to Create** voice channel. The channel owner can then manage that room with VoiceMaster commands and the pinned interface message.
+import { Steps, Step } from "fumadocs-ui/components/steps";
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+
+VoiceMaster automatically creates disposable, customizable temporary voice channels (Join to Create) when a member connects to the designated generator channel. Channel owners can manage their room via slash commands or the interactive interface panel in `#interface`.
 
 <Callout type="info" title="Owner controls">
-Most day-to-day VoiceMaster commands only work for the **current channel owner**. If the owner leaves, another member in that channel can take over with `voicemaster claim`.
+Most day-to-day VoiceMaster management commands only work for the **current room owner**. If the owner disconnects, another active member in that channel can claim ownership with `/voicemaster claim`.
 </Callout>
 
 ## First-time setup
 
 <Steps>
-  <Step title="Run `voicemaster setup`">
-    VoiceMaster setup is interactive and asks which layout you want.
+  <Step title="Run `/voicemaster setup`">
+    Launch the interactive setup wizard to generate the voice category layout.
 
 ```text
-voicemaster setup
+/voicemaster setup
 ```
-
   </Step>
-  <Step title="Choose the setup flow">
-    The first prompt asks whether you want a **private Join to Create** channel too.
-
-    If you approve, bored creates:
-
-    - `Voicemaster`
-    - `#interface`
-    - `Public Join to Create`
-    - `Private Join to Create`
-    - `Public Voice Channels`
-    - `Private Voice Channels`
-
-    If you deny, bored asks whether created channels should move into `Public Voice Channels` or stay under `Voicemaster`.
+  <Step title="Choose your layout">
+    Select whether you want a public Join to Create channel, a private Join to Create channel, or both. bored automatically creates the required categories, interface channel, and generator channels.
   </Step>
-  <Step title="Use the created layout">
-    Public joins create normal temporary channels. The private Join to Create source channel stays joinable, but joining it creates a locked temporary channel. The pinned interface message is posted in `#interface` and shows the active public and private Join to Create channels for that server.
+  <Step title="Manage rooms">
+    Empty temporary voice channels are automatically pruned and deleted when all members leave.
   </Step>
 </Steps>
-
-<Callout type="info" title="Setup outcomes">
-If you choose **Move Users**, the created public channels appear under `Public Voice Channels`.
-
-If you choose **Don't move users**, the created public channels stay under `Voicemaster`.
-
-If private setup is enabled, locked rooms move into `Private Voice Channels` and unlocked rooms move back to the default public category.
-</Callout>
-
-Empty VoiceMaster channels are deleted automatically once everyone leaves.
 
 ## Join to Create routing
 
@@ -59,20 +40,18 @@ Empty VoiceMaster channels are deleted automatically once everyone leaves.
   <Tab>
 
 ```text
-voicemaster channel (voice channel)
+/voicemaster channel channel:<voice channel>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-voicemaster channel Public Join to Create
+/voicemaster channel channel:#Public Join to Create
 ```
 
   </Tab>
 </Tabs>
-
-This sets the public Join to Create voice channel. When members join it, bored creates their temporary voice channel in the configured public category.
 
 ### Private Join to Create channel
 
@@ -80,100 +59,92 @@ This sets the public Join to Create voice channel. When members join it, bored c
   <Tab>
 
 ```text
-voicemaster channel private [voice channel]
+/voicemaster channel private [channel:<voice channel>]
 ```
 
   </Tab>
   <Tab>
 
 ```text
-voicemaster channel private Private Join to Create
+/voicemaster channel private channel:#Private Join to Create
 ```
 
   </Tab>
   <Tab>
 
 ```text
-voicemaster channel private
+/voicemaster channel private
 ```
 
   </Tab>
 </Tabs>
 
-This sets or clears the private Join to Create voice channel. The source channel itself stays joinable. When members join it, bored creates a locked temporary voice channel in the private VoiceMaster category using the same locked state as `voicemaster lock` or the interface lock button.
+## Naming & defaults
 
-When a private category is configured, `voicemaster unlock` moves that room back to the default public category, and `voicemaster lock` moves it into the private category again.
+### Default channel configuration
 
-## Naming and defaults
-
-### Default settings
-
-<Tabs items={["Name", "Bitrate", "Region", "Default role", "Join role"]}>
+<Tabs items={["Name", "Bitrate", "Region", "Default Role", "Join Role"]}>
   <Tab>
 
 ```text
-voicemaster default name (name or template)
+/voicemaster default name name:<template>
+```
+
+Variables supported: `{user.display_name}`, `{user.name}`, `{user.id}`, `{guild.name}`. Default: `{user.display_name}'s vc`.
+
+  </Tab>
+  <Tab>
+
+```text
+/voicemaster default bitrate bitrate:128
 ```
 
   </Tab>
   <Tab>
 
 ```text
-voicemaster default bitrate 128
+/voicemaster default region region:us-east
 ```
 
   </Tab>
   <Tab>
 
 ```text
-voicemaster default region russia
+/voicemaster default role role:@Voice Access
 ```
 
   </Tab>
   <Tab>
 
 ```text
-voicemaster default role @Voice Access
-```
-
-  </Tab>
-  <Tab>
-
-```text
-voicemaster join role @In Voice
+/voicemaster join role role:@In Voice
 ```
 
   </Tab>
 </Tabs>
-
-Use these to control how newly created VoiceMaster channels start out. `default role` sets the role applied to new VoiceMaster channels, while `join role` gives members a separate server role while they are connected to a VoiceMaster channel.
-
-`voicemaster default name` can use the same naming variables as the older template flow: `{user.display_name}`, `{user.name}`, `{user.global_name}`, `{user.id}`, `{user}`, `{guild.name}`, `{guild.id}`, and `{guild.member_count}`. The default name format is `{user.display_name}'s vc`.
 
 ## Announcements
 
-VoiceMaster can post a message in one or more text channels whenever a member creates a new VoiceMaster channel.
+bored can broadcast an alert whenever a member creates a new temporary voice room.
 
-### Add an announcement
+### Add announcement channel
 
 <Tabs items={["Syntax", "Example"]}>
   <Tab>
 
 ```text
-voicemaster announce add (channel) [message]
+/voicemaster announce add channel:<channel> [message:<text>]
 ```
 
   </Tab>
   <Tab>
 
 ```text
-voicemaster announce add #voice-log {user.mention} created {channel.mention}
+/voicemaster announce add channel:#voice-log message:{user.mention} created {channel.mention}
 ```
 
   </Tab>
 </Tabs>
-
-If you leave the message out, bored uses the default VoiceMaster announcement. Announcement messages support embed scripts and variables. In these messages, `{user.*}` is the channel creator and `{channel.*}` is the newly created voice channel.
 
 ### Manage announcements
 
@@ -181,175 +152,173 @@ If you leave the message out, bored uses the default VoiceMaster announcement. A
   <Tab>
 
 ```text
-voicemaster announce list
+/voicemaster announce list
 ```
 
   </Tab>
   <Tab>
 
 ```text
-voicemaster announce remove #voice-log
+/voicemaster announce remove channel:#voice-log
 ```
 
   </Tab>
   <Tab>
 
 ```text
-voicemaster announce reset
+/voicemaster announce reset
 ```
 
   </Tab>
   <Tab>
 
 ```text
-voicemaster announce test
+/voicemaster announce test
 ```
 
   </Tab>
 </Tabs>
-
-`voicemaster announce test` uses the chosen member, or you if no member is provided. The test target must already be connected to a voice channel.
 
 ## Channel owner controls
 
-These commands are for the current owner of a live VoiceMaster channel.
+These commands can be run by the owner of an active temporary voice channel.
 
 ### Basic channel controls
 
-<Tabs items={["Rename", "Limit", "Bitrate", "Status"]}>
+<Tabs items={["Rename", "User Limit", "Bitrate", "Status"]}>
   <Tab>
 
 ```text
-voicemaster rename (name)
+/voicemaster rename name:<new name>
+```
+
+Has a 10-minute cooldown per room.
+
+  </Tab>
+  <Tab>
+
+```text
+/voicemaster limit limit:5
 ```
 
   </Tab>
   <Tab>
 
 ```text
-voicemaster limit 5
+/voicemaster bitrate bitrate:96
 ```
 
   </Tab>
   <Tab>
 
 ```text
-voicemaster bitrate 96
-```
-
-  </Tab>
-  <Tab>
-
-```text
-voicemaster status Lofi Mode
+/voicemaster status status:Chilling & Gaming
 ```
 
   </Tab>
 </Tabs>
 
-`voicemaster rename` has a **10 minute cooldown** per channel.
-
-### Privacy and access
+### Privacy & Access
 
 <Tabs items={["Lock", "Unlock", "Ghost", "Unghost", "Permit", "Reject"]}>
   <Tab>
 
 ```text
-voicemaster lock
+/voicemaster lock
 ```
+
+Prevents unauthorized users from connecting.
 
   </Tab>
   <Tab>
 
 ```text
-voicemaster unlock
+/voicemaster unlock
 ```
+
+Opens the room to all server members.
 
   </Tab>
   <Tab>
 
 ```text
-voicemaster ghost
+/voicemaster ghost
 ```
+
+Hides the channel from members without access.
 
   </Tab>
   <Tab>
 
 ```text
-voicemaster unghost
+/voicemaster unghost
 ```
+
+Makes the channel visible again.
 
   </Tab>
   <Tab>
 
 ```text
-voicemaster permit @member
+/voicemaster permit member:@member
 ```
+
+Grants a specific user permission to join your locked room.
 
   </Tab>
   <Tab>
 
 ```text
-voicemaster reject @member
+/voicemaster reject member:@member
 ```
+
+Disconnects and bans a specific user from your temporary room.
 
   </Tab>
 </Tabs>
 
-`permit` grants someone access to the current channel. `reject` disconnects them if they are in the channel and blocks them from joining again until you reopen access. `ban`, `kick`, and `disconnect` work as aliases for `reject`.
+### Ownership controls
 
-### Ownership and extras
-
-<Tabs items={["Role", "Claim", "Transfer", "Music"]}>
+<Tabs items={["Claim", "Transfer"]}>
   <Tab>
 
 ```text
-voicemaster role @Trusted
+/voicemaster claim
 ```
+
+Claim ownership if the original channel creator disconnected.
 
   </Tab>
   <Tab>
 
 ```text
-voicemaster claim
+/voicemaster transfer member:@member
 ```
 
-  </Tab>
-  <Tab>
-
-```text
-voicemaster transfer @member
-```
-
-  </Tab>
-  <Tab>
-
-```text
-voicemaster music on
-```
+Transfer channel ownership to another active participant.
 
   </Tab>
 </Tabs>
 
-`role` updates the saved role permission override for the current VoiceMaster channel. `claim` takes ownership when the previous owner has already left. `transfer` gives control to someone else in the channel. `music` controls whether music bots can stay connected when the owner leaves.
-
-## Reset or resend the interface
+## Reset & interface recovery
 
 <Tabs items={["Reset", "Resend interface"]}>
   <Tab>
 
 ```text
-voicemaster reset
+/voicemaster reset
 ```
+
+Clears all VoiceMaster settings and category bindings.
 
   </Tab>
   <Tab>
 
 ```text
-voicemaster sendinterface
+/voicemaster sendinterface
 ```
+
+Reposts the interactive button interface message in `#interface`.
 
   </Tab>
 </Tabs>
-
-`voicemaster reset` removes the saved VoiceMaster configuration. `voicemaster sendinterface` sends a fresh copy of the interface message if the original one was deleted.

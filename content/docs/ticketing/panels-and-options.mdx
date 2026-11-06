@@ -5,113 +5,94 @@ section: Server Configuration
 icon: rectangle-stack
 ---
 
-Panels and options are the core of ticket configuration. The panel is one shared message; each option is a choice on that message with its own behavior. Choices can appear as separate buttons or inside one dropdown menu.
+import { Steps, Step } from "fumadocs-ui/components/steps";
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+
+Panels and options are the core of ticket configuration. A panel represents the shared public embed post, while options are individual buttons or dropdown choices members click to open private channels.
 
 ## Resend a panel
 
-Members only see ticket choices on the **current** panel message. After you change options, the display mode, or the panel message script, resend the panel so the public message stays up to date.
+Members only see ticket choices on the **active** panel message. After modifying options, display mode, or embed copy, resend the panel so the public message reflects the latest configuration:
 
 <Tabs items={["Syntax", "Example"]}>
   <Tab>
 
 ```text
-ticket panel (panel) [channel]
+/ticket panel panel:<panel name> [channel:<channel>]
 ```
 
   </Tab>
   <Tab>
 
 ```text
-ticket panel Support #tickets
+/ticket panel panel:Support channel:#tickets
 ```
 
   </Tab>
 </Tabs>
 
-If you omit the channel, bored uses the panel's saved channel when that channel still exists.
-
-Resending posts a **new** message with the latest embed and option controls. It does not edit the old message, so the panel avoids an `(edited)` marker.
-
-<Callout type="info" title="When to resend">
-Resend after you add, remove, enable, disable, edit, or change how ticket options are displayed.
-</Callout>
+If you omit the channel option, bored sends the panel to its saved channel.
 
 ## Build a multi-option panel
 
 <Steps>
   <Step title="Open the configurator">
-    Run `ticket config` and choose **Manage Ticket Panels**.
+    Run `/ticket config` and choose **Manage Ticket Panels**.
   </Step>
   <Step title="Create or select a panel">
-    Use **Create Panel** or pick an existing panel from the list.
+    Select **Create Panel** or choose an existing panel from the menu.
   </Step>
   <Step title="Set the panel message">
-    Open **Panel Message** and configure the shared embed or Components V2 container, panel channel, and whether options appear as **Buttons** or a **Dropdown**.
+    Configure the shared embed layout, public channel, and whether options appear as **Buttons** or a **Dropdown Menu**.
   </Step>
   <Step title="Add ticket options">
-    Open **Ticket Options**, then **Add Option** for each ticket choice you want on that message.
+    Open **Ticket Options**, then **Add Option** for each ticket choice you want on that panel (e.g. `General Support`, `Billing`, `Staff Report`).
   </Step>
-  <Step title="Configure each option">
-    Select an option and set **Button**, **Category**, **Ticket Settings**, **Welcome Message**, **Claiming**, and **Forms** as needed. Details are in [Customization](/ticketing/customization).
+  <Step title="Configure options">
+    Configure specific button styles, categories, support roles, welcome embeds, claiming rules, and form modals.
   </Step>
   <Step title="Resend the panel">
-    Run `ticket panel (panel) [channel]` so members see the updated message and option controls.
+    Run `/ticket panel panel:Support channel:#tickets` to post the live controls.
   </Step>
 </Steps>
 
-## Panel editor
-
-When you edit a panel, these sections are available:
+## Panel configuration sections
 
 | Section | Purpose |
 | --- | --- |
-| **Ticket Settings** | Panel name and max open tickets per user for this panel |
-| **Panel Message** | Shared public embed or Components V2 layout, panel channel, and buttons/dropdown display mode |
-| **Ticket Options** | List, add, enable, disable, and edit ticket choices |
-| **Log Channel** | Optional override for where this panel's closes are logged |
-
-**Max open tickets per user** counts tickets opened from any option on that panel.
+| **Ticket Settings** | Panel display name and maximum open tickets per user |
+| **Panel Message** | Shared embed script or Components V2 container, target channel, and button/dropdown mode |
+| **Ticket Options** | List, add, enable, disable, and customize ticket choices |
+| **Log Channel** | Optional channel override for where this panel's transcripts are recorded |
 
 ## Option editor
 
-Each ticket option has its own editor:
-
 | Section | Purpose |
 | --- | --- |
-| **Ticket Settings** | Option name, support roles, ping support roles, allow opener close, channel name format, roles required to open |
-| **Button** | Public label and emoji for this option, plus its style when the panel uses buttons |
-| **Category** | Category where channels for this option are created |
-| **Claiming** | Whether staff can claim tickets from this option, and whether claimed tickets lock to the claimer |
-| **Welcome Message** | Embed or Components V2 layout and close/claim controls in the new ticket channel |
-| **Forms** | Optional questions before the ticket opens |
-
-From the option list you can also **enable**, **disable**, or **delete** an option. Disabled options do not appear when you resend the panel.
-
-### Claim Lock
-
-Under **Claiming**, enable **Claim Lock** when claimed tickets should be locked to the staff member who claimed them.
-
-When Claim Lock is on, support roles can still view the ticket, but they cannot send messages, attach files, or embed links while another staff member has it claimed. The claimer keeps send access. Running `ticket unclaim` restores normal support-role send access.
+| **Ticket Settings** | Option name, support roles, ping support toggle, allow opener close, channel naming format |
+| **Button** | Button label, emoji, and button style (green, blurple, gray, red) |
+| **Category** | Destination category where channels are opened |
+| **Claiming** | Allow claiming, and toggle **Claim Lock** |
+| **Welcome Message** | Initial greeting embed and close/claim action buttons inside the ticket |
+| **Forms** | Modal questions asked before the ticket opens |
 
 ## Forms shortcut
 
-You can jump straight to forms for a panel:
+Jump directly to the form builder for a panel:
 
 <Tabs items={["Syntax", "Example"]}>
   <Tab>
 
 ```text
-ticket forms [panel]
+/ticket forms [panel:<panel name>]
 ```
 
   </Tab>
   <Tab>
 
 ```text
-ticket forms Support
+/ticket forms panel:Support
 ```
 
   </Tab>
 </Tabs>
-
-Without a panel name, bored shows a panel picker, then the ticket options list focused on forms.

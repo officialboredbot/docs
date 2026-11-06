@@ -5,10 +5,12 @@ section: Server Configuration
 icon: user-minus
 ---
 
-Leave Messages let bored send a saved goodbye message to each channel you configure when someone leaves the server.
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+
+Leave Messages dispatch custom departure notices when members leave or are kicked from your server.
 
 <Callout type="warning" title="Raid state">
-When **raid state** is active through AntiRaid, leave messages are paused until the raid batch is cleared or you turn raid state off.
+When AntiRaid **raid state** is active, leave messages are temporarily paused.
 </Callout>
 
 ## Add a leave message
@@ -17,100 +19,60 @@ When **raid state** is active through AntiRaid, leave messages are paused until 
   <Tab>
 
 ```text
-leave add (channel) (message)
+/leave add channel:<channel> message:<text or embed script>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-leave add #goodbye goodbye {user.mention} --self_destruct 30
+/leave add channel:#goodbye message:Goodbye {user.name}, we'll miss you!
 ```
 
   </Tab>
 </Tabs>
 
-You can save one leave message per channel. Messages support plain text or bored's embed script format. `--self_destruct` is optional and can be set from `6` to `60` seconds. `goodbye` works as an alias for `leave`.
+## View & test leave messages
 
-<Callout type="info" title="Invite-aware leave messages">
-If [Invite Tracking](/invite-tracking) is enabled and your leave message uses invite variables such as `{inviter}` or `{invite_code}`, that row overrides the invite tracker for leaves. Leave messages without invite variables keep running alongside the tracker.
-</Callout>
-
-## View a saved message
-
-<Tabs items={["Syntax", "Example"]}>
+<Tabs items={["View saved message", "Test live in channel", "List channels"]}>
   <Tab>
 
 ```text
-leave view (channel)
+/leave view channel:#goodbye
 ```
 
   </Tab>
   <Tab>
 
 ```text
-leave view #goodbye
-```
-
-  </Tab>
-</Tabs>
-
-Use this to check the saved content and whether `self_destruct` is enabled for that channel.
-
-## List configured channels
-
-```text
-leave list
-```
-
-This shows every channel that currently has a leave message saved.
-
-## Remove a leave message
-
-<Tabs items={["Syntax", "Example"]}>
-  <Tab>
-
-```text
-leave remove (channel)
+/leave test channel:#goodbye
 ```
 
   </Tab>
   <Tab>
 
 ```text
-leave remove #goodbye
+/leave list
 ```
 
   </Tab>
 </Tabs>
 
-This only removes the saved leave message for that channel.
+## Remove or reset
 
-## Reset all leave messages
-
-```text
-leave reset
-```
-
-This clears every saved leave message in the server after a confirmation prompt. `leave clear` works as an alias.
-
-## Test a leave message
-
-<Tabs items={["Syntax", "Example"]}>
+<Tabs items={["Remove single", "Reset all"]}>
   <Tab>
 
 ```text
-leave test (member)
+/leave remove channel:#goodbye
 ```
 
   </Tab>
   <Tab>
 
 ```text
-leave test @member
+/leave reset
 ```
 
   </Tab>
 </Tabs>
-
-If you leave the member out, bored uses you when possible and sends the saved leave messages as a preview.

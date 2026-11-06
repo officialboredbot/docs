@@ -5,176 +5,144 @@ section: Server Configuration
 icon: eye-slash
 ---
 
-Confessions lets members submit anonymous posts with `/confess`. Public confession posts can include vote buttons, anonymous reply threads, and staff reporting.
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
 
-## Start here
+Confessions lets members submit anonymous confessions via `/confess`. Confession posts support interactive upvote/downvote buttons, anonymous reply threads, and staff report routing.
+
+## Setup confession channel
 
 <Tabs items={["Syntax", "Example"]}>
   <Tab>
 
 ```text
-confessions add (channel)
+/confessions add channel:<channel>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-confessions add #confessions
+/confessions add channel:#confessions
 ```
 
   </Tab>
 </Tabs>
 
-Bored needs view, send, embed, read history, create public thread, and send in thread permissions in the confession channel.
+bored requires View Channel, Send Messages, Embed Links, Read Message History, and Create Public Threads in the confession channel.
 
-## Member flow
+## Member submission flow
 
 ```text
 /confess
 ```
 
-The slash command opens a modal for the confession text. Confessions and anonymous replies cannot be empty, cannot contain links or Discord invites, and are checked against the server's confession blacklist.
+Members run `/confess` to open an anonymous confession modal. Submissions cannot be blank, cannot contain links or Discord invites, and are checked against blacklisted keywords.
 
-Confession submissions have a `60` second cooldown. Anonymous replies have a `30` second cooldown.
+## Staff report channel
 
-## Report channel
-
-<Tabs items={["Set", "View", "Clear"]}>
+<Tabs items={["Set channel", "Report confession"]}>
   <Tab>
 
 ```text
-confessions reportchannel #confession-reports
+/confessions reportchannel channel:#confession-reports
 ```
 
   </Tab>
   <Tab>
 
 ```text
-confessions reportchannel
-```
-
-  </Tab>
-  <Tab>
-
-```text
-confessions reportchannel none
+/confessions report confession_number:7
 ```
 
   </Tab>
 </Tabs>
 
-Set a report channel before members use `confessions report`.
+## Member mutes
 
-## Report a confession
-
-<Tabs items={["Syntax", "Example"]}>
-  <Tab>
-
-```text
-confessions report (confession number or reply message id)
-```
-
-  </Tab>
-  <Tab>
-
-```text
-confessions report 7
-```
-
-  </Tab>
-</Tabs>
-
-Reports go to the configured staff report channel and include the saved anonymous subject when bored can resolve it.
-
-## Staff blocks
+Block abusive members from submitting anonymous confessions:
 
 <Tabs items={["Mute", "Unmute"]}>
   <Tab>
 
 ```text
-confessions mute (member)
+/confessions mute member:@bad-actor
 ```
 
   </Tab>
   <Tab>
 
 ```text
-confessions unmute (member)
+/confessions unmute member:@bad-actor
 ```
 
   </Tab>
 </Tabs>
 
-Muted members cannot submit anonymous confessions.
+## Blacklisted words
 
-## Blocked phrases
+Filter specific words or slurs from anonymous confessions and replies:
 
 <Tabs items={["Add", "Remove", "List", "Clear"]}>
   <Tab>
 
 ```text
-confessions blacklist add (phrase)
+/confessions blacklist add word:<phrase>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-confessions blacklist remove (phrase)
+/confessions blacklist remove word:<phrase>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-confessions blacklist list
+/confessions blacklist list
 ```
 
   </Tab>
   <Tab>
 
 ```text
-confessions blacklist clear
+/confessions blacklist clear
 ```
 
   </Tab>
 </Tabs>
 
-Blocked phrases are matched against confession and anonymous reply text.
+## Voting buttons
 
-## Vote buttons
+Configure custom upvote/downvote button emojis on confession embeds:
 
-<Tabs items={["Set", "View", "Reset"]}>
+<Tabs items={["Set emojis", "View emojis", "Reset emojis"]}>
   <Tab>
 
 ```text
-confessions emojis set (upvote emoji or none) (downvote emoji or none)
+/confessions emojis set upvote:👍 downvote:👎
 ```
 
   </Tab>
   <Tab>
 
 ```text
-confessions emojis view
+/confessions emojis view
 ```
 
   </Tab>
   <Tab>
 
 ```text
-confessions emojis reset
+/confessions emojis reset
 ```
 
   </Tab>
 </Tabs>
 
-Use `none`, `off`, `clear`, or similar clear words for a vote side to hide that button. `confessions emojis reset` restores the default vote buttons.
-
-## Disable
+## Disable confessions
 
 ```text
-confessions disable
+/confessions disable
 ```
-
-This asks for confirmation, disables anonymous confessions, and wipes the stored confession records for the server. `confessions remove` works as a compatibility alias.

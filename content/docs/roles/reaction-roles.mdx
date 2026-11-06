@@ -5,7 +5,9 @@ section: Server Configuration
 icon: hand-thumb-up
 ---
 
-Reaction Roles let members give themselves roles by reacting to one message with a saved emoji.
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+
+Reaction Roles let members assign or remove roles simply by reacting to a designated message with a saved emoji.
 
 ## Add a reaction role
 
@@ -13,92 +15,61 @@ Reaction Roles let members give themselves roles by reacting to one message with
   <Tab>
 
 ```text
-reactionrole add (message link) (reaction) (role) [--exclusive]
+/autorole reactionrole add message_link:<URL> reaction:<emoji> role:<role> [exclusive:<true or false>]
 ```
 
   </Tab>
   <Tab>
 
 ```text
-reactionrole add https://discord.com/channels/1/2/3 ✅ @Verified
+/autorole reactionrole add message_link:https://discord.com/channels/1/2/3 reaction:✅ role:@Verified
 ```
 
   </Tab>
 </Tabs>
 
-You can also reply to the target message instead of pasting a link. bored adds the reaction for you after the role assignment is saved. Prefix can attach more than one role to the same reaction in one command. Slash `/reactionrole add` stays single-role.
+bored automatically adds the initial reaction to the message once configured.
 
 ### Exclusive reaction roles
 
-Add `--exclusive` when members should only keep one role from a set on the same message.
+Set `exclusive:true` when members should only hold one role from that reaction group at a time:
 
 ```text
-reactionrole add https://discord.com/channels/1/2/3 🔞 @18+ --exclusive
-reactionrole add https://discord.com/channels/1/2/3 🚫 @18- --exclusive
+/autorole reactionrole add message_link:https://discord.com/channels/1/2/3 reaction:🔞 role:@18+ exclusive:true
+/autorole reactionrole add message_link:https://discord.com/channels/1/2/3 reaction:🚫 role:@18- exclusive:true
 ```
 
-If a member reacts with `🔞`, bored gives them `@18+`. If they later react with `🚫`, bored removes `@18+`, gives them `@18-`, and removes their old `🔞` reaction from the message.
+When a member reacts with `🚫`, bored removes `@18+`, awards `@18-`, and purges their previous reaction.
 
-Only reaction roles added with `--exclusive` conflict with each other. Normal reaction roles on the same message still stack normally.
+## Remove reaction roles
 
-<Callout type="info" title="Custom emojis">
-If you use a custom emoji from another server, bored can prompt to import that emoji into the current server before it saves the reaction role.
-</Callout>
-
-## Remove one reaction role
-
-<Tabs items={["Syntax", "Example"]}>
+<Tabs items={["Remove single reaction", "Remove all reactions from message"]}>
   <Tab>
 
 ```text
-reactionrole remove (message link) (reaction)
+/autorole reactionrole remove message_link:https://discord.com/channels/1/2/3 reaction:✅
 ```
 
   </Tab>
   <Tab>
 
 ```text
-reactionrole remove https://discord.com/channels/1/2/3 ✅
+/autorole reactionrole removeall message_link:https://discord.com/channels/1/2/3
 ```
 
   </Tab>
 </Tabs>
 
-This removes the saved role assignment for that reaction on the target message.
-
-## Remove every reaction role from one message
-
-<Tabs items={["Syntax", "Example"]}>
-  <Tab>
+## View active reaction roles
 
 ```text
-reactionrole removeall (message link)
+/autorole reactionrole list
 ```
-
-  </Tab>
-  <Tab>
-
-```text
-reactionrole removeall https://discord.com/channels/1/2/3
-```
-
-  </Tab>
-</Tabs>
-
-Use this when you want to clear the entire reaction role setup from one message at once.
-
-## List saved reaction roles
-
-```text
-reactionrole list
-```
-
-This shows every saved reaction role in the server, including the target message and the role attached to each emoji.
 
 ## Reset all reaction roles
 
-```text
-reactionrole reset
-```
+Clear all reaction role bindings across the server:
 
-This removes every saved reaction role in the server after a confirmation prompt.
+```text
+/autorole reactionrole reset
+```
