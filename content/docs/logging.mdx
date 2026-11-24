@@ -43,14 +43,14 @@ This creates a private `logs` category hidden from `@everyone` with dedicated ch
   <Tab>
 
 ```text
-/logs channel add channel:<channel> [event:<event name>]
+/logs add channel:<channel> [event:<event name>]
 ```
 
   </Tab>
   <Tab>
 
 ```text
-/logs channel add channel:#logs event:messages
+/logs add channel:#logs event:messages
 ```
 
   </Tab>
@@ -64,14 +64,14 @@ If you omit the event option, all logging events are bound to that channel.
   <Tab>
 
 ```text
-/logs channel remove channel:<channel> [event:<event name>]
+/logs remove channel:<channel> [event:<event name>]
 ```
 
   </Tab>
   <Tab>
 
 ```text
-/logs channel remove channel:#logs event:messages
+/logs remove channel:#logs event:messages
 ```
 
   </Tab>
@@ -85,14 +85,14 @@ Customize embed accent colors per event type:
   <Tab>
 
 ```text
-/logs channel color channel:<channel> event:<event> [color:<hex>]
+/logs color set channel:<channel> event:<event> color:<hex>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-/logs channel color channel:#logs event:messages color:#ff3b30
+/logs color set channel:#logs event:messages color:#ff3b30
 ```
 
   </Tab>
@@ -102,18 +102,11 @@ Customize embed accent colors per event type:
 
 Prevent noisy channels, spam bots, or testing categories from polluting your logs.
 
-<Tabs items={["Add ignore", "Remove ignore", "List ignored"]}>
+<Tabs items={["Toggle ignore", "List ignored"]}>
   <Tab>
 
 ```text
-/logs ignore add [channel:#counting] [member:@spam-bot]
-```
-
-  </Tab>
-  <Tab>
-
-```text
-/logs ignore remove [channel:#counting]
+/logs ignore toggle [channel:#counting] [member:@spam-bot]
 ```
 
   </Tab>

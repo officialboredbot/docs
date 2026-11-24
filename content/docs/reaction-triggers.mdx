@@ -73,7 +73,7 @@ Triggers match anywhere within message content, so a saved trigger like `sob` re
 Clear all saved reaction triggers from the server:
 
 ```text
-/reaction reset
+/reaction clear
 ```
 
 ## Channel auto-reactions
@@ -84,7 +84,7 @@ Automatically react to every message sent in a specific media or showcase channe
   <Tab>
 
 ```text
-/reaction messages channel:#selfies first:🔥 second:❤️ third:✨
+/reaction messages set channel:#selfies primary_emoji:🔥 secondary_emoji:❤️ tertiary_emoji:✨
 ```
 
 Channels must have slowmode enabled (at least 1 minute) or be configured as an image-only channel.
@@ -100,7 +100,7 @@ Channels must have slowmode enabled (at least 1 minute) or be configured as an i
   <Tab>
 
 ```text
-/reaction messages channel:#selfies
+/reaction messages clear channel:#selfies
 ```
 
   </Tab>

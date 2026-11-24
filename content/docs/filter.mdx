@@ -164,7 +164,7 @@ Sync custom regex patterns into Discord AutoMod:
   <Tab>
 
 ```text
-/filter invites whitelist [member:<user>] [role:<role>] [channel:<channel>]
+/filter invites exempt [channel:<channel>] [category:<category>] [role:<role>] [member:<user>]
 ```
 
   </Tab>
@@ -301,7 +301,7 @@ Exempt roles, channels, categories, or members from specific filters:
 
 ## Snipe safety
 
-Prevent sensitive content (like deleted invites, links, or filtered words) from being exposed through `/snipe` or `/editsnipe`:
+Prevent sensitive content (like deleted invites, links, or filtered words) from being exposed through `/snipe` or `/reaction editsnipe`:
 
 <Tabs items={["Syntax", "Example", "List"]}>
   <Tab>

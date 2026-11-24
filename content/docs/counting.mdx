@@ -18,14 +18,14 @@ Counting turns a text channel into an interactive counting minigame. Members wor
     Select the channel where members should count.
 
 ```text
-/counting channel channel:#counting
+/games counting channel channel:#counting
 ```
   </Step>
   <Step title="Review the settings">
     View your server's counting dashboard to see the active channel, current count, high score, and rules.
 
 ```text
-/counting config
+/games counting config
 ```
   </Step>
   <Step title="Start counting!">
@@ -41,14 +41,14 @@ Counting turns a text channel into an interactive counting minigame. Members wor
   <Tab>
 
 ```text
-/counting channel channel:<channel>
+/games counting channel channel:<channel>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-/counting channel channel:#counting
+/games counting channel channel:#counting
 ```
 
   </Tab>
@@ -59,7 +59,7 @@ Counting turns a text channel into an interactive counting minigame. Members wor
 To turn off counting and remove the channel binding, use:
 
 ```text
-/counting disable
+/games counting disable
 ```
 
 ### Reset count
@@ -67,25 +67,25 @@ To turn off counting and remove the channel binding, use:
 Reset the active count back to `0` without affecting the server's all-time high score or historical stats.
 
 ```text
-/counting reset
+/games counting reset
 ```
 
 ## Settings & rules
 
-View and adjust counting game rules using `/counting config`.
+View and adjust counting game rules using `/games counting config`.
 
 <Tabs items={["Syntax", "Example"]}>
   <Tab>
 
 ```text
-/counting config [math:<on or off>] [same_user:<on or off>] [strict:<on or off>]
+/games counting config [math:<on or off>] [same_user:<on or off>] [strict:<on or off>]
 ```
 
   </Tab>
   <Tab>
 
 ```text
-/counting config math:on same_user:off strict:off
+/games counting config math:on same_user:off strict:off
 ```
 
   </Tab>
@@ -105,14 +105,14 @@ Bored reacts to counts automatically to give instant visual feedback.
   <Tab>
 
 ```text
-/counting reactions [correct:<emoji>] [fail:<emoji>] [enabled:<on or off>]
+/games counting reactions [correct:<emoji>] [fail:<emoji>] [enabled:<on or off>]
 ```
 
   </Tab>
   <Tab>
 
 ```text
-/counting reactions correct:✅ fail:❌ enabled:on
+/games counting reactions correct:✅ fail:❌ enabled:on
 ```
 
   </Tab>
@@ -130,21 +130,21 @@ Give a role of shame to whoever ruins the count! When a user enters the wrong nu
   <Tab>
 
 ```text
-/counting failrole [role:<role>] [clear:<yes>]
+/games counting failrole [role:<role>] [clear:<yes>]
 ```
 
   </Tab>
   <Tab>
 
 ```text
-/counting failrole role:@Count Ruiner
+/games counting failrole role:@Count Ruiner
 ```
 
   </Tab>
   <Tab>
 
 ```text
-/counting failrole clear:yes
+/games counting failrole clear:yes
 ```
 
   </Tab>
@@ -161,7 +161,7 @@ Make sure bored's highest role is positioned above the fail role in your server'
 View comprehensive server metrics including current count, next expected count, all-time high score, total counts, and total resets.
 
 ```text
-/counting stats
+/games counting stats
 ```
 
 ### Server leaderboard
@@ -169,5 +169,5 @@ View comprehensive server metrics including current count, next expected count, 
 View the top counters in the server ranked by total successful counts and accuracy.
 
 ```text
-/counting leaderboard
+/games counting leaderboard
 ```

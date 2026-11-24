@@ -15,14 +15,14 @@ Managing counters requires `Manage Channels`. The bot must also possess permissi
   <Tab>
 
 ```text
-/server counter add metric:<string> channel_type:<string>
+/counter add metric:<string> channel_type:<string>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-/server counter add metric:members channel_type:voice
+/counter add metric:members channel_type:voice
 ```
 
   </Tab>
@@ -55,14 +55,14 @@ Supported channel types for `channel_type`: `voice`, `text`, `category`, `announ
   <Tab>
 
 ```text
-/server counter remove channel:<channel>
+/counter remove channel:<channel>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-/server counter remove channel:#members-1200
+/counter remove channel:#members-1200
 ```
 
   </Tab>
@@ -75,5 +75,5 @@ Removing a counter unregisters it from background sync routines without deleting
 Inspect all active counters tracked in the guild.
 
 ```text
-/server counter list
+/counter list
 ```

@@ -17,14 +17,14 @@ The minimum interval is `60` seconds.
   <Tab>
 
 ```text
-/server timer add channel:<channel> interval:<duration> message:<text or embed>
+/timer add channel:<channel> interval:<duration> message:<text or embed>
 ```
 
   </Tab>
   <Tab>
 
 ```text
-/server timer add channel:#announcements interval:6h message:Remember to check out the latest server updates and events!
+/timer add channel:#announcements interval:6h message:Remember to check out the latest server updates and events!
 ```
 
   </Tab>
@@ -38,14 +38,14 @@ Intervals accept duration formats like `30m`, `1h`, or `1d`.
   <Tab>
 
 ```text
-/server timer view channel:#announcements
+/timer view channel:#announcements
 ```
 
   </Tab>
   <Tab>
 
 ```text
-/server timer remove channel:#announcements
+/timer remove channel:#announcements
 ```
 
   </Tab>
@@ -54,7 +54,7 @@ Intervals accept duration formats like `30m`, `1h`, or `1d`.
 ## View active timers
 
 ```text
-/server timer list
+/timer list
 ```
 
 ## Activity requirement
@@ -65,14 +65,14 @@ Prevent timer messages from spamming inactive or dead channels:
   <Tab>
 
 ```text
-/server timer activity setting:on
+/timer activity setting:on
 ```
 
   </Tab>
   <Tab>
 
 ```text
-/server timer activity setting:off
+/timer activity setting:off
 ```
 
   </Tab>

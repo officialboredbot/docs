@@ -5,7 +5,7 @@ section: Miscellaneous
 icon: archive-box-arrow-down
 ---
 
-Autosnipe streams snipe events automatically to designated channels rather than requiring manual invocations of `/snipe`, `/editsnipe`, or `/reaction reactionsnipe`.
+Autosnipe streams snipe events automatically to designated channels rather than requiring manual invocations of `/snipe`, `/reaction editsnipe`, or `/reaction reactionsnipe`.
 
 Each event type can post to **one channel per server**. Enabling an event type in a new channel replaces the previous destination. Autosnipe respects `/filter snipe` exclusions.
 
@@ -13,18 +13,32 @@ Each event type can post to **one channel per server**. Enabling an event type i
 
 Configure automatic snipe forwarding for specific message lifecycle events.
 
-<Tabs items={["Syntax", "Example"]}>
+<Tabs items={["Deleted", "Edited", "Reaction", "Example"]}>
   <Tab>
 
 ```text
-/autosnipe channel event:<delete|edit|reaction> channel:<channel> [state:<on|off>]
+/autosnipe delete [channel:<channel>] [setting:<on|off>]
 ```
 
   </Tab>
   <Tab>
 
 ```text
-/autosnipe channel event:delete channel:#logs state:on
+/autosnipe edit [channel:<channel>] [setting:<on|off>]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/autosnipe reaction [channel:<channel>] [setting:<on|off>]
+```
+
+  </Tab>
+  <Tab>
+
+```text
+/autosnipe delete channel:#logs setting:on
 ```
 
   </Tab>
@@ -38,14 +52,14 @@ Send deleted messages, edited messages, and removed reactions to a unified log c
   <Tab>
 
 ```text
-/autosnipe all channel:<channel> [state:<on|off>]
+/autosnipe all channel:<channel> [setting:<on|off>]
 ```
 
   </Tab>
   <Tab>
 
 ```text
-/autosnipe all channel:#logs state:on
+/autosnipe all channel:#logs setting:on
 ```
 
   </Tab>
@@ -87,7 +101,7 @@ For on-demand inspection, use the native slash snipe suite:
   <Tab>
 
 ```text
-/editsnipe [index:<integer>]
+/reaction editsnipe [index:<integer>]
 ```
 
   </Tab>
@@ -101,7 +115,7 @@ For on-demand inspection, use the native slash snipe suite:
   <Tab>
 
 ```text
-/clearsnipe
+/reaction clearsnipe
 ```
 
   </Tab>
